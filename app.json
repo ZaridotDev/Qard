@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "QardGo",
-    "slug": "QardGo",
+    "name": "Qard",
+    "slug": "Qard",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
