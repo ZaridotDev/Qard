@@ -1,0 +1,25 @@
+-getMonthRange, usa la fecha que
+le pase y retorna la fecha con 
+formato correcto
+
+-la fecha que getMonthRange 
+devuelve es la que usa 
+useMonthlyTransactions para 
+retornar las transacciones de ese
+mes
+
+-forma actual que tengo de 
+hardcodear la fecha es 
+new Date(anio, mes), el mes tiene
+que ser una variable que varie con 
+las flechas
+
+-deberia guardar en selectMonth
+el mes seleccionado pero pasado por
+getMonthRange
+
+-deberia haber un limite para 
+los botones, para que menos de 0
+sea 11 y mas de 11 sea 0
+
+-
