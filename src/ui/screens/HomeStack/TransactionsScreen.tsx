@@ -55,7 +55,7 @@ export function TransactionsScreen() {
   return (
     <>
     {/* SELECCION DE MES */}
-      <View style={{ marginVertical: 20, flexDirection: 'row', justifyContent: 'space-around'}}>
+      <View style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'space-around'}}>
         <Button 
           title={'<'}
           onPress={goToPreviousMonth}
@@ -68,16 +68,16 @@ export function TransactionsScreen() {
           onPress={goToNextMonth}
         />
       </View>
-      <View style={{ backgroundColor: '#BAD3A2', height: '70%', borderRadius: 10, padding: 10}}>
+      <View style={{ backgroundColor: '#BAD3A2', height: '80%', borderRadius: 10, padding: 10}}>
 
           {/* TITULOS */}
           <View
           style={{ marginBottom: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
           >
-            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Fecha</Text>
             <Text style={{ fontSize: 14, fontWeight: 'bold'  }}>Descripcion</Text>
             <Text style={{ fontSize: 14, fontWeight: 'bold'  }}>Monto</Text>
             <Text style={{ fontSize: 14, fontWeight: 'bold'  }}>Metodo</Text>
+            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Fecha</Text>
           </View>
 
           {/* TRANSACTIONS */}
@@ -89,10 +89,10 @@ export function TransactionsScreen() {
             <View
               style={{ marginBottom: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
               >
-              <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{formatDateForUI(item.transaction_date)}</Text>
               <Text style={{ fontSize: 14 }}>{item.description}</Text>
               <Text style={{ fontSize: 14 }}>{item.amount}</Text>
               <Text style={{ fontSize: 14 }}>{item.type}</Text>
+              <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{formatDateForUI(item.transaction_date)}</Text>
             </View>
           )}
           /> 

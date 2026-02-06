@@ -8,7 +8,7 @@ const Drawer = createDrawerNavigator();
 
 export function HamburgerMenu() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator screenOptions={{ headerShown: false,  }}>
       <Drawer.Screen name="Home" component={HomeStack} />
       <Drawer.Screen name="Analytics" component={AnalyticsScreen} />
       <Drawer.Screen name="Session" component={SessionScreen} />

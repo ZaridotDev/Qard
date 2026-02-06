@@ -3,6 +3,8 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useState } from "react";
 import { AuthScreen } from "./AuthScreen";
 import { authService } from "../../../services/auth.service";
+import { DrawerToggleButton } from "@react-navigation/drawer";
+import { DrawerButon } from "../../components/DrawerButon";
 
 export function SessionScreen () {
     
@@ -21,13 +23,14 @@ export function SessionScreen () {
   
     return (
         <View>
+          <DrawerButon />
           <Text>Logueado como:</Text>
-        <Text>{user?.email} en {env}</Text>
+          <Text>{user?.email} en {env}</Text>
 
-        <Button
-          title="Logout"
-          onPress={() => authService.signOut()}
-        />
+          <Button
+            title="Logout"
+            onPress={() => authService.signOut()}
+          />
         </View>
     )
 }
