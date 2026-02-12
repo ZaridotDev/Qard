@@ -13,6 +13,6 @@ export function getMonthRange(date: Date) {
     return {
       startCurrentMonth: toISO(start), // YYYY-MM-DD
       endCurrentMonth: toISO(end),
+      today: toISO(date)
     };
   }
-  

@@ -1,4 +1,3 @@
-
 import { View, Text, Button } from "react-native";
 import { CreateTransactionScreen } from "../CreateTransactionScreen";
 import { TransactionsScreen } from "./TransactionsScreen";
@@ -11,14 +10,19 @@ import { useState } from "react";
 export function HomeScreen () {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
+  const handleCloseModal = (closed: boolean, saved?: boolean) => {
+    setVisible(false);
+    if (saved) setRefreshTrigger((t) => t + 1);
+  };
 
   return ( 
     <View style={{ padding: 24, backgroundColor: '#F3F7EE', flex: 1, paddingTop: 50}}>
       <DrawerButon />
 
-      <TransactionsScreen />
-      <ModalIncome visible={visible} onCLose={(res: boolean) => setVisible(res)}/>
+      <TransactionsScreen refreshTrigger={refreshTrigger} />
+      <ModalIncome visible={visible} onClose={handleCloseModal} />
       
       <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
         <ButtonStack text="DEBITO" onPress={() => navigation.navigate('Debit')}/>

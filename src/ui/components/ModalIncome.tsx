@@ -1,28 +1,35 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, Button, Modal, TextInput } from "react-native";
 import { transactionService } from "../../services/src/services/transactions.service";
+import { getMonthRange } from "../../utils/date";
+import { useState } from "react";
 
 type ModalIncomeType = {
     visible: boolean;
-    onCLose: (res: boolean) => void;
+    onClose: (closed: boolean, saved?: boolean) => void;
 }
 
-export function ModalIncome ({visible, onCLose}: ModalIncomeType) {
+export function ModalIncome ({visible, onClose}: ModalIncomeType) {
+    const [teton, setTeton] = useState("")
+    const [description, setDescription] = useState("")
 
     const createIncome = async () => {
             try {
-                const today = new Date();
-                // const transaction = await transactionService.insert({
-                //     type: 'income',
-                //     amount: 1000,
-                //     description: 'Supermercado',
-                //     transaction_date: '2026-03-29',
-                // });
+                const {today: piton} = getMonthRange(new Date());
+                const amount = parseInt(teton);
+                const transaction = await transactionService.insert({
+                    type: 'income',
+                    amount: amount, // traido del inut del 2do text input
+                    description: description, // traido del inut del 1er text input
+                    transaction_date: piton, 
+                });
         
-                // console.log('Transaction creada', transaction);
-                console.log(today)
+                console.log('Transaction creada', transaction);
+                onClose(false, true); // cerrado y guardado → padre puede refrescar
+                return;
             } catch (error) {
                 console.error('Error creando transaction', error);
+                onClose(false); // cierra igual para que el usuario pueda reintentar
             }
     }
 
@@ -38,16 +45,21 @@ export function ModalIncome ({visible, onCLose}: ModalIncomeType) {
                 <View style={{alignSelf: 'center', justifyContent: 'space-between',width: '80%', height: '40%', backgroundColor: '#BAD3A2', padding: 20, borderRadius: 15, alignItems: 'center'}}>
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Descripcion</Text>
                     <TextInput 
-                    style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18 }}
-                    placeholder="Sueldo"
+                        style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18 }}
+                        placeholder="Sueldo"
+                        value={description}
+                        onChangeText={(text) => setDescription(text)}
                     />
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Monto</Text>
                     <TextInput 
-                    style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18 }}
-                    placeholder="$1000"
+                        style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18 }}
+                        placeholder="$1000"
+                        value={teton}
+                        onChangeText={(text) => setTeton(text)}
+                        
                     />
                     <Button onPress={() => createIncome()} title='Aceptar' color={'#5C7E3B'} />
-                    <Button onPress={() => onCLose(false)} title='Cancelar' color={'#5C7E3B'} />
+                    <Button onPress={() => onClose(false)} title='Cancelar' color={'#5C7E3B'} />
                 </View>
             </View>
         </Modal>

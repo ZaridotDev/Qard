@@ -4,19 +4,26 @@ import { formatDateForUI } from '../../../utils/dateFormatUI';
 import { getMonthRange, parseLocalDate } from '../../../utils/date';
 import { useEffect, useState } from 'react';
 
-export function TransactionsScreen() {
+type TransactionsScreenType = {
+  refreshTrigger?: number;
+}
+
+export function TransactionsScreen({ refreshTrigger = 0 }: TransactionsScreenType) {
   const { startCurrentMonth, endCurrentMonth } = getMonthRange(new Date());
   const [selectMonth, setSelectMonth] = useState([startCurrentMonth, endCurrentMonth]);
   const [ balance, setBalance ] = useState<number>(0);
 
-  const { transactions, loading, error } = useMonthlyTransactions(selectMonth[0], selectMonth[1]);
-
+  const { transactions, loading, error } = useMonthlyTransactions(
+    selectMonth[0],
+    selectMonth[1],
+    refreshTrigger
+  );
+  
   if (error) return <Text>Error: {error}</Text>;
-
+  
   // console.log(balance);
   
   useEffect(() => {
-    // console.log(selectMonth[0])
     let income = 0;
     let expense = 0;
     let total = 0;
@@ -26,12 +33,10 @@ export function TransactionsScreen() {
       } else {
         expense += parseFloat(transactions[i].amount);
       }
-      // total += parseFloat(transactions[i].amount);\
       total = income - expense;
     }
-    // console.log(total)
     setBalance(total);
-  },[transactions])
+  }, [transactions]);
 
   // Usar parseLocalDate para que "YYYY-MM-DD" sea siempre en hora local (igual en emulador y dispositivo)
   const dateSelected = parseLocalDate(selectMonth[0]);
