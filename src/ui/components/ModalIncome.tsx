@@ -14,6 +14,8 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
     const [description, setDescription] = useState("")
 
     const createIncome = async () => {
+        const tetonInt = parseInt(teton);
+        if  ( teton != '' && tetonInt > 0 && description != '') {
             try {
                 const {today: piton} = getMonthRange(new Date());
                 const amount = parseInt(teton);
@@ -23,14 +25,24 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                     description: description, // traido del inut del 1er text input
                     transaction_date: piton, 
                 });
-        
+                
                 console.log('Transaction creada', transaction);
                 onClose(false, true); // cerrado y guardado → padre puede refrescar
+                setTeton('');
+                setDescription('');
                 return;
             } catch (error) {
                 console.error('Error creando transaction', error);
                 onClose(false); // cierra igual para que el usuario pueda reintentar
             }
+        } else if (teton === '') {
+            console.log("ingresa un monto")
+            return;
+        } else if (description === '') {
+            console.log("ingresa una descripcion a tu ingreso")
+            return;
+        }
+        console.log("ingresa un monto mayor a 0")
     }
 
     return (
@@ -59,7 +71,10 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                         
                     />
                     <Button onPress={() => createIncome()} title='Aceptar' color={'#5C7E3B'} />
-                    <Button onPress={() => onClose(false)} title='Cancelar' color={'#5C7E3B'} />
+                    <Button onPress={() => {
+                        setTeton('');
+                        setDescription('');
+                        onClose(false)}} title='Cancelar' color={'#5C7E3B'} />
                 </View>
             </View>
         </Modal>

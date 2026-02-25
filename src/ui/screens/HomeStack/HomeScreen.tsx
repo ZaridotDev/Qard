@@ -17,11 +17,15 @@ export function HomeScreen () {
     if (saved) setRefreshTrigger((t) => t + 1);
   };
 
+  const crudTransaction = (crud?: boolean) => {
+    if (crud) setRefreshTrigger((t) => t + 1);
+  }
+
   return ( 
     <View style={{ padding: 24, backgroundColor: '#F3F7EE', flex: 1, paddingTop: 50}}>
       <DrawerButon />
 
-      <TransactionsScreen refreshTrigger={refreshTrigger} />
+      <TransactionsScreen refreshTrigger={refreshTrigger} crud={crudTransaction}/>
       <ModalIncome visible={visible} onClose={handleCloseModal} />
       
       <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>

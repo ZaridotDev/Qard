@@ -1,14 +1,17 @@
-import { View, Text, FlatList, Button } from 'react-native';
+import { View, Text, FlatList, Button, TouchableOpacity } from 'react-native';
 import { useMonthlyTransactions } from '../../../hooks/useMonthlyTransactions';
 import { formatDateForUI } from '../../../utils/dateFormatUI';
 import { getMonthRange, parseLocalDate } from '../../../utils/date';
+import { Trash, SquarePen } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
+import { transactionService } from '../../../services/src/services/transactions.service';
 
 type TransactionsScreenType = {
   refreshTrigger?: number;
+  crud: (crud: boolean) => void;
 }
 
-export function TransactionsScreen({ refreshTrigger = 0 }: TransactionsScreenType) {
+export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScreenType) {
   const { startCurrentMonth, endCurrentMonth } = getMonthRange(new Date());
   const [selectMonth, setSelectMonth] = useState([startCurrentMonth, endCurrentMonth]);
   const [ balance, setBalance ] = useState<number>(0);
@@ -20,9 +23,7 @@ export function TransactionsScreen({ refreshTrigger = 0 }: TransactionsScreenTyp
   );
   
   if (error) return <Text>Error: {error}</Text>;
-  
-  // console.log(balance);
-  
+
   useEffect(() => {
     let income = 0;
     let expense = 0;
@@ -56,6 +57,17 @@ export function TransactionsScreen({ refreshTrigger = 0 }: TransactionsScreenTyp
     const { startCurrentMonth: inicio, endCurrentMonth: fin } = getMonthRange(next);
     setSelectMonth([inicio, fin]);
   };
+
+  const getTransactionType = (string: string) => {
+    return string === 'income' ;
+  
+  };
+
+  const deleteItem = async (id: string) => {
+    const {error} = await transactionService.delete(id)
+    if (error) console.error(error)
+    crud(true);
+  }
   
   return (
     <>
@@ -64,48 +76,54 @@ export function TransactionsScreen({ refreshTrigger = 0 }: TransactionsScreenTyp
         <Button 
           title={'<'}
           onPress={goToPreviousMonth}
-        />
+        /> 
         <View>
-          <Text>{getCurrentMonth()}</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlignVertical: 'center'}}>{getCurrentMonth()}</Text>
         </View>
         <Button 
           title={'>'}
           onPress={goToNextMonth}
         />
       </View>
-      <View style={{ backgroundColor: '#BAD3A2', height: '80%', borderRadius: 10, padding: 10}}>
+      <View style={{ backgroundColor: '#D9E7CB', height: '80%', borderRadius: 10, padding: 4, flex: 1}}>
 
-          {/* TITULOS */}
-          <View
-          style={{ marginBottom: 15, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
-          >
-            <Text style={{ fontSize: 14, fontWeight: 'bold'  }}>Descripcion</Text>
-            <Text style={{ fontSize: 14, fontWeight: 'bold'  }}>Monto</Text>
-            <Text style={{ fontSize: 14, fontWeight: 'bold'  }}>Metodo</Text>
-            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Fecha</Text>
-          </View>
+        {/* <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/> */}
+        <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 93, width: 2, zIndex: 1}}/>
+        <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 200, width: 2, zIndex: 1}}/>
 
           {/* TRANSACTIONS */}
           <FlatList
           data={transactions}
-          style={{ marginTop: 0, display: 'flex' }}
+          contentContainerStyle={{ paddingBottom: 60 }}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View
-              style={{ marginBottom: 10, display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}
+                style={{ 
+                  marginBottom: 5, 
+                  flexDirection: 'row', 
+                  borderRadius: 8,
+                  height: 35,
+                  alignItems: 'center',
+                  backgroundColor: getTransactionType(item.type) ? '#BAD3A2' : '#E7B8B8', 
+                }}
               >
-              <Text style={{ fontSize: 14 }}>{item.description}</Text>
-              <Text style={{ fontSize: 14 }}>{item.amount}</Text>
-              <Text style={{ fontSize: 14 }}>{item.type}</Text>
-              <Text style={{ fontSize: 10, fontWeight: 'bold' }}>{formatDateForUI(item.transaction_date)}</Text>
+              <Text style={{ fontSize: 14, flex: 3, marginLeft: 12 }}>{item.description}</Text>
+              <Text style={{ fontSize: 14, flex: 2, textAlign: 'right', marginHorizontal: 4 }}>{item.amount}</Text>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', flex: 0.7, textAlign: 'right', marginHorizontal: 4, width: 10 }}>{formatDateForUI(item.transaction_date)}</Text>
+              <TouchableOpacity style={{ marginLeft: 4, }}>
+                <SquarePen size={16} />
+              </TouchableOpacity>
+              <TouchableOpacity style={{ marginHorizontal: 8, }} onPress={() => deleteItem(item.id)}>
+                <Trash size={16} />
+              </TouchableOpacity>
             </View>
           )}
           /> 
 
           {/* TOTAL BALANCE */}
-          <View style={{ height: 55, width: '45%', alignSelf: 'flex-end', justifyContent: 'space-between', backgroundColor: 'red', borderRadius: 10, padding: 4}}>
-            <Text style={{ fontSize: 14, alignSelf: 'center' }}>Total disponible:</Text>
-            <Text style={{ fontSize: 18, alignSelf: 'center', fontWeight: 'bold' }}>${balance}</Text>
+          <View style={{ height: 55, width: '45%', alignSelf: 'flex-end', justifyContent: 'space-between', backgroundColor: '#93B771', borderRadius: 10, padding: 4, position: 'absolute', bottom: 8, right: 8, zIndex: 2}}>
+            <Text style={{ fontSize: 16, alignSelf: 'center' }}>Total disponible:</Text>
+            <Text style={{ fontSize: 20, alignSelf: 'center', fontWeight: 'bold' }}>${balance}</Text>
           </View>
       </View>
     </>

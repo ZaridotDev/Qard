@@ -6,7 +6,7 @@ export function CalculateEgressScreen () {
     return (
         <View>
             <BackButton/>
-            <Text>Pantalla de creacion de gasto en debito + calculadora de compra</Text>
+            {/* View de totales */}
         </View>
     )
 }

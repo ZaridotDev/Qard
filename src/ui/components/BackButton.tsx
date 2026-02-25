@@ -1,10 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, Button } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { ChevronUp } from "lucide-react-native";
+
 
 export function BackButton () {
     const navigation = useNavigation();
 
     return (
-        <Button onPress={() => navigation.goBack()} title={"Volver"}/>
+        <TouchableOpacity 
+        onPress={() => navigation.goBack()}
+        style={{marginBottom: 50}}
+        >
+            <View style={{ flex: 1, alignItems: 'center'}}>
+                <ChevronUp size={34}/>
+                <Text style={{position: "absolute", top: 20}}>Volver</Text>
+            </View>
+        </TouchableOpacity>
     )
 }
