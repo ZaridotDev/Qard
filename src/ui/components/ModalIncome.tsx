@@ -4,12 +4,12 @@ import { transactionService } from "../../services/src/services/transactions.ser
 import { getMonthRange } from "../../utils/date";
 import { useState } from "react";
 
-type Modal2InputsType = {
+type ModalIncomeType = {
     visible: boolean;
     onClose: (closed: boolean, saved?: boolean) => void;
 }
 
-export function Modal2Inputs ({visible, onClose}: Modal2InputsType) {
+export function ModalIncome ({visible, onClose}: ModalIncomeType) {
     const [teton, setTeton] = useState("")
     const [description, setDescription] = useState("")
 

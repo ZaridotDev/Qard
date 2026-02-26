@@ -4,7 +4,7 @@ import { TransactionsScreen } from "./TransactionsScreen";
 import { ButtonStack } from "../../components/ButtonStack";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerButon } from "../../components/DrawerButon";
-import { Modal2Inputs } from "../../components/Modal2Inputs";
+import { ModalIncome } from "../../components/ModalIncome";
 import { useState } from "react";
 import { Plus } from "lucide-react-native";
 import { PlusButton } from "../../components/PlusButton";
@@ -28,7 +28,7 @@ export function HomeScreen () {
       <DrawerButon />
 
       <TransactionsScreen refreshTrigger={refreshTrigger} crud={crudTransaction}/>
-      <Modal2Inputs visible={visible} onClose={handleCloseModal} />
+      <ModalIncome visible={visible} onClose={handleCloseModal} />
       
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 25, padding:8}}>
         <ButtonStack text="DEBITO" onPress={() => navigation.navigate('Debit')}/>
