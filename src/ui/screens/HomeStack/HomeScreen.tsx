@@ -7,6 +7,7 @@ import { DrawerButon } from "../../components/DrawerButon";
 import { Modal2Inputs } from "../../components/Modal2Inputs";
 import { useState } from "react";
 import { Plus } from "lucide-react-native";
+import { PlusButton } from "../../components/PlusButton";
 
 export function HomeScreen () {
   const navigation = useNavigation();
@@ -32,26 +33,7 @@ export function HomeScreen () {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 25, padding:8}}>
         <ButtonStack text="DEBITO" onPress={() => navigation.navigate('Debit')}/>
         {/* <ButtonStack text="+" onPress={() => setVisible(true)}/> */}
-        <TouchableOpacity
-          style={{ alignItems: 'center', marginTop: 40}}
-          onPress={() => setVisible(true)}
-          activeOpacity={0.8}
-        >
-          <View 
-          style={{
-            width: 50, 
-            height: 50, 
-            borderRadius: 15, 
-            backgroundColor: '#D9E7CB', 
-            justifyContent: 'center', 
-            alignItems: 'center',
-            elevation: 5,
-            bottom: 15
-            }}
-          >
-            <Plus />
-          </View>
-        </TouchableOpacity>
+        <PlusButton onPress={() => setVisible(true)}/>
         <ButtonStack text="CREDITO" onPress={() => navigation.navigate('Credit')}/>
       </View>
       

@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { Plus } from "lucide-react-native";
 import { DebitItem } from "../../../components/DebitItem";
+import { PlusButton } from "../../../components/PlusButton";
 
 // deberia renderizar lo que pase el boton por las props
 export function CalculateEgressScreen () {
@@ -21,30 +22,29 @@ export function CalculateEgressScreen () {
             <DebitItem text="pan" amount="$0.000"/>
             <DebitItem text="leche" amount="$0.000"/>
             {/* Boton add Item */}
-            <TouchableOpacity 
-                    style={{ alignItems: 'center', marginTop: 40}}
-                    onPress={() => console.log('hola')}
-                >
-                    <View 
-                    style={{
-                        width: 50,
-                        height: 50,
-                        borderRadius: 15,
-                        backgroundColor: '#D9E7CB',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        elevation: 10,
-                        }}
-                    >
-                        <Plus />
-                    </View>
-                </TouchableOpacity>
+            <PlusButton onPress={() => console.log('add Item')}/>
             {/* Boton Comprar */}
             <TouchableOpacity 
-            onPress={() => console.log('comprar')}
-            activeOpacity={0.9}
-            style={{width: '60%', height: 50, alignSelf: 'center', justifyContent: 'flex-end', position: 'absolute', bottom: 50}}>
-                <View style={{backgroundColor: '#5C7E3B', flex: 1, alignContent: 'center', justifyContent: 'center', borderRadius: 15, alignItems: 'center', elevation: 10,}}>
+                onPress={() => console.log('comprar')}
+                activeOpacity={0.9}
+                style={{
+                    width: '60%', 
+                    height: 50, 
+                    alignSelf: 'center', 
+                    justifyContent: 'flex-end',
+                    position: 'absolute', 
+                    bottom: 50,
+            }}>
+                <View 
+                style={{
+                    backgroundColor: '#5C7E3B', 
+                    flex: 1, 
+                    alignContent: 'center', 
+                    justifyContent: 'center', 
+                    borderRadius: 15, 
+                    alignItems: 'center', 
+                    elevation: 10,
+                }}>
                     <Text style={{color: 'white', fontSize: 24}}>Comprar</Text>
                 </View>
             </TouchableOpacity>
