@@ -1,20 +1,26 @@
 import { View, TouchableOpacity } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { Plus } from "lucide-react-native";
-import { BudgetItem } from "../../../components/BudgetItem";
+import { DebitItem } from "../../../components/DebitItem";
+import { useNavigation } from "@react-navigation/native";
 
 export function WalletScreen () {
+    
+    const navigation = useNavigation();
 
     return (
             <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
                 {/* Flatlist */}
+
                 <BackButton/>
-                <BudgetItem/>
-                <BudgetItem/>
-                <BudgetItem/>
+
+                <DebitItem text="comida" amount="$200.000" onPress={() => navigation.navigate('Calculator')}/>
+                <DebitItem text="gatos" amount="$50.000" onPress={() =>  navigation.navigate('Calculator')}/>
+                <DebitItem text="antojos" amount="$30.000" onPress={() =>  navigation.navigate('Calculator')}/>
+                
                 {/* Flatlist */}
 
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={{ alignItems: 'center', marginTop: 40}}
                     onPress={() => console.log('hola')}
                 >

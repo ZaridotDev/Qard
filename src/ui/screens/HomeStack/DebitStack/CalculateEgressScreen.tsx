@@ -1,12 +1,13 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { Plus } from "lucide-react-native";
-import { BudgetItem } from "../../../components/BudgetItem";
+import { DebitItem } from "../../../components/DebitItem";
 
+// deberia renderizar lo que pase el boton por las props
 export function CalculateEgressScreen () {
 
     return (
-        <View>
+        <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
             <BackButton/>
             {/* View de totales */}
             <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center'}}>
@@ -16,9 +17,9 @@ export function CalculateEgressScreen () {
             </View>
             {/* Reutilizar BudgetItems para los items de compra */}
             
-            <BudgetItem/>
-            <BudgetItem/>
-            <BudgetItem/>
+            <DebitItem text="mermelada" amount="$0.000"/>
+            <DebitItem text="pan" amount="$0.000"/>
+            <DebitItem text="leche" amount="$0.000"/>
             {/* Boton add Item */}
             <TouchableOpacity 
                     style={{ alignItems: 'center', marginTop: 40}}
@@ -26,22 +27,25 @@ export function CalculateEgressScreen () {
                 >
                     <View 
                     style={{
-                        width: 50, 
-                        height: 50, 
-                        borderRadius: 15, 
-                        backgroundColor: '#D9E7CB', 
-                        justifyContent: 'center', 
+                        width: 50,
+                        height: 50,
+                        borderRadius: 15,
+                        backgroundColor: '#D9E7CB',
+                        justifyContent: 'center',
                         alignItems: 'center',
-                        elevation: 10,  
+                        elevation: 10,
                         }}
                     >
                         <Plus />
                     </View>
                 </TouchableOpacity>
             {/* Boton Comprar */}
-            <TouchableOpacity style={{width: '60%', height: 45, alignSelf: 'center', justifyContent: 'flex-end', flex: 1}}>
+            <TouchableOpacity 
+            onPress={() => console.log('comprar')}
+            activeOpacity={0.9}
+            style={{width: '60%', height: 50, alignSelf: 'center', justifyContent: 'flex-end', position: 'absolute', bottom: 50}}>
                 <View style={{backgroundColor: '#5C7E3B', flex: 1, alignContent: 'center', justifyContent: 'center', borderRadius: 15, alignItems: 'center', elevation: 10,}}>
-                    <Text>Comprar</Text>
+                    <Text style={{color: 'white', fontSize: 24}}>Comprar</Text>
                 </View>
             </TouchableOpacity>
         </View>
