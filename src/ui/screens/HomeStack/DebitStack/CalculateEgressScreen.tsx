@@ -10,9 +10,9 @@ export function CalculateEgressScreen () {
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
             <BackButton/>
             {/* View de totales */}
-            <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center'}}>
-                <Text style={{ fontSize: 20, color: 'white'}}>Budget</Text>
-                <Text style={{ fontSize: 50, color: 'white'}}>$150.000</Text>
+            <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{ fontSize: 22, color: 'white'}}>Budget</Text>
+                <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold'}}>$150.000</Text>
                 <Text style={{ fontSize: 30, color: 'white'}}>$13.000</Text>
             </View>
             {/* Reutilizar BudgetItems para los items de compra */}
