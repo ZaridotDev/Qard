@@ -2,7 +2,7 @@ import { View, Text, FlatList, Button, TouchableOpacity } from 'react-native';
 import { useMonthlyTransactions } from '../../../hooks/useMonthlyTransactions';
 import { formatDateForUI } from '../../../utils/dateFormatUI';
 import { getMonthRange, parseLocalDate } from '../../../utils/date';
-import { Trash, SquarePen } from 'lucide-react-native';
+import { Trash, SquarePen, ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { transactionService } from '../../../services/src/services/transactions.service';
 
@@ -72,20 +72,24 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
   return (
     <>
     {/* SELECCION DE MES */}
-      <View style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'space-around'}}>
-        <Button 
-          title={'<'}
+      <View style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', alignSelf: 'center', width: '90%'}}>
+        <TouchableOpacity 
           onPress={goToPreviousMonth}
-        /> 
-        <View>
+          style={{flex: 1, alignItems: 'center'}}
+        >
+          <ChevronLeft />
+        </TouchableOpacity> 
+        <View style={{backgroundColor: '#BAD3A2', padding: 10, flex: 3, borderRadius: 10, alignSelf: 'center', justifyContent: 'center', alignItems: 'center', elevation: 15}}>
           <Text style={{ fontSize: 20, fontWeight: 'bold', textAlignVertical: 'center'}}>{getCurrentMonth()}</Text>
         </View>
-        <Button 
-          title={'>'}
+        <TouchableOpacity 
           onPress={goToNextMonth}
-        />
+          style={{flex: 1, alignItems: 'center'}}
+        >
+          <ChevronRight />
+        </TouchableOpacity>
       </View>
-      <View style={{ backgroundColor: '#D9E7CB', height: '80%', borderRadius: 10, padding: 4, flex: 1}}>
+      <View style={{ backgroundColor: '#D9E7CB', height: '80%', borderRadius: 10, padding: 4, flex: 1, elevation: 5, marginBottom: 10}}>
 
         {/* <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/> */}
         <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 93, width: 2, zIndex: 1}}/>
@@ -121,7 +125,7 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
           /> 
 
           {/* TOTAL BALANCE */}
-          <View style={{ height: 55, width: '45%', alignSelf: 'flex-end', justifyContent: 'space-between', backgroundColor: '#93B771', borderRadius: 10, padding: 4, position: 'absolute', bottom: 8, right: 8, zIndex: 2}}>
+          <View style={{ height: 55, width: '45%', alignSelf: 'flex-end', justifyContent: 'space-between', backgroundColor: '#93B771', borderRadius: 10, padding: 4, position: 'absolute', bottom: 8, right: 8, zIndex: 2, elevation: 3}}>
             <Text style={{ fontSize: 16, alignSelf: 'center' }}>Total disponible:</Text>
             <Text style={{ fontSize: 20, alignSelf: 'center', fontWeight: 'bold' }}>${balance}</Text>
           </View>

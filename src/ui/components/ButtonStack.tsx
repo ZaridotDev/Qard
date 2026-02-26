@@ -8,9 +8,17 @@ export function ButtonStack ({text, onPress}: ButtonStackType) {
     return (
         <TouchableOpacity 
             onPress={onPress}
-            style={{ backgroundColor: 'yellow', width: 'auto', padding: 10, borderRadius: 10, marginTop: 30, alignSelf: 'flex-end'}}>
+            style={{ 
+                backgroundColor: '#D9E7CB', 
+                width: 'auto', 
+                padding: 15, 
+                borderRadius: 10, 
+                marginTop: 30, 
+                alignSelf: 'flex-end',
+                elevation: 5,
+            }}>
             <View >
-                <Text>{text}</Text>
+                <Text style={{fontSize: 20}}>{text}</Text>
             </View>
         </TouchableOpacity>
     )

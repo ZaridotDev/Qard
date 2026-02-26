@@ -4,7 +4,7 @@ import { View, Text, Button } from "react-native";
 
 export function DrawerButon () {
     return (
-        <View style={{ backgroundColor: '#ecf4e4', position: 'absolute', borderRadius: 10, top: 50, left: 5}}>
+        <View style={{ backgroundColor: '#ecf4e4', position: 'absolute', borderRadius: 10, top: 20, left: 5}}>
             <DrawerToggleButton /> {/* ReBambis */}
         </View>
     )
