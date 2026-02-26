@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { Plus } from "lucide-react-native";
 import { BudgetItem } from "../../../components/BudgetItem";
@@ -15,7 +15,7 @@ export function CalculateEgressScreen () {
                 <Text style={{ fontSize: 30, color: 'white'}}>$13.000</Text>
             </View>
             {/* Reutilizar BudgetItems para los items de compra */}
-
+            
             <BudgetItem/>
             <BudgetItem/>
             <BudgetItem/>
@@ -39,6 +39,11 @@ export function CalculateEgressScreen () {
                     </View>
                 </TouchableOpacity>
             {/* Boton Comprar */}
+            <TouchableOpacity style={{width: '60%', height: 45, alignSelf: 'center', justifyContent: 'flex-end', flex: 1}}>
+                <View style={{backgroundColor: '#5C7E3B', flex: 1, alignContent: 'center', justifyContent: 'center', borderRadius: 15, alignItems: 'center', elevation: 10,}}>
+                    <Text>Comprar</Text>
+                </View>
+            </TouchableOpacity>
         </View>
     )
 }

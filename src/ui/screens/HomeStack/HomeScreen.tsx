@@ -4,7 +4,7 @@ import { TransactionsScreen } from "./TransactionsScreen";
 import { ButtonStack } from "../../components/ButtonStack";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerButon } from "../../components/DrawerButon";
-import { ModalIncome } from "../../components/ModalIncome";
+import { Modal2Inputs } from "../../components/Modal2Inputs";
 import { useState } from "react";
 
 export function HomeScreen () {
@@ -26,7 +26,7 @@ export function HomeScreen () {
       <DrawerButon />
 
       <TransactionsScreen refreshTrigger={refreshTrigger} crud={crudTransaction}/>
-      <ModalIncome visible={visible} onClose={handleCloseModal} />
+      <Modal2Inputs visible={visible} onClose={handleCloseModal} />
       
       <View style={{ flexDirection: 'row', justifyContent: 'space-between',}}>
         <ButtonStack text="DEBITO" onPress={() => navigation.navigate('Debit')}/>
