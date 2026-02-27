@@ -14,7 +14,7 @@ export function ButtonStack ({text, onPress}: ButtonStackType) {
                 padding: 15, 
                 borderRadius: 10, 
                 marginTop: 30, 
-                alignSelf: 'flex-end',
+                alignSelf: 'center',
                 elevation: 5,
             }}>
             <View >
