@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, Button, Modal, TextInput } from "react-native";
-import { transactionService } from "../../services/src/services/transactions.service";
-import { getMonthRange } from "../../utils/date";
+import { transactionService } from "../../../services/src/services/transactions.service";
+import { getMonthRange } from "../../../utils/date";
 import { useState } from "react";
 
 type ModalIncomeType = {
@@ -10,7 +10,7 @@ type ModalIncomeType = {
 }
 
 export function ModalIncome ({visible, onClose}: ModalIncomeType) {
-    const [teton, setTeton] = useState("")
+    const [teton, setTeton] = useState("") // esto es culpa de Joni
     const [description, setDescription] = useState("")
 
     const createIncome = async () => {

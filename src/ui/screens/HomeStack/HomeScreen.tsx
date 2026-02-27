@@ -4,9 +4,8 @@ import { TransactionsScreen } from "./TransactionsScreen";
 import { ButtonStack } from "../../components/ButtonStack";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerButon } from "../../components/DrawerButon";
-import { ModalIncome } from "../../components/ModalIncome";
+import { ModalIncome } from "../../components/Modals/ModalIncome";
 import { useState } from "react";
-import { Plus } from "lucide-react-native";
 import { PlusButton } from "../../components/PlusButton";
 
 export function HomeScreen () {

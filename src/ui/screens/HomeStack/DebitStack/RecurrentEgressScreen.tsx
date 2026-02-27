@@ -3,7 +3,7 @@ import { BackButton } from "../../../components/BackButton";
 import { PlusButton } from "../../../components/PlusButton";
 import { DebitItem } from "../../../components/DebitItem";
 import { useState } from "react";
-import { ModalIncome } from "../../../components/ModalIncome";
+import { ModalIncome } from "../../../components/Modals/ModalIncome";
 
 export function RecurrentEgressScreen () {
     const [visible, setVisible] = useState(false);
