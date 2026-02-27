@@ -1,10 +1,11 @@
 import { View, Text, FlatList, Button, TouchableOpacity } from 'react-native';
 import { useMonthlyTransactions } from '../../../hooks/useMonthlyTransactions';
 import { formatDateForUI } from '../../../utils/dateFormatUI';
-import { getMonthRange, parseLocalDate } from '../../../utils/date';
+import { getMonthRange } from '../../../utils/date';
 import { Trash, SquarePen, ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { transactionService } from '../../../services/src/services/transactions.service';
+import { SelectMonthScreen } from './SelectMonthScreen';
 
 type TransactionsScreenType = {
   refreshTrigger?: number;
@@ -13,7 +14,7 @@ type TransactionsScreenType = {
 
 export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScreenType) {
   const { startCurrentMonth, endCurrentMonth } = getMonthRange(new Date());
-  const [selectMonth, setSelectMonth] = useState([startCurrentMonth, endCurrentMonth]);
+  const [selectMonth, setSelectMonth] = useState<string[]>([startCurrentMonth, endCurrentMonth]);
   const [ balance, setBalance ] = useState<number>(0);
 
   const { transactions, loading, error } = useMonthlyTransactions(
@@ -39,24 +40,9 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
     setBalance(total);
   }, [transactions]);
 
-  // Usar parseLocalDate para que "YYYY-MM-DD" sea siempre en hora local (igual en emulador y dispositivo)
-  const dateSelected = parseLocalDate(selectMonth[0]);
-
-  const getCurrentMonth = () => {
-    return dateSelected.toLocaleDateString('es-ES', { month: 'long' }).toUpperCase();
-  };
-
-  const goToPreviousMonth = () => {
-    const prev = new Date(dateSelected.getFullYear(), dateSelected.getMonth() - 1, 1);
-    const { startCurrentMonth: inicio, endCurrentMonth: fin } = getMonthRange(prev);
-    setSelectMonth([inicio, fin]);
-  };
-
-  const goToNextMonth = () => {
-    const next = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 1);
-    const { startCurrentMonth: inicio, endCurrentMonth: fin } = getMonthRange(next);
-    setSelectMonth([inicio, fin]);
-  };
+  const restoreSelecetMonth = (selected: string[]) => {
+    setSelectMonth(selected);
+  }
 
   const getTransactionType = (string: string) => {
     return string === 'income' ;
@@ -72,23 +58,7 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
   return (
     <>
     {/* SELECCION DE MES */}
-      <View style={{ marginBottom: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', alignSelf: 'center', width: '90%'}}>
-        <TouchableOpacity 
-          onPress={goToPreviousMonth}
-          style={{flex: 1, alignItems: 'center'}}
-        >
-          <ChevronLeft />
-        </TouchableOpacity> 
-        <View style={{backgroundColor: '#BAD3A2', padding: 10, flex: 3, borderRadius: 10, alignSelf: 'center', justifyContent: 'center', alignItems: 'center', elevation: 15}}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlignVertical: 'center'}}>{getCurrentMonth()}</Text>
-        </View>
-        <TouchableOpacity 
-          onPress={goToNextMonth}
-          style={{flex: 1, alignItems: 'center'}}
-        >
-          <ChevronRight />
-        </TouchableOpacity>
-      </View>
+      <SelectMonthScreen selected={restoreSelecetMonth}/>
       <View style={{ backgroundColor: '#D9E7CB', height: '80%', borderRadius: 10, padding: 4, flex: 1, elevation: 5, marginBottom: 10}}>
 
         {/* <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/> */}
