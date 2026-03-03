@@ -14,7 +14,6 @@ type CreditExpensesScreenType = {
 export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpensesScreenType) {
   const { startCurrentMonth, endCurrentMonth } = getMonthRange(new Date());
   const [selectMonth, setSelectMonth] = useState<string[]>([startCurrentMonth, endCurrentMonth]);
-  const [ balance, setBalance ] = useState<number>(0);
   const [ paid, setPaid ] = useState(false);
 
 
@@ -26,20 +25,7 @@ export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpense
   
   if (error) return <Text>Error: {error}</Text>;
 
-  useEffect(() => {
-    let income = 0;
-    let expense = 0;
-    let total = 0;
-    for (let i = 0; i < transactions.length; i++) {
-      if (transactions[i].type === 'income') {
-        income += parseFloat(transactions[i].amount);
-      } else {
-        expense += parseFloat(transactions[i].amount);
-      }
-      total = income - expense;
-    }
-    setBalance(total);
-  }, [transactions]);
+  // if (loading) return <Text>Loading...</Text>;
 
   const restoreSelecetMonth = (selected: string[]) => {
     setSelectMonth(selected);
@@ -47,7 +33,6 @@ export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpense
 
   const getTransactionType = (string: string) => {
     return string === 'income' ;
-  
   };
 
   const deleteItem = async (id: string) => {
@@ -88,8 +73,8 @@ export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpense
       <View style={{ backgroundColor: '#D9E7CB', minHeight: 100, borderBottomStartRadius: 10, padding: 4}}>
 
         {/* <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/> */}
-        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 93, width: 2, zIndex: 1}}/>
-        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)',  height: '97%', position: 'absolute', top: 5, right: 200, width: 2, zIndex: 1}}/>
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 75, width: 2, zIndex: 1}}/>
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 170, width: 2, zIndex: 1}}/>
 
           {/* TRANSACTIONS */}
           <FlatList
