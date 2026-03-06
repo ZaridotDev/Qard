@@ -31,7 +31,6 @@ export function HomeScreen () {
       
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 25, padding:8}}>
         <ButtonStack text="DEBITO" onPress={() => navigation.navigate('Debit')}/>
-        {/* <ButtonStack text="+" onPress={() => setVisible(true)}/> */}
         <PlusButton onPress={() => setVisible(true)}/>
         <ButtonStack text="CREDITO" onPress={() => navigation.navigate('Credit')}/>
       </View>

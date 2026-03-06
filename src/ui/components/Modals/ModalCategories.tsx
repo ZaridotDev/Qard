@@ -1,50 +1,48 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, Button, Modal, TextInput, TouchableOpacity } from "react-native";
-import { transactionService } from "../../../services/src/services/transactions.service";
+import { budgetingService } from "../../../services/src/services/budgeting.service";
 import { getMonthRange } from "../../../utils/date";
 import { useState } from "react";
 import { X } from "lucide-react-native";
 
-type ModalIncomeType = {
+type ModalCategoriesType = {
     visible: boolean;
     onClose: (closed: boolean, saved?: boolean) => void;
 }
 
-export function ModalIncome ({visible, onClose}: ModalIncomeType) {
-    const [teton, setTeton] = useState("") // esto es culpa de Joni
+export function ModalCategories ({visible, onClose}: ModalCategoriesType) {
     const [description, setDescription] = useState("")
+    const [budgetAmount, setBudgetAmount] = useState("") // esto es culpa de Joni
 
-    const createIncome = async () => {
-        const tetonInt = parseInt(teton);
-        if  ( teton != '' && tetonInt > 0 && description != '') {
-            try {
-                const {today: piton} = getMonthRange(new Date());
-                const amount = parseInt(teton);
-                const transaction = await transactionService.insert({
-                    type: 'income',
-                    amount: amount, // traido del input del 2do text input
-                    description: description, // traido del inut del 1er text input
-                    transaction_date: piton, 
+    const createCategory = async () => {
+        try {
+            const { data: category, error: categoryError } = await budgetingService.insertCategory({
+                name: description,
+            });
+        
+            if (categoryError) throw categoryError;
+        
+            if (budgetAmount !== '') {
+                const amount = parseInt(budgetAmount);
+                const { error: budgetError } = await budgetingService.insertBudget({
+                    category_id: category.id,
+                    amount: amount,
                 });
-                
-                console.log('Transaction creada', transaction);
-                onClose(false, true); // cerrado y guardado → padre puede refrescar
-                setTeton('');
-                setDescription('');
-                return;
-            } catch (error) {
-                console.error('Error creando transaction', error);
-                onClose(false); // cierra igual para que el usuario pueda reintentar
+
+                if (budgetError) throw budgetError;
             }
-        } else if (teton === '') {
-            console.log("ingresa un monto")
-            return;
-        } else if (description === '') {
-            console.log("ingresa una descripcion a tu ingreso")
-            return;
+        
+        
+            console.log('categoria y presupuesto creados');
+            onClose(false, true);
+            setDescription('');
+            setBudgetAmount('');
+        
+            } catch (error) {
+            console.error('Error creando categoria', error);
+            onClose(false);
+            }
         }
-        console.log("ingresa un monto mayor a 0")
-    }
 
     return (
         <Modal
@@ -56,7 +54,7 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                 <View style={{alignSelf: 'center', width: '80%', height: 260, backgroundColor: '#BAD3A2', padding: 20, borderRadius: 15, alignItems: 'center'}}>
                     <TouchableOpacity 
                     onPress={() => {
-                        setTeton('');
+                        setBudgetAmount('');
                         setDescription('');
                         onClose(false)}} 
                     style={{ padding: 10, position: 'absolute', top: 5, right:5 }}
@@ -64,23 +62,23 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                         <X size={24} color={'white'} />
                     </TouchableOpacity>
 
-                    <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Descripcion</Text>
+                    <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Nombrar categoria</Text>
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
-                        placeholder="Sueldo"
+                        placeholder="Comida"
                         value={description}
                         onChangeText={(text) => setDescription(text)}
                     />
-                    <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Monto</Text>
+                    <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Ingresa cuanto gastar</Text>
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
-                        placeholder="$1000"
-                        value={teton}
-                        onChangeText={(text) => setTeton(text)}
+                        placeholder="$100.000"
+                        value={budgetAmount}
+                        onChangeText={(text) => setBudgetAmount(text)}
                         
                     />
                     <TouchableOpacity 
-                    onPress={() => createIncome()} 
+                    onPress={() => createCategory()} 
                     >
                         <View style={{backgroundColor: '#5C7E3B', padding: 10, borderRadius: 10,}}>
                             <Text style={{color: 'white', fontSize: 20}}>Aceptar</Text>
