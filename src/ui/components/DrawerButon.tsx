@@ -1,6 +1,5 @@
 import { DrawerToggleButton } from "@react-navigation/drawer";
-import { useNavigation } from "@react-navigation/native";
-import { View, Text, Button } from "react-native";
+import { View } from "react-native";
 
 export function DrawerButon () {
     return (

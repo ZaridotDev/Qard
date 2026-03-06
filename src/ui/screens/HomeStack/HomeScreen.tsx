@@ -1,5 +1,4 @@
-import { View, Text, Button, TouchableOpacity } from "react-native";
-import { CreateTransactionScreen } from "../CreateTransactionScreen";
+import { View } from "react-native";
 import { TransactionsScreen } from "./TransactionsScreen";
 import { ButtonStack } from "../../components/ButtonStack";
 import { useNavigation } from "@react-navigation/native";
@@ -7,9 +6,11 @@ import { DrawerButon } from "../../components/DrawerButon";
 import { ModalIncome } from "../../components/Modals/ModalIncome";
 import { useState } from "react";
 import { PlusButton } from "../../components/PlusButton";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeStackParams } from "../../../types/navigation";
 
 export function HomeScreen () {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<HomeStackParams>>();
   const [visible, setVisible] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 

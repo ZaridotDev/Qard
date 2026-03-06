@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { SquarePen, Trash } from "lucide-react-native";
 import { View, Text, TouchableOpacity } from "react-native";
 

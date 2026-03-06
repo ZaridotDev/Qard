@@ -8,12 +8,14 @@ import { ModalCategories } from "../../../components/Modals/ModalCategories";
 import { FlatList } from "react-native-gesture-handler";
 import { useGetCategories } from "../../../../hooks/useGetCategories";
 import { formatCurrency } from "../../../../utils/currency";
+import { WalletsStackParams } from "../../../../types/navigation";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 export function WalletScreen () {
     const [visible, setVisible] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     
-    const navigation = useNavigation();
+    const navigation = useNavigation<StackNavigationProp<WalletsStackParams>>();
 
     const { categories, loading, error } = useGetCategories(
         refreshTrigger

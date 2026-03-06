@@ -1,7 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import { View, Text, Button, Modal, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, Modal, TextInput, TouchableOpacity } from "react-native";
 import { budgetingService } from "../../../services/src/services/budgeting.service";
-import { getMonthRange } from "../../../utils/date";
 import { useState } from "react";
 import { X } from "lucide-react-native";
 

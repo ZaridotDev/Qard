@@ -1,5 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
-import { View, Text, Button, Modal, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, Modal, TextInput, TouchableOpacity } from "react-native";
 import { transactionService } from "../../../services/src/services/transactions.service";
 import { getMonthRange } from "../../../utils/date";
 import { useState } from "react";
