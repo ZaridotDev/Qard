@@ -1,16 +1,31 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { DebitItem } from "../../../components/DebitItem";
 import { PlusButton } from "../../../components/PlusButton";
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { WalletsStackParams } from '../../../../types/navigation';
 import { formatCurrency } from "../../../../utils/currency";
+import { useEffect, useState } from "react";
+import { ModalShoppingItem } from "../../../components/Modals/ModalShoppingItem";
 
 type CalculatorRouteProp = RouteProp<WalletsStackParams, 'Calculator'>;
-// deberia renderizar lo que pase el boton por las props
+
+export type ShoppingItemsType = {
+    id: string;
+    name: string;
+    price: number;
+    quantity?: number;
+}
+
 export function CalculateEgressScreen () {
+    const [shoppingItems, setShoppingItems] = useState<ShoppingItemsType[]>([])
+    const [visible, setVisible] = useState(false);
     const route = useRoute<CalculatorRouteProp>();
     const { category } = route.params;
+
+    const handleAddItem = (item: ShoppingItemsType) => {
+        setShoppingItems((prev) => [...prev, item]);  
+    };
 
     return (
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
@@ -30,11 +45,31 @@ export function CalculateEgressScreen () {
             }
             {/* Reutilizar BudgetItems para los items de compra */}
             
-            <DebitItem text="mermelada" amount="$0.000"/>
-            <DebitItem text="pan" amount="$0.000"/>
-            <DebitItem text="leche" amount="$0.000"/>
+                <View style={{height: 'auto',maxHeight: '75%'}}>
+                    <FlatList 
+                    data={shoppingItems} 
+                    renderItem={({ item }) => (
+                        <DebitItem 
+                            text={item.name}
+                            amount={formatCurrency(item.price)}
+                        />
+                    )}
+                    keyExtractor={(item) => item.id}
+                    ListEmptyComponent={
+                        <Text style={{ textAlign: 'center', color: 'white', fontSize: 18, marginTop: 20 }}>
+                            Ingresá nuevos items
+                        </Text>
+                    }
+                    />
+                </View>
             {/* Boton add Item */}
-            <PlusButton onPress={() => console.log('add Item')}/>
+            <ModalShoppingItem 
+                visible={visible} 
+                onClose={() => setVisible(false)} 
+                onAddItem={handleAddItem} 
+            />
+
+            <PlusButton onPress={() => setVisible(true)}/>
             {/* Boton Comprar */}
             <TouchableOpacity 
                 onPress={() => console.log('comprar')}
