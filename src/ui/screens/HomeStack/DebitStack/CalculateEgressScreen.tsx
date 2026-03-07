@@ -1,21 +1,33 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { BackButton } from "../../../components/BackButton";
-import { Plus } from "lucide-react-native";
 import { DebitItem } from "../../../components/DebitItem";
 import { PlusButton } from "../../../components/PlusButton";
+import { useRoute, RouteProp } from '@react-navigation/native';
+import { WalletsStackParams } from '../../../../types/navigation';
+import { formatCurrency } from "../../../../utils/currency";
 
+type CalculatorRouteProp = RouteProp<WalletsStackParams, 'Calculator'>;
 // deberia renderizar lo que pase el boton por las props
 export function CalculateEgressScreen () {
+    const route = useRoute<CalculatorRouteProp>();
+    const { category } = route.params;
 
     return (
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
             <BackButton/>
             {/* View de totales */}
-            <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center', justifyContent: 'center'}}>
-                <Text style={{ fontSize: 22, color: 'white'}}>Budget</Text>
-                <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold'}}>$150.000</Text>
-                <Text style={{ fontSize: 30, color: 'white'}}>$13.000</Text>
+            { category.budgets[0]?.amount 
+            ? <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{ fontSize: 22, color: 'white'}}>{category.name}</Text>
+                <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold'}}>{formatCurrency(category.budgets[0]?.amount)}</Text>
+                <Text style={{ fontSize: 30, color: 'white'}}>Sumas</Text>
             </View>
+            : <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{ fontSize: 22, color: 'white'}}>{category.name}</Text>
+                <Text style={{ fontSize: 22, color: 'white'}}>Sin Presupuesto</Text>
+                <Text style={{ fontSize: 50, color: 'white', fontWeight: 'bold'}}>Sumas</Text>
+            </View>
+            }
             {/* Reutilizar BudgetItems para los items de compra */}
             
             <DebitItem text="mermelada" amount="$0.000"/>
