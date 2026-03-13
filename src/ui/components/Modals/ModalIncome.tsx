@@ -31,12 +31,12 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                 const {today: piton} = getMonthRange(new Date());
                 const transaction = await transactionService.insert({
                     type: 'income',
-                    amount: teton, // traido del input del 2do text input
+                    amount: teton, // traido del input del 2do text  input
                     description: description, // traido del inut del 1er text input
                     transaction_date: piton, 
                 });
                 
-                onClose(false, true); // cerrado y guardado → padre puede refrescar
+                onClose(false); // cerrado y guardado → padre puede refrescar
                 setTeton(0);
                 setDisplayAmount('');
                 setDescription('');

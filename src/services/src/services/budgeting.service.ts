@@ -9,7 +9,7 @@ export type BudgetInsert = {
 };
 
 export const budgetingService = {
-  async getCatergory() {
+  async getCatergories() {
     return supabase
       .from('categories')
       .select(`
@@ -21,11 +21,14 @@ export const budgetingService = {
       `)
       .order('created_at', { ascending: false })
   },
-  async getBudget() {
+  async getBudgets() {
     return supabase
     .from('budgets')
     .select('*')
     .order('created_at', { ascending: false })
+  },
+  async getBudget(id: string) {
+    return supabase.from('budgets').select('*').eq('id', id).single();
   },
   async insertCategory(data: CategoryInsert) {
     return supabase.from('categories').insert(data).select().single();
@@ -38,5 +41,8 @@ export const budgetingService = {
   },
   async deleteBudget(id: string) {
     return supabase.from('budgets').delete().eq('id', id);
+  },
+  async updateBudget(id: string, newAmount: number) {
+    return supabase.from('budgets').update({amount: newAmount}).eq('id', id);
   },
 };

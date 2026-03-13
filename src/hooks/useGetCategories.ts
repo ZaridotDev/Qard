@@ -16,7 +16,7 @@ export function useGetCategories(
   useEffect(() => {
     setLoading(true);
     setError(null);
-    budgetingService.getCatergory().then(({ data, error }) => {
+    budgetingService.getCatergories().then(({ data, error }) => {
       console.log('data:', JSON.stringify(data, null, 2));
       if (error) {
         setError(error.message);

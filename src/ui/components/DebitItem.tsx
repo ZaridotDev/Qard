@@ -27,7 +27,7 @@ export function DebitItem ({text, amount, onPress, quantity}: DebitItemType) {
                     <Text style={{ fontSize: 18, color: 'white', }}>{text}</Text>
                 </View>
 
-                <View style={{ paddingHorizontal: 4, flex: 2}}>
+                <View style={{ paddingHorizontal: 4, flex: 3}}>
                     <Text style={{ fontSize: 18, textAlign: 'right', color: 'white'}}>{amount}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>

@@ -8,6 +8,8 @@ import { formatCurrency } from "../../../../utils/currency";
 import { useEffect, useState } from "react";
 import { ModalShoppingItem } from "../../../components/Modals/ModalShoppingItem";
 import { ModalAlert } from "../../../components/Modals/ModalAlert";
+import { ModalPurchase } from "../../../components/Modals/ModalPurchase";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type CalculatorRouteProp = RouteProp<WalletsStackParams, 'Calculator'>;
 
@@ -19,25 +21,27 @@ export type ShoppingItemsType = {
 }
 
 export function CalculateEgressScreen () {
-    const [shoppingItems, setShoppingItems] = useState<ShoppingItemsType[]>([])
-    const [visible, setVisible] = useState(false);
-    const [alert, setAlert] = useState(false)
+    const navigation = useNavigation<StackNavigationProp<WalletsStackParams>>();
     const route = useRoute<CalculatorRouteProp>();
     const { category } = route.params;
-    const navigation = useNavigation();
+
+    const [shoppingItems, setShoppingItems] = useState<ShoppingItemsType[]>([])
+    const [visibleItem, setVisibleItem] = useState(false);
+    const [visibleBuy, setVisibleBuy] = useState(false);
+    const [alert, setAlert] = useState(false)
 
     const handleAddItem = (item: ShoppingItemsType) => {
         setShoppingItems((prev) => [...prev, item]);  
     };
 
-    useEffect(() => {
-        
-    }, [shoppingItems]);
-
     return (
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
-            <BackButton confirm={(arg: boolean) => setAlert(arg)}/>
-            <ModalAlert visible={alert} onClose={() => setAlert(false)} back={() => navigation.goBack()} />
+
+            {shoppingItems.length
+            ? <BackButton confirm={(arg: boolean) => setAlert(arg)}/>
+            : <BackButton/>}
+            
+            <ModalAlert visible={alert} onClose={() => setAlert(false)} back={() => navigation.navigate('Wallets')} />
             {/* View de totales */}
             { category.budgets[0]?.amount 
             ? <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center', justifyContent: 'center'}}>
@@ -73,15 +77,16 @@ export function CalculateEgressScreen () {
                 </View>
             {/* Boton add Item */}
             <ModalShoppingItem 
-                visible={visible} 
-                onClose={() => setVisible(false)} 
+                visible={visibleItem} 
+                onClose={() => setVisibleItem(false)} 
                 onAddItem={handleAddItem} 
             />
+            <ModalPurchase visible={visibleBuy} onClose={(arg) => setVisibleBuy(arg)} shoppingItems={shoppingItems} idBudget={category.budgets[0].id}/>
 
-            <PlusButton onPress={() => setVisible(true)}/>
+            <PlusButton onPress={() => setVisibleItem(true)}/>
             {/* Boton Comprar */}
             <TouchableOpacity 
-                onPress={() => console.log('comprar')}
+                onPress={() => setVisibleBuy(true)}
                 activeOpacity={0.9}
                 style={{
                     width: '60%', 
