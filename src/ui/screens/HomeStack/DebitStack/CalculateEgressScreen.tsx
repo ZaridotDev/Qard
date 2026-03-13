@@ -7,6 +7,7 @@ import { WalletsStackParams } from '../../../../types/navigation';
 import { formatCurrency } from "../../../../utils/currency";
 import { useEffect, useState } from "react";
 import { ModalShoppingItem } from "../../../components/Modals/ModalShoppingItem";
+import { ModalAlert } from "../../../components/Modals/ModalAlert";
 
 type CalculatorRouteProp = RouteProp<WalletsStackParams, 'Calculator'>;
 
@@ -14,12 +15,13 @@ export type ShoppingItemsType = {
     id: string;
     name: string;
     price: number;
-    quantity?: number;
+    quantity: number;
 }
 
 export function CalculateEgressScreen () {
     const [shoppingItems, setShoppingItems] = useState<ShoppingItemsType[]>([])
     const [visible, setVisible] = useState(false);
+    const [alert, setAlert] = useState(false)
     const route = useRoute<CalculatorRouteProp>();
     const { category } = route.params;
 
@@ -27,9 +29,14 @@ export function CalculateEgressScreen () {
         setShoppingItems((prev) => [...prev, item]);  
     };
 
+    useEffect(() => {
+        
+    }, [shoppingItems]);
+
     return (
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
-            <BackButton/>
+            <BackButton confirm={(arg: boolean) => setAlert(arg)}/>
+            <ModalAlert visible={alert}/>
             {/* View de totales */}
             { category.budgets[0]?.amount 
             ? <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center', justifyContent: 'center'}}>
@@ -51,7 +58,8 @@ export function CalculateEgressScreen () {
                     renderItem={({ item }) => (
                         <DebitItem 
                             text={item.name}
-                            amount={formatCurrency(item.price)}
+                            amount={formatCurrency(item.price * item.quantity)}
+                            quantity={item.quantity}
                         />
                     )}
                     keyExtractor={(item) => item.id}

@@ -39,6 +39,7 @@ export function ModalShoppingItem({ visible, onClose, onAddItem }: ModalShopping
         // limpiar
         setName('');
         setPrice(0);
+        setQuantity(1);
         setDisplayPrice('');
         onClose();
     };

@@ -5,9 +5,10 @@ type DebitItemType = {
     text: string;
     amount: string;
     onPress?: () => void;
+    quantity?: number;
 }
 
-export function DebitItem ({text, amount, onPress}: DebitItemType) {
+export function DebitItem ({text, amount, onPress, quantity}: DebitItemType) {
 
     return (
         <TouchableOpacity
@@ -16,7 +17,13 @@ export function DebitItem ({text, amount, onPress}: DebitItemType) {
             activeOpacity={ onPress ? 0.9 : 1 }
         >
             <View style={{flex: 1, flexDirection: 'row', backgroundColor: "#93B771", alignItems: 'center', justifyContent: 'space-between', borderRadius: 10, elevation: 5, paddingLeft: 8}}>
-                <View style={{ paddingHorizontal: 4, flex: 4}}>
+                { quantity
+                    ? <View style={{ paddingHorizontal: 4, flex: 0.2}}>
+                        <Text style={{ fontSize: 18, textAlign: 'center', color: 'white'}}>{quantity}</Text>
+                    </View>
+                    : null
+                }
+                <View style={{ paddingHorizontal: 4, flex: 6}}>
                     <Text style={{ fontSize: 18, color: 'white', }}>{text}</Text>
                 </View>
 
