@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity } from "react-native";
 import { ChevronUp } from "lucide-react-native";
-import { useState } from "react";
 
 type BackButtonType = {
     confirm?: (visible: boolean) => void

@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { DebitItem } from "../../../components/DebitItem";
 import { PlusButton } from "../../../components/PlusButton";
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { WalletsStackParams } from '../../../../types/navigation';
 import { formatCurrency } from "../../../../utils/currency";
 import { useEffect, useState } from "react";
@@ -24,6 +24,7 @@ export function CalculateEgressScreen () {
     const [alert, setAlert] = useState(false)
     const route = useRoute<CalculatorRouteProp>();
     const { category } = route.params;
+    const navigation = useNavigation();
 
     const handleAddItem = (item: ShoppingItemsType) => {
         setShoppingItems((prev) => [...prev, item]);  
@@ -36,7 +37,7 @@ export function CalculateEgressScreen () {
     return (
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
             <BackButton confirm={(arg: boolean) => setAlert(arg)}/>
-            <ModalAlert visible={alert}/>
+            <ModalAlert visible={alert} onClose={() => setAlert(false)} back={() => navigation.goBack()} />
             {/* View de totales */}
             { category.budgets[0]?.amount 
             ? <View style={{width: '80%', height: 150, backgroundColor: "#93B771", alignSelf: 'center', borderRadius:15, marginBottom: 50, paddingTop: 10, alignItems: 'center', justifyContent: 'center'}}>

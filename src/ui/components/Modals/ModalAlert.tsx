@@ -2,9 +2,11 @@ import { View, Text, Modal, TouchableOpacity } from "react-native";
 
 type ModalAlertType = {
     visible: boolean;
+    onClose: () => void;
+    back: () => void;
 }
 
-export function ModalAlert ({visible}: ModalAlertType) {
+export function ModalAlert ({visible,  onClose, back}: ModalAlertType) {
 
 
     return (
@@ -22,14 +24,14 @@ export function ModalAlert ({visible}: ModalAlertType) {
 
                     <View style={{flexDirection: 'row', alignItems: "center", justifyContent: 'space-around', width: '100%'}}> 
                         <TouchableOpacity 
-                        // onPress={} 
+                        onPress={back} 
                         >
                             <View style={{backgroundColor: '#5C7E3B', padding: 8, borderRadius: 10,}}>
                                 <Text style={{color: 'white', fontSize: 20}}>Volver</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity 
-                        // onPress={ } 
+                        onPress={onClose} 
                         >
                             <View style={{backgroundColor: '#5C7E3B', padding: 8, borderRadius: 10, bottom: 0}}>
                                 <Text style={{color: 'white', fontSize: 20, textAlign: 'center'}}>Seguir {'\n'}comprando</Text>
