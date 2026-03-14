@@ -7,7 +7,6 @@ import { ShoppingItemsType } from "../../screens/HomeStack/DebitStack/CalculateE
 import { StackNavigationProp } from "@react-navigation/stack";
 import { WalletsStackParams } from "../../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
-import { useUpdateBudget } from "../../../hooks/useUpdateBudget";
 import { budgetingService } from "../../../services/src/services/budgeting.service";
 
 type ModalPurchaseType = {
@@ -15,6 +14,7 @@ type ModalPurchaseType = {
     onClose: (closed: boolean, saved?: boolean) => void;
     shoppingItems: ShoppingItemsType[];
     idBudget: string;
+    idCategory: string;
 }
 
 export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: ModalPurchaseType) {
@@ -28,43 +28,54 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
             for (let i = 0; i < shoppingItems.length; i++) {
                 totalAmount += shoppingItems[i].price * shoppingItems[i].quantity
             }
+            
             try {
                 const {today} = getMonthRange(new Date());
-
-                const {error: fetchError, data: currentBudget} = await budgetingService.getBudget(idBudget)
-                
-                if (fetchError) {
-                    console.error('Error obteniendo budget:', fetchError.message);
-                    return;
-                }
-
-                const newAmount = currentBudget.amount - totalAmount;
-                
                 await transactionService.insert({
                     type: 'expense',
                     amount: totalAmount, // tiene que ser la suma de los shoppingItems
                     description: description, // traido del Textinput
                     transaction_date: today, 
                 });
-                
-                const {error: updateError} = await budgetingService.updateBudget(idBudget, newAmount)
-                
-                if (updateError) {
-                    console.error('Error actualizando budget:', updateError.message);
-                } else {
-                    console.log('Budget actualizado con éxito, nuevo monto:', newAmount);
+            } catch (error) {
+                console.error('Error creando transaction', error);
+                onClose(false);
+            }
+
+            if (idBudget != '') {
+                try {
+                    const {error: fetchError, data: currentBudget} = await budgetingService.getBudget(idBudget)
+                    
+                    if (fetchError) {
+                        console.error('Error obteniendo budget:', fetchError.message);
+                        return;
+                    }
+
+                    const newAmount = currentBudget.amount - totalAmount;
+                    
+                    const {error: updateError} = await budgetingService.updateBudget(idBudget, newAmount)
+                    
+                    if (updateError) {
+                        console.error('Error actualizando budget:', updateError.message);
+                    } else {
+                        console.log('Budget actualizado con éxito, nuevo monto:', newAmount );
+                    }
+                    
+                    onClose(false);
+                    setDescription('');
+                    navigation.navigate('Wallets')
+                    return;
+                } catch (error) {
+                    console.error('Error en la compra', error);
+                    onClose(false);
                 }
-                
+            } else {
                 onClose(false);
                 setDescription('');
                 navigation.navigate('Wallets')
                 return;
-            } catch (error) {
-                console.error('Error en la compra', error);
-                onClose(false);
             }
-            console.log("ingresa un nombre a la compra para guardarla")
-        }
+        } else console.log("ingresa un nombre a la compra para guardarla")
     }
 
     return (

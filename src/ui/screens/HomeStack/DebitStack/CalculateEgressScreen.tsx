@@ -81,7 +81,13 @@ export function CalculateEgressScreen () {
                 onClose={() => setVisibleItem(false)} 
                 onAddItem={handleAddItem} 
             />
-            <ModalPurchase visible={visibleBuy} onClose={(arg) => setVisibleBuy(arg)} shoppingItems={shoppingItems} idBudget={category.budgets[0].id}/>
+            <ModalPurchase 
+                visible={visibleBuy} 
+                onClose={(arg) => setVisibleBuy(arg)} 
+                shoppingItems={shoppingItems} 
+                idBudget={category.budgets[0]?.id ? category.budgets[0].id : ''}
+                idCategory={category.id}
+            />
 
             <PlusButton onPress={() => setVisibleItem(true)}/>
             {/* Boton Comprar */}
