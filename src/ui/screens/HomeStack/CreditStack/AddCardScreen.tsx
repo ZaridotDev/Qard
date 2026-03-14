@@ -3,14 +3,25 @@ import { BackButton } from "../../../components/BackButton";
 import { ButtonStack } from "../../../components/ButtonStack";
 import { useState } from "react";
 import { CreditCard, User } from "lucide-react-native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 
 export function AddCardScreen () {
     const [ method, setMethod ] = useState(false);
     const [ person, setPerson ] = useState(false);
     const [ card, setCard ] = useState(true);
+
+    const navigation = useNavigation()
+    const goHome = () => {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Home' }],
+            })
+        );
+    };
     return (
         <View style={{ backgroundColor: '#F3F7EE', flex: 1, alignContent: 'center'}}>
-            <BackButton/>
+            <BackButton onClick={goHome}/>
 
             {/* Titulo */}
             <View 

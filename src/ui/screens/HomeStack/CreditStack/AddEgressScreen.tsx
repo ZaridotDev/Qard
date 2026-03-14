@@ -4,10 +4,20 @@ import { ButtonStack } from "../../../components/ButtonStack";
 import { useMemo, useState } from "react";
 import { Square, SquareCheckBig } from "lucide-react-native";
 import { RadioButtonProps, RadioGroup } from "react-native-radio-buttons-group";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 
 export function AddEgressScreen () {
     const [ paid, setPaid ] = useState(false);
     const [selectedId, setSelectedId] = useState<string | undefined>();
+    const navigation = useNavigation();
+    const goHome = () => {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Home' }],
+            })
+        );
+    };
     const radioButtons: RadioButtonProps[] = useMemo(() => ([
         {
             id: '1', // acts as primary key, should be unique and non-empty string
@@ -41,7 +51,7 @@ export function AddEgressScreen () {
     
     return (
         <View style={{ backgroundColor: '#F3F7EE', flex: 1, paddingTop: 0, alignContent: 'center'}}>
-            <BackButton/>
+            <BackButton onClick={goHome}/>
             {/* Titulo */}
             <View 
                 style={{

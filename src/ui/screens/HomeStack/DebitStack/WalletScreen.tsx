@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { DebitItem } from "../../../components/DebitItem";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, CommonActions } from "@react-navigation/native";
 import { PlusButton } from "../../../components/PlusButton";
 import { useState } from "react";
 import { ModalCategories } from "../../../components/Modals/ModalCategories";
@@ -16,6 +16,14 @@ export function WalletScreen () {
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     
     const navigation = useNavigation<StackNavigationProp<WalletsStackParams>>();
+    const goHome = () => {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Home' }],
+            })
+        );
+    };
 
     const { categories, loading, error } = useGetCategories(
         refreshTrigger
@@ -30,7 +38,7 @@ export function WalletScreen () {
             <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
                 {/* Flatlist */}
 
-                <BackButton/>
+                <BackButton onClick={goHome}/>
                 <View style={{height: 'auto',maxHeight: '75%'}}>
                     <FlatList 
                     data={categories} 

@@ -39,7 +39,7 @@ export function CalculateEgressScreen () {
 
             {shoppingItems.length
             ? <BackButton confirm={(arg: boolean) => setAlert(arg)}/>
-            : <BackButton/>}
+            : <BackButton onClick={() => navigation.navigate('Wallets')}/>}
             
             <ModalAlert visible={alert} onClose={() => setAlert(false)} back={() => navigation.navigate('Wallets')} />
             {/* View de totales */}
