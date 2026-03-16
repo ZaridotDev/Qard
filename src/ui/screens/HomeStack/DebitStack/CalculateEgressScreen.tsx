@@ -5,7 +5,7 @@ import { PlusButton } from "../../../components/PlusButton";
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { WalletsStackParams } from '../../../../types/navigation';
 import { formatCurrency } from "../../../../utils/currency";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ModalShoppingItem } from "../../../components/Modals/ModalShoppingItem";
 import { ModalAlert } from "../../../components/Modals/ModalAlert";
 import { ModalPurchase } from "../../../components/Modals/ModalPurchase";
@@ -14,10 +14,10 @@ import { StackNavigationProp } from "@react-navigation/stack";
 type CalculatorRouteProp = RouteProp<WalletsStackParams, 'Calculator'>;
 
 export type ShoppingItemsType = {
-    id: string;
     name: string;
     price: number;
     quantity: number;
+    idCategory: string;
 }
 
 export function CalculateEgressScreen () {
@@ -67,7 +67,7 @@ export function CalculateEgressScreen () {
                             quantity={item.quantity}
                         />
                     )}
-                    keyExtractor={(item) => item.id}
+                    // keyExtractor={(item) => item.id}
                     ListEmptyComponent={
                         <Text style={{ textAlign: 'center', color: 'white', fontSize: 18, marginTop: 20 }}>
                             Ingresá nuevos items
@@ -80,6 +80,7 @@ export function CalculateEgressScreen () {
                 visible={visibleItem} 
                 onClose={() => setVisibleItem(false)} 
                 onAddItem={handleAddItem} 
+                idCategory={category.id}
             />
             <ModalPurchase 
                 visible={visibleBuy} 
@@ -90,6 +91,7 @@ export function CalculateEgressScreen () {
             />
 
             <PlusButton onPress={() => setVisibleItem(true)}/>
+            <PlusButton onPress={() => console.log(shoppingItems, 'hola')}/>
             {/* Boton Comprar */}
             <TouchableOpacity 
                 onPress={() => setVisibleBuy(true)}

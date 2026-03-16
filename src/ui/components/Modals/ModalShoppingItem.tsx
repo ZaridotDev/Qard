@@ -9,9 +9,10 @@ type ModalShoppingItemType = {
     visible: boolean;
     onClose: () => void;
     onAddItem: (item: ShoppingItemsType) => void;  
+    idCategory: string;
 }
 
-export function ModalShoppingItem({ visible, onClose, onAddItem }: ModalShoppingItemType) {
+export function ModalShoppingItem({ visible, onClose, onAddItem, idCategory }: ModalShoppingItemType) {
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState(1);
     const [price, setPrice] = useState(0);
@@ -30,7 +31,7 @@ export function ModalShoppingItem({ visible, onClose, onAddItem }: ModalShopping
         if (name === '' || price <= 0) return;
     
         onAddItem({
-            id: Date.now().toString(),
+            idCategory,
             name,
             price,
             quantity,
@@ -106,4 +107,4 @@ export function ModalShoppingItem({ visible, onClose, onAddItem }: ModalShopping
             </View>
         </Modal>
     )
-  }
+}

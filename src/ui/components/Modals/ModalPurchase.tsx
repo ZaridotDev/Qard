@@ -8,6 +8,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { WalletsStackParams } from "../../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { budgetingService } from "../../../services/src/services/budgeting.service";
+import { shoppingItemsService } from "../../../services/src/services/shoppintItems.service";
 
 type ModalPurchaseType = {
     visible: boolean;
@@ -31,12 +32,28 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
             
             try {
                 const {today} = getMonthRange(new Date());
-                await transactionService.insert({
+                const {data: transactionData, error: transactionError} = await transactionService.insert({
                     type: 'expense',
                     amount: totalAmount, // tiene que ser la suma de los shoppingItems
                     description: description, // traido del Textinput
                     transaction_date: today, 
+                    category_id: shoppingItems[0].idCategory,
                 });
+
+                if (transactionError) throw transactionError;
+                
+                for (let i=0; i<shoppingItems.length; i++){
+                    const {error: shoppingItemsError} = await shoppingItemsService.insertItems({
+                        transaction_id: transactionData.id,                        
+                        category_id: shoppingItems[i].idCategory,
+                        description: shoppingItems[i].name,
+                        price: shoppingItems[i].price,
+                        quantity: shoppingItems[i].quantity,
+                    })
+                    
+                    if (shoppingItemsError) throw shoppingItemsError;
+                }
+
             } catch (error) {
                 console.error('Error creando transaction', error);
                 onClose(false);
@@ -78,6 +95,17 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
         } else console.log("ingresa un nombre a la compra para guardarla")
     }
 
+    const prueba = () => {
+        for (let i=0; i<shoppingItems.length; i++){
+            console.log(`
+                transaction_id: 
+                category_id: ${shoppingItems[i].idCategory}
+                description: ${shoppingItems[i].name}
+                price: ${shoppingItems[i].price}
+                quantity: ${shoppingItems[i].quantity}
+            `)
+        }
+    }
     return (
         <Modal
             visible={visible}
@@ -105,6 +133,7 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
                     />
                     <TouchableOpacity 
                     onPress={() => createPurchase()} 
+                    // onPress={() => prueba()} 
                     >
                         <View style={{backgroundColor: '#5C7E3B', padding: 10, borderRadius: 10,}}>
                             <Text style={{color: 'white', fontSize: 20}}>Aceptar</Text>

@@ -5,6 +5,7 @@ export type TransactionInsert = {
   amount: number;
   description?: string;
   transaction_date?: string;
+  category_id?: string;
 };
 export const transactionService = {
   async getByMonth(start: string, end: string) {
@@ -18,7 +19,7 @@ export const transactionService = {
     
   },
   async insert(data: TransactionInsert) {
-    return supabase.from('transactions').insert(data);
+    return supabase.from('transactions').insert(data).select().single();
   },    
   async delete(id: string) {
     return supabase.from('transactions').delete().eq('id', id);
