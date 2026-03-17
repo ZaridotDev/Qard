@@ -13,15 +13,18 @@ export const shoppingItemsService = {
     return supabase
       .from('categories')
       .select(`
-        *,
-        transactions (
-        *,
-            shopping_items (
-                id,
-                description,
-                price,
-                quantity
-            )
+        name,
+        transactions!inner (
+          id,
+          amount,
+          description,
+          transaction_date,
+          shopping_items (
+            id,
+            description,
+            price,
+            quantity
+          )
         )
       `)
       .order('created_at', { ascending: false })

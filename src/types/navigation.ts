@@ -5,9 +5,12 @@ export type Category = {
     name: string;
     budgets: { id: string; amount: number }[];
 };
-export type Purchase = {
-    // datos a pasar por Historial
-};
+
+export type ShoppingItemsType = {
+    description: string;
+    price: number;
+    quantity: number;
+}
 
 // Pantallas
 
@@ -39,6 +42,11 @@ export type WalletsStackParams = {
 };
 export type HistoryStackParams = {
     History: undefined;
-    Details: { purchase: Purchase };
+    Details: { 
+        transactionName: string,
+        transactionAmount: number,
+        transactionDate: string,
+        shoppingItems: ShoppingItemsType[],
+    };
 };
 

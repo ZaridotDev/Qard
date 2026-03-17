@@ -6,9 +6,10 @@ type DebitItemType = {
     amount: string;
     onPress?: () => void;
     quantity?: number;
+    woBtns?: boolean;
 }
 
-export function DebitItem ({text, amount, onPress, quantity}: DebitItemType) {
+export function DebitItem ({text, amount, onPress, quantity, woBtns}: DebitItemType) {
 
     return (
         <TouchableOpacity
@@ -27,10 +28,11 @@ export function DebitItem ({text, amount, onPress, quantity}: DebitItemType) {
                     <Text style={{ fontSize: 18, color: 'white', }}>{text}</Text>
                 </View>
 
-                <View style={{ paddingHorizontal: 4, flex: 3}}>
+                <View style={{ paddingHorizontal: 4, flex: 3, paddingRight: 12}}>
                     <Text style={{ fontSize: 18, textAlign: 'right', color: 'white'}}>{amount}</Text>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
+                { !woBtns
+                ? <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={{ paddingVertical: 4, paddingHorizontal: 4 }}>
                         <SquarePen size={22} color={'white'} />
                     </TouchableOpacity>
@@ -38,6 +40,7 @@ export function DebitItem ({text, amount, onPress, quantity}: DebitItemType) {
                         <Trash size={22} color={'white'} />
                     </TouchableOpacity>
                 </View>
+                : null }
             </View>
         </TouchableOpacity>
     )

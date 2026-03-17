@@ -95,17 +95,6 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
         } else console.log("ingresa un nombre a la compra para guardarla")
     }
 
-    const prueba = () => {
-        for (let i=0; i<shoppingItems.length; i++){
-            console.log(`
-                transaction_id: 
-                category_id: ${shoppingItems[i].idCategory}
-                description: ${shoppingItems[i].name}
-                price: ${shoppingItems[i].price}
-                quantity: ${shoppingItems[i].quantity}
-            `)
-        }
-    }
     return (
         <Modal
             visible={visible}
