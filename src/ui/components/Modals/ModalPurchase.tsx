@@ -101,7 +101,10 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
             animationType='fade'
             backdropColor={'rgba(0, 0, 0, 0.1)'}
         >
-            <View style={{flex: 1, justifyContent: 'center', padding: 20}}>
+            <TouchableOpacity 
+                onPress={() => onClose(false)}
+                activeOpacity={1}
+                style={{flex: 1, justifyContent: 'center', padding: 20}}>
                 <View style={{alignSelf: 'center', width: '80%', height: 'auto', backgroundColor: '#BAD3A2', padding: 20, borderRadius: 15, alignItems: 'center'}}>
                     <TouchableOpacity 
                     onPress={() => {
@@ -129,7 +132,7 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
                         </View>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </TouchableOpacity>
         </Modal>
     )
 }

@@ -63,7 +63,10 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
             animationType='fade'
             backdropColor={'rgba(0, 0, 0, 0.1)'}
         >
-            <View style={{flex: 1, justifyContent: 'center', padding: 20}}>
+            <TouchableOpacity 
+                onPress={() => onClose(false)}
+                activeOpacity={1}
+                style={{flex: 1, justifyContent: 'center', padding: 20}}>
                 <View style={{alignSelf: 'center', width: '80%', height: 260, backgroundColor: '#BAD3A2', padding: 20, borderRadius: 15, alignItems: 'center'}}>
                     <TouchableOpacity 
                     onPress={() => {
@@ -101,7 +104,7 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
                         </View>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </TouchableOpacity>
         </Modal>
     )
 }
