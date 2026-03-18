@@ -6,6 +6,7 @@ import { CreditCard, User } from "lucide-react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { formatCurrency } from "../../../../utils/currency";
 import { paymentMethodsService } from "../../../../services/src/services/paymentMethods.service";
+import Toast from "react-native-toast-message";
 
 export function AddCardScreen () {
     const [ method, setMethod ] = useState(false);
@@ -37,20 +38,27 @@ export function AddCardScreen () {
     };
 
     const insertCard = async () => {
-        if ( form.name != '' && form.lastDigits != '' ) {
-            try {
-            await paymentMethodsService.insertPaymentMethod({
-                alias: form.name,
-                lastDigits: form.lastDigits,
-                closingDay: parseInt(form.closingDay),
-                dueDay: parseInt(form.dueDay),
-                creditLimit: form.creditLimit,
-                personalLimit: form.personalLimit
-            });
-            } catch (error) {
-                console.error('Error creando tarjeta', error);
-            }
-        }
+        // if ( form.name != '' && form.lastDigits != '' ) {
+        //     try {
+        //     await paymentMethodsService.insertPaymentMethod({
+        //         alias: form.name,
+        //         lastDigits: form.lastDigits,
+        //         closingDay: parseInt(form.closingDay),
+        //         dueDay: parseInt(form.dueDay),
+        //         creditLimit: form.creditLimit,
+        //         personalLimit: form.personalLimit
+        //     });
+        //     } catch (error) {
+        //         console.error('Error creando tarjeta', error);
+        //     }
+        // }
+        Toast.show({
+            type: 'error',
+            text1: 'Tarjeta agregada correctamente',
+            text2: 'Tarjeta agregada correctamente',
+            topOffset: 70,
+            visibilityTime: 4000,
+        });
     };
 
     const handleCreditLimitChange = (text: string) => {

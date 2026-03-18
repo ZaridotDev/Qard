@@ -4,6 +4,7 @@ import { HamburgerMenu } from '../navigation/HamburgerMenu';
 import { Platform, SafeAreaView, StatusBar } from 'react-native';
 import { useEffect } from 'react';
 import * as NavigationBar from 'expo-navigation-bar';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
 
@@ -14,10 +15,13 @@ export default function App() {
   }, []); 
   
   return (
+    <>
     <SafeAreaView style={{ flex: 1, paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, backgroundColor: '#F3F7EE'}} >
       <NavigationContainer>
         <HamburgerMenu/>
       </NavigationContainer>
     </SafeAreaView>
+    <Toast />
+    </>
   ); 
 }
