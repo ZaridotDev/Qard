@@ -2,20 +2,49 @@ import { FlatList, Modal, TouchableOpacity, Text, View } from "react-native";
 import { useGetCategories } from "../../../hooks/useGetCategories";
 import { useState } from "react";
 import { colors } from "../../styles/colors";
+import { useGetPaymentMethods } from "../../../hooks/useGetPaymentMethods";
 
 type ModalSelectorType = {
     visible: boolean;
-    onClose: (closed: boolean, category?: CatgorySelectedType) => void;
+    cards?: boolean
+    onClose: (closed: boolean, item?: {id: string, name: string}) => void;
 }
 
-export type CatgorySelectedType = {
+export type itemSelectedType = {
     id: string;
     name: string;
 }
+// export type CatgorySelectedType = {
+//     id: string;
+//     name: string;
+// }
+// export type PaymentMethodSelectedType = {
+//     id: string;
+//     alias: string;
+// }
 
-export function ModalSelector ({visible, onClose}: ModalSelectorType) {
+export function ModalSelector ({visible, cards, onClose}: ModalSelectorType) {
 
-    const { categories, loading, error } = useGetCategories();
+    const { categories } = useGetCategories();
+    const { paymentMethods } = useGetPaymentMethods();
+
+    const itemToReturn = (item: itemSelectedType) => {
+        // if (cards) {
+        //     let category = {
+        //         id: item.id,
+        //         name: item.name
+        //     }
+        //     onClose(false, category)
+        // } else {
+        //     let paymentMethod = {
+        //         id: item.id,
+        //         alias: item.alias
+        //     }
+        //     onClose(false, paymentMethod)
+
+        // }
+        onClose(false, item)
+    }
 
     return (
         <Modal
@@ -26,7 +55,7 @@ export function ModalSelector ({visible, onClose}: ModalSelectorType) {
             <TouchableOpacity 
                 onPress={() => onClose(false)}
                 activeOpacity={1}
-                style={{flex: 1, justifyContent: 'center', width: '70%', height: 'auto', alignSelf: 'center', marginTop: 100,}}>
+                style={{flex: 1, justifyContent: 'center', width: '70%', height: 'auto', alignSelf: 'center'}}>
                 <View
                     style={{
                         backgroundColor: colors[7], 
@@ -38,16 +67,10 @@ export function ModalSelector ({visible, onClose}: ModalSelectorType) {
                     }}
                 >
                     <FlatList
-                        data={categories}
+                        data={cards ? paymentMethods : categories}
                         renderItem={({item}) => 
                             <TouchableOpacity 
-                                onPress={() => {
-                                    let category: CatgorySelectedType = {
-                                        id: item.id,
-                                        name: item.name
-                                    }
-                                    onClose(false, category)
-                                }}
+                                onPress={() => itemToReturn(item)}
                                 activeOpacity={0.9}
                                 style={{ 
                                     width: '100%', 
@@ -61,7 +84,7 @@ export function ModalSelector ({visible, onClose}: ModalSelectorType) {
                                     borderRadius: 5
                                 }}
                                 >
-                                <Text style={{color: 'grey', fontSize: 20, bottom: 2}}>{item.name}</Text>
+                                <Text style={{color: 'grey', fontSize: 20, bottom: 2}}>{cards ? item.alias : item.name}</Text>
                             </TouchableOpacity> 
                         }
                         keyExtractor={(item) => item.id}

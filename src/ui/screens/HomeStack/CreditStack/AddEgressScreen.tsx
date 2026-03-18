@@ -5,9 +5,19 @@ import { useMemo, useState } from "react";
 import { Square, SquareCheckBig } from "lucide-react-native";
 import { RadioButtonProps, RadioGroup } from "react-native-radio-buttons-group";
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import { Selector } from "../../../components/Selector";
+import Toast from "react-native-toast-message";
+import { useInsertWithInstallments } from "../../../../hooks/useInsertWithInstallments";
+import { formatCurrency } from "../../../../utils/currency";
 
 export function AddEgressScreen () {
     const [ paid, setPaid ] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [amount, setAmount] = useState<number>(0) 
+    const [description, setDescription] = useState("")
+    const [installments, setInstallments] = useState('')
+    const [displayAmount, setDisplayAmount] = useState('');    
+    
     const [selectedId, setSelectedId] = useState<string | undefined>();
     const navigation = useNavigation();
     const goHome = () => {
@@ -18,36 +28,73 @@ export function AddEgressScreen () {
             })
         );
     };
-    const radioButtons: RadioButtonProps[] = useMemo(() => ([
-        {
-            id: '1', // acts as primary key, should be unique and non-empty string
-            label: '25%',
-            value: '25',
-            containerStyle: { flexDirection: 'column', alignItems: 'center' },
-            color: 'white'
-        },
-        {
-            id: '2',
-            label: '50%',
-            value: '50',
-            containerStyle: { flexDirection: 'column', alignItems: 'center' },
-            color: 'white'
-        },
-        {
-            id: '3', // acts as primary key, should be unique and non-empty string
-            label: '75%',
-            value: '75',
-            containerStyle: { flexDirection: 'column', alignItems: 'center' },
-            color: 'white'
-        },
-        {
-            id: '4',
-            label: '100%',
-            value: '100',
-            containerStyle: { flexDirection: 'column' },
-            color: 'white'
-        }
-    ]), []);
+    // const radioButtons: RadioButtonProps[] = useMemo(() => ([
+    //     {
+    //         id: '1', // acts as primary key, should be unique and non-empty string
+    //         label: '25%',
+    //         value: '25',
+    //         containerStyle: { flexDirection: 'column', alignItems: 'center' },
+    //         color: 'white'
+    //     },
+    //     {
+    //         id: '2',
+    //         label: '50%',
+    //         value: '50',
+    //         containerStyle: { flexDirection: 'column', alignItems: 'center' },
+    //         color: 'white'
+    //     },
+    //     {
+    //         id: '3', 
+    //         label: '75%',
+    //         value: '75',
+    //         containerStyle: { flexDirection: 'column', alignItems: 'center' },
+    //         color: 'white'
+    //     },
+    //     {
+    //         id: '4',
+    //         label: '100%',
+    //         value: '100',
+    //         containerStyle: { flexDirection: 'column' },
+    //         color: 'white'
+    //     }
+    // ]), []);
+
+    const { insert, loading } = useInsertWithInstallments();
+    
+    const createNewEgress = async () => {
+            if (paymentMethod && amount > 0 && parseInt(installments) > 0 && description != '') {
+            try {
+                await insert({
+                    payment_method_id: paymentMethod,
+                    amount: amount,
+                    description: description,
+                    total_installments: parseInt(installments),
+                    installment_amount: amount / parseInt(installments), // monto por cuota
+                });
+                setPaymentMethod('Selecciona una tarjeta o persona');
+                setAmount(0);
+                setDescription('');
+                setInstallments('');
+                setDisplayAmount('');
+                Toast.show({ type: 'success', text1: 'Egreso creado correctamente' });
+            } catch (error) {
+                Toast.show({ type: 'error', text1: 'Error al crear el egreso'},);
+            }
+        } else Toast.show({ type: 'error', text1: 'Datos incompletos', text2: 'Todos los capos son obligatorios' });
+    }
+
+    const handleAmountChange = (text: string) => {
+
+        const cleaned = text.replace(/\D/g, '');
+        const number = parseInt(cleaned) || 0;
+        
+        setAmount(number);                          
+        setDisplayAmount(formatCurrency(number));  
+    };
+
+    const restorePaymentMethod = (id: string) => {
+        setPaymentMethod(id);
+    }
     
     return (
         <View style={{ backgroundColor: '#F3F7EE', flex: 1, paddingTop: 0, alignContent: 'center'}}>
@@ -70,42 +117,56 @@ export function AddEgressScreen () {
             {/* Formulario */}
             <View style={{flex: 1, paddingTop: 20, width: '100%'}}>
                 <ScrollView 
-                contentContainerStyle={{ paddingBottom: paid ? 25 : 0 }}
-                style={{backgroundColor: '#BAD3A2', padding: 12, maxHeight: paid ? '100%' : '80%', borderRadius: 10, alignSelf: 'center',  elevation: 15, width: '85%', paddingBottom: 100}}>
-                    <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Metodo de pago</Text>
-                    <TextInput 
-                        style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                        placeholderTextColor={'#999'}
-                        placeholder="Seleccionar emisor"
-                        // value={description}
-                        // onChangeText={(text) => setDescription(text)}
+                    // contentContainerStyle={{ paddingBottom: paid ? 25 : 0 }} comentado para update
+                    style={{
+                        backgroundColor: '#BAD3A2', 
+                        padding: 12, 
+                        maxHeight: paid ? '100%' : '70%', //  comentado para update : '80%'
+                        borderRadius: 10, 
+                        alignSelf: 'center',  
+                        elevation: 15, 
+                        width: '85%', 
+                        paddingBottom: 100
+                    }}
+                >
+                    <Selector 
+                        title={"Selecciona un Emisor"} 
+                        placeholder={"Selecciona una tarjeta o persona"}
+                        idPaymentMethod={restorePaymentMethod}
+                        fs={18}
+                        cards
                     />
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Egreso</Text>
                     <TextInput 
+                        keyboardType="numeric"
+                        maxLength={10}
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
                         placeholderTextColor={'#999'}
                         placeholder="$"
-                        // value={teton}
-                        // onChangeText={(text) => setTeton(text)}
+                        value={displayAmount}
+                        onChangeText={handleAmountChange}
                     />
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Cantidad de cuotas</Text>
                     <TextInput 
+                        keyboardType="numeric"
+                        maxLength={3}
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
                         placeholderTextColor={'#999'}
                         placeholder="1, 3, 6, 9 ..."
-                        // value={description}
-                        // onChangeText={(text) => setDescription(text)}
+                        value={installments}
+                        onChangeText={(text) => setInstallments(text)}
                     />
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Descripcion</Text>
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
                         placeholderTextColor={'#999'}
                         placeholder="Titulo de la compra"
-                        // value={teton}
-                        // onChangeText={(text) => setTeton(text)}
+                        value={description}
+                        onChangeText={(text) => setDescription(text)}
                         
                     />
-                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    {/* comentado para update futura, posibilidad de comprar con otra persona */}
+                    {/* <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold', textAlignVertical: 'center'}}>Pagar con otra persona</Text>
                         <TouchableOpacity style={{ marginHorizontal: 8,padding: 10, top: 2}} onPress={() => setPaid(!paid)}>
                             {!paid 
@@ -134,12 +195,12 @@ export function AddEgressScreen () {
                             labelStyle={{ left: -5, color: 'white', fontSize: 16, fontWeight: 'bold'}}
                         />
                     </>
-                    : <></>}
+                    : <></>} */}
                 </ScrollView>
             </View>
             {/* Boton de cargar egreso */}
             <View style={{backgroundColor: 'transparent'}}>
-                <ButtonStack text={'Añadir egreso'} onPress={() => console.log('hola')} bt={20}/>
+                <ButtonStack text={'Añadir egreso'} onPress={() => createNewEgress()} bt={20}/>
             </View>
         </View>
     )

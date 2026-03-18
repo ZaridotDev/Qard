@@ -104,7 +104,13 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
                         onChangeText={handleAmountChange}
                         
                     />
-                    <Selector title="Categoria" placeholder="Seleccionar categoria" idCategory={restoreCategory}/>
+                    <Selector 
+                        title="Categoria" 
+                        placeholder="Seleccionar categoria" 
+                        center
+                        idCategory={restoreCategory}
+                        fs={22}
+                        />
 
                     <TouchableOpacity 
                     onPress={() => createExpense()} 

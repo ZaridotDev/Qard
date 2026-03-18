@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
-import { budgetingService } from '../services/src/services/budgeting.service';
+import { paymentMethodsService } from '../services/src/services/paymentMethods.service';
 
-export function useGetCategories(
+export function useGetPaymentMethods(
   refreshTrigger: number = 0
 ) {
-  const [categories, setCategories] = useState<any[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
     setError(null);
-    budgetingService.getCatergories().then(({ data, error }) => {
+    paymentMethodsService.getPaymentMethods().then(({ data, error }) => {
       console.log('data:', JSON.stringify(data, null, 2));
       if (error) {
         setError(error.message);
       } else {
-        setCategories(data ?? []);
+        setPaymentMethods(data ?? []);
       }
       setLoading(false);
     });
   }, [refreshTrigger]);
 
-  return { categories, loading, error };
+  return { paymentMethods, loading, error };
 }
