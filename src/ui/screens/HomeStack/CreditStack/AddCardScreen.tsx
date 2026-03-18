@@ -38,39 +38,71 @@ export function AddCardScreen () {
     };
 
     const insertCard = async () => {
-        // if ( form.name != '' && form.lastDigits != '' ) {
-        //     try {
-        //     await paymentMethodsService.insertPaymentMethod({
-        //         alias: form.name,
-        //         lastDigits: form.lastDigits,
-        //         closingDay: parseInt(form.closingDay),
-        //         dueDay: parseInt(form.dueDay),
-        //         creditLimit: form.creditLimit,
-        //         personalLimit: form.personalLimit
-        //     });
-        //     } catch (error) {
-        //         console.error('Error creando tarjeta', error);
-        //     }
-        // }
-        Toast.show({
-            type: 'error',
-            text1: 'Tarjeta agregada correctamente',
-            text2: 'Tarjeta agregada correctamente',
-            topOffset: 70,
-            visibilityTime: 4000,
-        });
+        if (card ? form.name != '' && form.lastDigits != '' : form.name != '' ) {
+            if (parseInt(form.closingDay) < 31 && parseInt(form.closingDay) > 0 && parseInt(form.dueDay) < 31 && parseInt(form.dueDay) > 0 || form.closingDay == '' && form.dueDay == ''){
+                try {
+                    await paymentMethodsService.insertPaymentMethod({
+                        alias: form.name,
+                        last_digits: form.lastDigits,
+                        closing_day: parseInt(form.closingDay),
+                        due_day: parseInt(form.dueDay),
+                        credit_limit: form.creditLimit,
+                        personal_limit: form.personalLimit
+                    });
+                    setForm({
+                        name: '',
+                        lastDigits: '',
+                        closingDay: '',
+                        dueDay: '',
+                        creditLimit: 0,
+                        personalLimit: 0,
+                    });
+                    setDisplayCreditLimit('');
+                    setDisplayPersonalLimit('');
+
+                    Toast.show({
+                        type: 'success',
+                        text1: card ? 'Tarjeta creada correctamente' : 'Persona creada correctamente',
+                        visibilityTime: 4000,
+                    });
+
+                } catch (error) {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Error creando la tarjeta',
+                        text2: (error as Error).message.toString(),
+                        visibilityTime: 7000,
+                    });
+                    console.error('Error creando tarjeta', error);
+                }
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Datos Incorrectos',
+                    text2: 'Debes ingresar un dia válido para cierre y vencimiento',
+                    visibilityTime: 7000,
+                });
+            }
+        } else {
+            Toast.show({
+                type: 'error',
+                text1: 'No ingresaste datos',
+                text2: 'Debes ingresar minimo nombre e identificador',
+                visibilityTime: 7000,
+            });
+        }
     };
 
     const handleCreditLimitChange = (text: string) => {
-        const cleaned = parseInt(text.replace(/\D/g, ''));
+        const cleaned = parseInt(text.replace(/\D/g, '')) || 0;
         updateForm('creditLimit', cleaned);          
-        setDisplayCreditLimit(formatCurrency(cleaned));
+        setDisplayCreditLimit(cleaned === 0 ? '' : formatCurrency(cleaned));
     };
     
     const handlePersonalLimitChange = (text: string) => {
-        const cleaned = parseInt(text.replace(/\D/g, ''));
+        const cleaned = parseInt(text.replace(/\D/g, '')) || 0;
         updateForm('personalLimit', cleaned);           
-        setDisplayPersonalLimit(formatCurrency(cleaned));
+        setDisplayPersonalLimit(cleaned === 0 ? '' : formatCurrency(cleaned));
     };
 
     

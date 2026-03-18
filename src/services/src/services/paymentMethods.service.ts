@@ -10,17 +10,17 @@ export type paymentMethodsType = {
 };
 
 export const  paymentMethodsService = {
-  async getrRecurringTransactions() {
-    return supabase
-      .from('recurring_transactions')
-      .select(`
-        id,
-        amount,
-        description,
-        category_id
-      `)
-      .order('created_at', { ascending: false })
-  },
+  // async getrRecurringTransactions() {
+  //   return supabase
+  //     .from('recurring_transactions')
+  //     .select(`
+  //       id,
+  //       amount,
+  //       description,
+  //       category_id
+  //     `)
+  //     .order('created_at', { ascending: false })
+  // },
   async insertPaymentMethod(data: paymentMethodsType) {
     return supabase.from('payment_methods').insert(data).select();
   },
