@@ -5,6 +5,7 @@ import { useState } from "react";
 import { X } from "lucide-react-native";
 import { formatCurrency } from "../../../utils/currency";
 import { recurrentEgressType, recurrentEgressService } from "../../../services/src/services/recurrentEgress.service";
+import { Selector } from "../Selector";
 
 type ModalRecurerentEgressType = {
     visible: boolean;
@@ -15,6 +16,8 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
     const [amount, setAmount] = useState<number>(0) // esto es culpa de Joni
     const [description, setDescription] = useState("")
     const [displayAmount, setDisplayAmount] = useState('');
+    const [category, setCategory] = useState('');
+
 
     const handleAmountChange = (text: string) => {
 
@@ -34,6 +37,7 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
                     amount: amount,
                     description: description, 
                     start_date: today, 
+                    category_id: category ? category : ''
                 });
 
                 if (error) throw error;
@@ -57,6 +61,10 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
         console.log("ingresa un monto mayor a 0")
     }
 
+    const restoreCategory = (id: string) => {
+        setCategory(id);
+    }
+
     return (
         <Modal
             visible={visible}
@@ -67,7 +75,7 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
                 onPress={() => onClose(false)}
                 activeOpacity={1}
                 style={{flex: 1, justifyContent: 'center', padding: 20}}>
-                <View style={{alignSelf: 'center', width: '80%', height: 260, backgroundColor: '#BAD3A2', padding: 20, borderRadius: 15, alignItems: 'center'}}>
+                <View style={{alignSelf: 'center', width: '80%', height: 'auto', backgroundColor: '#BAD3A2', padding: 20, borderRadius: 15, alignItems: 'center'}}>
                     <TouchableOpacity 
                     onPress={() => {
                         setDisplayAmount('');
@@ -96,6 +104,8 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
                         onChangeText={handleAmountChange}
                         
                     />
+                    <Selector title="Categoria" placeholder="Seleccionar categoria" idCategory={restoreCategory}/>
+
                     <TouchableOpacity 
                     onPress={() => createExpense()} 
                     >
