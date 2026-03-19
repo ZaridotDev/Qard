@@ -18,7 +18,7 @@ export function AddEgressScreen () {
     const [installments, setInstallments] = useState('')
     const [displayAmount, setDisplayAmount] = useState('');    
     
-    const [selectedId, setSelectedId] = useState<string | undefined>();
+    // const [selectedId, setSelectedId] = useState<string | undefined>();
     const navigation = useNavigation();
     const goHome = () => {
         navigation.dispatch(
@@ -68,8 +68,7 @@ export function AddEgressScreen () {
                     payment_method_id: paymentMethod,
                     amount: amount,
                     description: description,
-                    total_installments: parseInt(installments),
-                    installment_amount: amount / parseInt(installments), // monto por cuota
+                    total_installments: parseInt(installments)
                 });
                 setPaymentMethod('Selecciona una tarjeta o persona');
                 setAmount(0);
@@ -78,7 +77,7 @@ export function AddEgressScreen () {
                 setDisplayAmount('');
                 Toast.show({ type: 'success', text1: 'Egreso creado correctamente' });
             } catch (error) {
-                Toast.show({ type: 'error', text1: 'Error al crear el egreso'},);
+                Toast.show({ type: 'error', text1: 'Error al crear el egreso'}); 
             }
         } else Toast.show({ type: 'error', text1: 'Datos incompletos', text2: 'Todos los capos son obligatorios' });
     }

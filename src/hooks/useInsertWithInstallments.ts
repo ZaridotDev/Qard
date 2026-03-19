@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { installmentsService, TransactionWithInstallmentsInsert } from "../services/src/services/installments.service";
+import { InstallmentPurchaseInsert, installmentsService,  } from "../services/src/services/installments.service";
 
 export function useInsertWithInstallments() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const insert = async (data: TransactionWithInstallmentsInsert) => {
+    const insert = async (data: InstallmentPurchaseInsert) => {
         setLoading(true);
         setError(null);
         try {
             const result = await installmentsService.insertWithInstallments(data);
             return result;
         } catch (err) {
+            console.log('Error detallado:', JSON.stringify(err))
             setError((err as Error).message);
             throw err;
         } finally {
