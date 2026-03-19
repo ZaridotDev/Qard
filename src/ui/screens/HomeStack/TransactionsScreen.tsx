@@ -2,10 +2,12 @@ import { View, Text, FlatList, Button, TouchableOpacity } from 'react-native';
 import { useMonthlyTransactions } from '../../../hooks/useMonthlyTransactions';
 import { formatDateForUI } from '../../../utils/dateFormatUI';
 import { getMonthRange } from '../../../utils/date';
-import { Trash, SquarePen, ChevronLeft, ChevronRight } from 'lucide-react-native';
+import { Trash, SquarePen } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { transactionService } from '../../../services/src/services/transactions.service';
 import { SelectMonthScreen } from './SelectMonthScreen';
+import { installmentsService } from '../../../services/src/services/installments.service';
+import { formatCurrency } from '../../../utils/currency';
 
 type TransactionsScreenType = {
   refreshTrigger?: number;
@@ -50,15 +52,17 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
   };
 
   const deleteItem = async (id: string) => {
-    const {error} = await transactionService.delete(id)
-    if (error) console.error(error)
+    await installmentsService.resetByPaidTransactionId(id);
+    
+    const { error } = await transactionService.delete(id);
+    if (error) console.error(error);
     crud(true);
-  }
+}
   
   return (
     <>
     {/* SELECCION DE MES */}
-      <SelectMonthScreen selected={restoreSelecetMonth}/>
+      <SelectMonthScreen credit={false} selected={restoreSelecetMonth}/>
       <View style={{ backgroundColor: '#D9E7CB', height: '80%', borderRadius: 10, padding: 4, flex: 1, elevation: 5, marginBottom: 10}}>
 
         {/* <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/> */}
@@ -82,7 +86,7 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
                 }}
               >
               <Text style={{ fontSize: 14, flex: 3, marginLeft: 12 }}>{item.description}</Text>
-              <Text style={{ fontSize: 14, flex: 2, textAlign: 'right', marginHorizontal: 4 }}>{item.amount}</Text>
+              <Text style={{ fontSize: 14, flex: 2, textAlign: 'right', marginHorizontal: 4 }}>{formatCurrency(item.amount)}</Text>
               <Text style={{ fontSize: 12, fontWeight: 'bold', flex: 0.7, textAlign: 'right', marginHorizontal: 4, width: 10 }}>{formatDateForUI(item.transaction_date)}</Text>
               <TouchableOpacity style={{ marginLeft: 4, }}>
                 <SquarePen size={16} />
@@ -97,7 +101,7 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
           {/* TOTAL BALANCE */}
           <View style={{ height: 55, width: '45%', alignSelf: 'flex-end', justifyContent: 'space-between', backgroundColor: '#93B771', borderRadius: 10, padding: 4, position: 'absolute', bottom: 8, right: 8, zIndex: 2, elevation: 3}}>
             <Text style={{ fontSize: 16, alignSelf: 'center' }}>Total disponible:</Text>
-            <Text style={{ fontSize: 20, alignSelf: 'center', fontWeight: 'bold' }}>${balance}</Text>
+            <Text style={{ fontSize: 20, alignSelf: 'center', fontWeight: 'bold' }}>{formatCurrency(balance)}</Text>
           </View>
       </View>
     </>

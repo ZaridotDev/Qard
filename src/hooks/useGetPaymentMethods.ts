@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { paymentMethodsService } from '../services/src/services/paymentMethods.service';
 
 export function useGetPaymentMethods(
-  refreshTrigger: number = 0
+  refreshTrigger: number
 ) {
   const [paymentMethods, setPaymentMethods] = useState<any[]>([]);
+  const [MethodsWithInstallments, setMethodsWithInstallments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +21,16 @@ export function useGetPaymentMethods(
       }
       setLoading(false);
     });
+    paymentMethodsService.getPaymentMethodsWithInstallments().then(({ data, error }) => {
+      console.log('data:', JSON.stringify(data, null, 2));
+      if (error) {
+        setError(error.message);
+      } else {
+        setMethodsWithInstallments(data ?? []);
+      }
+      setLoading(false);
+    });
   }, [refreshTrigger]);
 
-  return { paymentMethods, loading, error };
+  return { paymentMethods, MethodsWithInstallments, loading, error };
 }

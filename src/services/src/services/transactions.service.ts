@@ -6,6 +6,7 @@ export type TransactionInsert = {
   description?: string;
   transaction_date?: string;
   category_id?: string;
+  payment_method_id?: string; 
 };
 export const transactionService = {
   async getByMonth(start: string, end: string) {

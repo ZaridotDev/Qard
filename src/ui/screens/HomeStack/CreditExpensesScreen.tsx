@@ -1,45 +1,155 @@
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useMonthlyTransactions } from '../../../hooks/useMonthlyTransactions';
-import { formatDateForUI } from '../../../utils/dateFormatUI';
-import { getMonthRange } from '../../../utils/date';
 import { Trash, SquarePen, Square, SquareCheckBig } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useMonthlyInstallments } from '../../../hooks/useMonthlyInstallments';
+import { formatCurrency } from '../../../utils/currency';
 import { transactionService } from '../../../services/src/services/transactions.service';
+import { installmentsService } from '../../../services/src/services/installments.service';
+import Toast from 'react-native-toast-message';
+import { useFocusEffect } from '@react-navigation/native';
 
 type CreditExpensesScreenType = {
-  refreshTrigger?: number;
   crud: (crud: boolean) => void;
+  title: string;
+  id: string;
+  selectMonth: string[];
 }
 
-export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpensesScreenType) {
-  const { startCurrentMonth, endCurrentMonth } = getMonthRange(new Date());
-  const [selectMonth, setSelectMonth] = useState<string[]>([startCurrentMonth, endCurrentMonth]);
-  const [ paid, setPaid ] = useState(false);
+export function CreditExpensesScreen({ crud, title, id, selectMonth}: CreditExpensesScreenType) {
+  const [localRefresh, setLocalRefresh] = useState(0);
+  const { installments, loading } = useMonthlyInstallments(id, selectMonth[0], selectMonth[1], localRefresh);
+  const [selected, setSelected] = useState<Record<string, boolean>>({});
+  const [ totalAmount, setTotalAmount ] = useState(0)
 
+  const hasSelected = installments.some(i => selected[i.id] && !i.is_paid);
 
-  const { transactions, loading, error } = useMonthlyTransactions(
-    selectMonth[0],
-    selectMonth[1],
-    refreshTrigger
-  );
-  
-  if (error) return <Text>Error: {error}</Text>;
-
-  // if (loading) return <Text>Loading...</Text>;
-
-  const restoreSelecetMonth = (selected: string[]) => {
-    setSelectMonth(selected);
-  }
-
-  const getTransactionType = (string: string) => {
-    return string === 'income' ;
+  const toggleItem = (itemId: string) => {
+    const installment = installments.find(i => i.id === itemId);
+    if (installment?.is_paid) return; 
+    setSelected(prev => ({ ...prev, [itemId]: !prev[itemId] }));
   };
 
-  const deleteItem = async (id: string) => {
-    const {error} = await transactionService.delete(id)
-    if (error) console.error(error)
-    crud(true);
-  }
+  const allSelected = installments.length > 0 && installments.every(i => selected[i.id]);
+
+  const handlePaySingle = async (installment: any, skipRefresh = false) => {
+    if (installment.is_paid) return;
+    toggleItem(installment.id); 
+    const today = new Date().toISOString().split('T')[0];
+    try {
+        const { data: transaction, error } = await transactionService.insert({
+            type: 'expense',
+            amount: parseFloat(installment.amount),
+            description: `${installment.description} ${installment.installment_number}/${installment.total_installments}`,
+            transaction_date: today,
+            payment_method_id: id,
+        });
+        if (error) throw error;
+        await installmentsService.markAsPaid(installment.id, transaction.id);
+        if (!skipRefresh) { // ← solo refresca si no viene del loop
+          Toast.show({ type: 'success', text1: 'Cuota pagada correctamente' });
+          setLocalRefresh(t => t + 1);
+        }
+    } catch (error) {
+        Toast.show({ type: 'error', text1: 'Error al registrar el pago' });
+        console.error(error);
+    }
+};
+
+  const handlePayAll = async () => {
+    const today = new Date().toISOString().split('T')[0];
+    if (installments.length === 0 || installments.every(i => i.is_paid)) {
+      Toast.show({ type: 'info', text1: 'No hay cuotas que pagar en esta tarjeta' });
+      return;
+    }
+    try {
+      if (hasSelected) {
+        const selectedInstallments = installments.filter(i => selected[i.id] && !i.is_paid);
+        const total = selectedInstallments.reduce((acc, i) => acc + parseFloat(i.amount), 0);
+        const { data: transaction, error } = await transactionService.insert({
+            type: 'expense',
+            amount: total,
+            description: `Pagos seleccionados ${title}`,
+            transaction_date: today,
+            payment_method_id: id,
+        });
+        if (error) throw error;
+        await installmentsService.markManyAsPaid(selectedInstallments.map(i => i.id), transaction.id);
+        Toast.show({ type: 'success', text1: 'Pagos seleccionados registrados' });
+        setSelected({});
+        setLocalRefresh(t => t + 1);
+    } else {
+      const unpaid = installments.filter(i => !i.is_paid);
+      const hasSomePaid = installments.some(i => i.is_paid); // ← detecta si hay alguno pagado
+      const total = unpaid.reduce((acc, i) => acc + parseFloat(i.amount), 0);
+      const { data: transaction, error } = await transactionService.insert({
+          type: 'expense',
+          amount: total,
+          description: hasSomePaid ? `Pagos restantes ${title}` : `Pago completo ${title}`, // ← cambia según el caso
+          transaction_date: today,
+          payment_method_id: id,
+      });
+      if (error) throw error;
+      await installmentsService.markManyAsPaid(unpaid.map(i => i.id), transaction.id);
+      Toast.show({ type: 'success', text1: hasSomePaid ? 'Pagos restantes registrados' : 'Pago completo registrado' });
+      setLocalRefresh(t => t + 1);
+    }
+    } catch (error) {
+        Toast.show({ type: 'error', text1: 'Error al registrar el pago' });
+        console.error(error);
+    }
+  };
+
+  const handleDelete = async (item: any) => {
+    // Traer TODAS las cuotas de esa compra sin filtro de fecha
+    const { data: allInstallments, error } = await installmentsService.getByDescriptionAndPaymentMethod(
+        item.description, 
+        item.payment_method_id
+    );
+
+    if (error || !allInstallments) return;
+
+    const hasPaid = allInstallments.some(i => i.is_paid);
+
+    if (hasPaid) {
+        Toast.show({ 
+            type: 'error', 
+            text1: 'No podés eliminar esta compra',
+            text2: 'Tenes cuotas ya pagadas.',
+            visibilityTime: 5000
+        });
+        return;
+    }
+
+    const ids = allInstallments.map(i => i.id);
+    console.log('ids a eliminar:', ids);
+    const { error: deleteError } = await installmentsService.deleteMany(ids);
+    console.log('deleteError:', JSON.stringify(deleteError));
+    Toast.show({ type: 'success', text1: 'Compra eliminada correctamente' });
+    setLocalRefresh(t => t + 1);
+  };
+
+  useEffect(() => {
+    let total = 0;
+    for (let i = 0; i < installments.length; i++) {
+      if (!installments[i].is_paid) {
+        total += parseFloat(installments[i].amount);
+      }
+    }
+    setTotalAmount(total)
+
+    const initialSelected: Record<string, boolean> = {};
+    installments.forEach(i => {
+        if (i.is_paid) initialSelected[i.id] = true;
+    });
+    setSelected(initialSelected);
+
+  }, [installments]);
+
+  useFocusEffect(
+    useCallback(() => {
+        setLocalRefresh(t => t + 1);
+    }, [])
+  );
   
   return (
     // Container General
@@ -54,10 +164,10 @@ export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpense
       {/* Titulos */}
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={{ backgroundColor: '#D9E7CB', borderTopStartRadius: 10, borderTopEndRadius: 10, padding: 4, width: 100}}>
-          <Text style={{fontSize: 24, textAlign: 'center'}}>AMEX</Text>
+          <Text style={{fontSize: 18, textAlign: 'center'}}>{title}</Text>
         </View>
         <View style={{ backgroundColor: '#D9E7CB', borderTopStartRadius: 10, borderTopEndRadius: 10, padding: 4, width: 150, alignSelf: 'flex-end'}}>
-          <Text style={{fontSize: 24, textAlign: 'center'}}>$0.000.000</Text>
+          <Text style={{fontSize: 18, textAlign: 'center'}}>{formatCurrency(totalAmount)}</Text>
         </View>
       </View>
       {/* Titulos */}
@@ -73,12 +183,12 @@ export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpense
       <View style={{ backgroundColor: '#D9E7CB', minHeight: 100, borderBottomStartRadius: 10, padding: 4}}>
 
         {/* <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/> */}
-        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 75, width: 2, zIndex: 1}}/>
-        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 170, width: 2, zIndex: 1}}/>
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/>
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 150, width: 2, zIndex: 1}}/>
 
-          {/* TRANSACTIONS */}
+          {/* INSTALLMENTS */}
           <FlatList
-          data={transactions}
+          data={installments}
           // contentContainerStyle={{ paddingBottom: 60 }}
           scrollEnabled={false}
           keyExtractor={(item) => item.id}
@@ -90,23 +200,20 @@ export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpense
                   borderRadius: 8,
                   height: 35,
                   alignItems: 'center',
-                  backgroundColor: getTransactionType(item.type) ? '#BAD3A2' : '#E7B8B8', 
+                  backgroundColor: '#BAD3A2', 
                 }}
               >
               <View style={{ flex: 3, marginLeft: 12, flexDirection: 'row', }}>
                 <Text style={{ fontSize: 14 }}>{item.description}</Text>
-                <Text style={{ fontSize: 12, fontWeight: 'bold', textAlign: 'right', marginHorizontal: 4}}>{/* Cuotas */} 1/6</Text>
+                <Text style={{ fontSize: 12, fontWeight: 'bold', textAlign: 'right', marginHorizontal: 4, top: 3}}>{`${item.installment_number}/${item.total_installments}`}</Text>
               </View>
-              <Text style={{ fontSize: 14, flex: 2, textAlign: 'right', marginHorizontal: 4 }}>{item.amount}</Text>
+              <Text style={{ fontSize: 12, flex: 2, textAlign: 'right', marginHorizontal: 4 }}>{formatCurrency(item.amount)}</Text>
 
-              <TouchableOpacity style={{ marginLeft: 4, }}>
-                <SquarePen size={16} />
-              </TouchableOpacity>
-              <TouchableOpacity style={{ marginLeft: 4, }} onPress={() => deleteItem(item.id)}>
+              <TouchableOpacity style={{ marginLeft: 4, }} onPress={() => handleDelete(item)}>
                 <Trash size={16} />
               </TouchableOpacity>
-              <TouchableOpacity style={{ marginHorizontal: 8, }} onPress={() => setPaid(true)}>
-                {!paid 
+              <TouchableOpacity style={{ marginHorizontal: 8, }} onPress={() => handlePaySingle(item)}>
+                {!selected[item.id] 
                 ? <Square size={16} />
                 : <SquareCheckBig size={16} />
                 }
@@ -116,10 +223,12 @@ export function CreditExpensesScreen({ refreshTrigger = 0, crud }: CreditExpense
           /> 
       </View>
       {/* Card de egresos */}
+
+
       <View style={{ backgroundColor: '#D9E7CB', width: 110, borderBottomStartRadius: 10, borderBottomEndRadius: 10, padding: 8, alignSelf: 'flex-end', alignItems: 'center', flexDirection: 'row'}}>
         <Text style={{ fontSize: 12, textAlign: 'right', marginHorizontal: 4 }}>Pagar total: </Text>    
-        <TouchableOpacity  onPress={() => setPaid(true)}>
-          {!paid 
+        <TouchableOpacity onPress={handlePayAll}>
+          {!allSelected 
           ? <Square size={18} />
           : <SquareCheckBig size={18} />
           }

@@ -19,4 +19,21 @@ export const  paymentMethodsService = {
   async insertPaymentMethod(data: paymentMethodsType) {
     return supabase.from('payment_methods').insert(data).select();
   },
+  async getPaymentMethodsWithInstallments() {
+    return supabase
+        .from('payment_methods')
+        .select(`
+            *,
+            installments!inner (
+                id,
+                installment_number,
+                total_installments,
+                amount,
+                due_date,
+                is_paid,
+                description
+            )
+        `)
+        .order('created_at', { ascending: false })
+}
 };  
