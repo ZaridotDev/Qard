@@ -6,6 +6,7 @@ import { X } from "lucide-react-native";
 import { formatCurrency } from "../../../utils/currency";
 import { recurrentEgressType, recurrentEgressService } from "../../../services/src/services/recurrentEgress.service";
 import { Selector } from "../Selector";
+import Toast from "react-native-toast-message";
 
 type ModalRecurerentEgressType = {
     visible: boolean;
@@ -42,23 +43,36 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
 
                 if (error) throw error;
                 
+                Toast.show({
+                    type: 'success',
+                    text1: 'Creaado nuevo Egreso Recurrente',
+                })
                 onClose(false, true);
                 setAmount(0);
                 setDisplayAmount('');
                 setDescription('');
                 return;
-            } catch (error) {
-                console.error('Error creando transaction', error);
+            } catch (error) {            
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error creando transaction',
+                    text2: (error as Error).message.toString()
+                })
                 onClose(false); // cierra igual para que el usuario pueda reintentar
             }
-        } else if (amount < 0) {
-            console.log("ingresa un monto mayor a 0")
+        } else if (amount < 0) {            
+            Toast.show({
+                type: 'info',
+                text1: 'ingresa un monto mayor a 0',
+            })
             return;
         } else if (description === '') {
-            console.log("ingresa una descripcion a tu ingreso")
+            Toast.show({
+                type: 'info',
+                text1: 'ingresa una descripcion a tu ingreso',
+            })
             return;
         }
-        console.log("ingresa un monto mayor a 0")
     }
 
     const restoreCategory = (id: string) => {

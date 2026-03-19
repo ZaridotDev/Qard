@@ -5,11 +5,12 @@ type DebitItemType = {
     text: string;
     amount: string;
     onPress?: () => void;
+    onDelete?: () => void;
     quantity?: number;
     woBtns?: boolean;
 }
 
-export function DebitItem ({text, amount, onPress, quantity, woBtns}: DebitItemType) {
+export function DebitItem ({text, amount, onPress, onDelete,quantity, woBtns}: DebitItemType) {
 
     return (
         <TouchableOpacity
@@ -33,10 +34,10 @@ export function DebitItem ({text, amount, onPress, quantity, woBtns}: DebitItemT
                 </View>
                 { !woBtns
                 ? <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity style={{ paddingVertical: 4, paddingHorizontal: 4 }}>
+                    {/* <TouchableOpacity style={{ paddingVertical: 4, paddingHorizontal: 4 }}>
                         <SquarePen size={22} color={'white'} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ paddingVertical: 4, paddingRight: 8 }} onPress={() => console.log('borrar budget')}>
+                    </TouchableOpacity> */}
+                    <TouchableOpacity style={{ paddingVertical: 4, paddingRight: 8 }} onPress={onDelete}>
                         <Trash size={22} color={'white'} />
                     </TouchableOpacity>
                 </View>

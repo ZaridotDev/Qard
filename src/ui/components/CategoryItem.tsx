@@ -51,7 +51,6 @@ export function CategoryItem ({text, transactions}: CategoryItemType) {
                                 amount={formatCurrency(item.amount)}
                                 date={formatDateForUI(item.transaction_date)} 
                                 onPress={() => {
-                                    console.log(item)
                                     navigation.navigate('Details', {
                                     transactionName: item.description,
                                     transactionAmount: item.amount,

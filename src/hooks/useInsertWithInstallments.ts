@@ -12,7 +12,6 @@ export function useInsertWithInstallments() {
             const result = await installmentsService.insertWithInstallments(data);
             return result;
         } catch (err) {
-            console.log('Error detallado:', JSON.stringify(err))
             setError((err as Error).message);
             throw err;
         } finally {

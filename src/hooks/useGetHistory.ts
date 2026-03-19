@@ -12,7 +12,6 @@ export function useGetHistory(
     setLoading(true);
     setError(null);
     shoppingItemsService.getBudgetTransaction().then(({ data, error }) => {
-      console.log('data:', JSON.stringify(data, null, 2));
       if (error) {
         setError(error.message);
       } else {

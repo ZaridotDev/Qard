@@ -73,7 +73,6 @@ export function AddCardScreen () {
                         text2: (error as Error).message.toString(),
                         visibilityTime: 7000,
                     });
-                    console.error('Error creando tarjeta', error);
                 }
             } else {
                 Toast.show({

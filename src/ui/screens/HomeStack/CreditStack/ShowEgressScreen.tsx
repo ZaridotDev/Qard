@@ -36,7 +36,6 @@ export function ShowEgressScreen () {
 
     const {paymentMethods} = useGetPaymentMethods(refreshTrigger)
 
-    // console.log(selectMonth, 'hola');
     return (
         <View style={{flex: 1, backgroundColor: '#F3F7EE'}}>
             <BackButton onClick={goHome}/>

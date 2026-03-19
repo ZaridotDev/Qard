@@ -5,8 +5,10 @@ import { Platform, SafeAreaView, StatusBar } from 'react-native';
 import { useEffect } from 'react';
 import * as NavigationBar from 'expo-navigation-bar';
 import Toast from 'react-native-toast-message';
+import { LogBox } from 'react-native';
 
 export default function App() {
+  LogBox.ignoreAllLogs();
 
   useEffect(() => {
     if (Platform.OS === 'android') {

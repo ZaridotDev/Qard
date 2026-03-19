@@ -12,11 +12,11 @@ export function HistoryItem ({text, amount, onPress, date}: HistoryItemType) {
 
     return (
         <TouchableOpacity
-            style={{width: '90%',  minHeight: 40, height: 'auto', marginVertical: 4, alignSelf: 'center', }}
+            style={{width: '90%',  minHeight: 40, height: 'auto', marginVertical: 4, alignSelf: 'center'}}
             onPress={onPress}
             activeOpacity={ onPress ? 0.9 : 1 }
         >
-            <View style={{flex: 1, flexDirection: 'row', backgroundColor: "#93B771", alignItems: 'center', justifyContent: 'space-between', borderRadius: 10, elevation: 5, paddingLeft: 8}}>
+            <View style={{flex: 1, flexDirection: 'row', backgroundColor: "#93B771", alignItems: 'center', justifyContent: 'space-between', borderRadius: 10, elevation: 5, paddingHorizontal: 8}}>
                 <View style={{ paddingHorizontal: 4, flex: 6}}>
                     <Text style={{ fontSize: 18, color: 'white', }}>{text}</Text>
                 </View>
@@ -28,9 +28,9 @@ export function HistoryItem ({text, amount, onPress, date}: HistoryItemType) {
                     <Text style={{ fontSize: 18, textAlign: 'right', color: 'white'}}>{date}</Text>
                 </View>
 
-                <TouchableOpacity style={{ paddingVertical: 4, paddingHorizontal: 8 }} onPress={() => console.log('borrar budget')}>
+                {/* <TouchableOpacity style={{ paddingVertical: 4, paddingHorizontal: 8 }} onPress={() => console.log('borrar budget')}>
                     <Trash size={22} color={'white'} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </TouchableOpacity>
     )

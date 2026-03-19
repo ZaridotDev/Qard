@@ -12,7 +12,7 @@ export function HistoryDetailsScreen () {
     const navigation = useNavigation<StackNavigationProp<HistoryStackParams>>();
     const route = useRoute<DetailsRouteProp>();
     const { shoppingItems, transactionName, transactionAmount, transactionDate} = route.params;
-    // console.log(route.params)
+
     return (
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
             <BackButton onClick={() => navigation.navigate('History')}/>

@@ -12,8 +12,6 @@ export function useRecurringTransactions(
     setLoading(true);
     setError(null);
     recurrentEgressService.getrRecurringTransactions().then(({ data, error }) => {
-      console.log('data:', data)
-      console.log('error:', error)
       if (error) {
         setError(error.message);
       } else {

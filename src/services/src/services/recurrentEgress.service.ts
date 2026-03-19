@@ -23,4 +23,7 @@ export const recurrentEgressService = {
   async insertRecurringTransaction(data: recurrentEgressType) {
     return supabase.from('recurring_transactions').insert(data).select();
   },
+  async deleteRecurringTransaction(id: string) {
+    return supabase.from('recurring_transactions').delete().eq('id', id);
+}
 };  

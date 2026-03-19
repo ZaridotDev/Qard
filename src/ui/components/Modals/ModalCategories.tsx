@@ -3,6 +3,7 @@ import { budgetingService } from "../../../services/src/services/budgeting.servi
 import { useState } from "react";
 import { X } from "lucide-react-native";
 import { formatCurrency } from "../../../utils/currency";
+import Toast from "react-native-toast-message";
 
 type ModalCategoriesType = {
     visible: boolean;
@@ -40,14 +41,21 @@ export function ModalCategories ({visible, onClose}: ModalCategoriesType) {
                 if (budgetError) throw budgetError;
             }
         
+            Toast.show({
+                type: 'success',
+                text1: 'Categoria creada con éxito'
+            });
             onClose(false, true);
             setDescription('');
             setAmount(0);
             setDisplayAmount('');
         
             } catch (error) {
-            console.error('Error creando categoria', error);
-            onClose(false);
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error creando categoria'
+                });
+                onClose(false);
             }
         }
 

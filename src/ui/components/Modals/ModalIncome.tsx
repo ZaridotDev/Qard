@@ -4,6 +4,7 @@ import { getMonthRange } from "../../../utils/date";
 import { useState } from "react";
 import { X } from "lucide-react-native";
 import { formatCurrency } from "../../../utils/currency";
+import Toast from "react-native-toast-message";
 
 type ModalIncomeType = {
     visible: boolean;
@@ -29,30 +30,47 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
         if  ( teton > 0 && description != '') {
             try {
                 const {today: piton} = getMonthRange(new Date());
-                const transaction = await transactionService.insert({
+                await transactionService.insert({
                     type: 'income',
-                    amount: teton, // traido del input del 2do text  input
-                    description: description, // traido del inut del 1er text input
+                    amount: teton, 
+                    description: description, 
                     transaction_date: piton, 
                 });
                 
-                onClose(false); // cerrado y guardado → padre puede refrescar
+                Toast.show({
+                    type: 'success',
+                    text1: 'Ingreso creado con éxito'
+                })
+                onClose(false); 
                 setTeton(0);
                 setDisplayAmount('');
                 setDescription('');
                 return;
             } catch (error) {
-                console.error('Error creando transaction', error);
-                onClose(false); // cierra igual para que el usuario pueda reintentar
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error creando transaction',
+                    text2: (error as Error).message.toString()
+                })
+                onClose(false);
             }
         } else if (teton < 0) {
-            console.log("ingresa un monto mayor a 0")
+            Toast.show({
+                type: 'error',
+                text1: 'ingresa un monto mayor a 0"'
+            })
             return;
         } else if (description === '') {
-            console.log("ingresa una descripcion a tu ingreso")
+            Toast.show({
+                type: 'error',
+                text1: 'ingresa una descripcion a tu ingreso"'
+            })
             return;
         }
-        console.log("ingresa un monto mayor a 0")
+        Toast.show({
+            type: 'error',
+            text1: 'ingresa un monto mayor a 0"'
+        })
     }
 
     return (

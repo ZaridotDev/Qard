@@ -1,5 +1,24 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0",
+            "extraMavenRepos": [],
+            "resolutionStrategies": {
+              "force": [
+                "androidx.core:core-ktx:1.15.0",
+                "androidx.core:core:1.15.0"
+              ]
+            }
+          }
+        }
+      ]
+    ],
     "name": "Qard",
     "slug": "Qard",
     "version": "1.0.0",
@@ -16,14 +35,22 @@
       "supportsTablet": true
     },
     "android": {
+      "compileSdkVersion": 35,
+      "buildToolsVersion": "35.0.0",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.goneza.Qard"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ee7ffd36-e032-459a-a4a2-04d61840d6af"
+      }
     }
   }
 }

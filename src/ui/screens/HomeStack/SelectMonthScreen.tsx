@@ -12,11 +12,9 @@ type SelectMonthScreenType = {
 export function SelectMonthScreen ({selected, credit}: SelectMonthScreenType) {
     const today = new Date();
     const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    console.log(nextMonth, 'esta es la que va'); // Fecha del 1º del mes siguiente
 
     const { startCurrentMonth, endCurrentMonth } = getMonthRange(credit ? nextMonth : new Date());
     const [selectMonth, setSelectMonth] = useState([startCurrentMonth, endCurrentMonth]);
-    console.log(selectMonth)
 
     const dateSelected = parseLocalDate(selectMonth[0]);
 

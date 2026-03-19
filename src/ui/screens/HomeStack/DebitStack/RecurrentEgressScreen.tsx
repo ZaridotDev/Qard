@@ -8,6 +8,8 @@ import { ModalRecurerentEgress } from "../../../components/Modals/ModalRecurrent
 import { transactionService } from "../../../../services/src/services/transactions.service";
 import { getMonthRange } from "../../../../utils/date";
 import { useRecurringTransactions } from "../../../../hooks/useRecurringTransactions";
+import { recurrentEgressService } from "../../../../services/src/services/recurrentEgress.service";
+import Toast from "react-native-toast-message";
 
 export function RecurrentEgressScreen () {
     const [visible, setVisible] = useState(false);
@@ -21,6 +23,16 @@ export function RecurrentEgressScreen () {
             })
         );
     };
+
+    const deleteReccurent = async (id: string) => {
+        const { error } = await recurrentEgressService.deleteRecurringTransaction(id);
+        if (error) {
+            Toast.show({ type: 'error', text1: 'Error al eliminar' });
+            return;
+        }
+        Toast.show({ type: 'success', text1: 'Eliminado correctamente' });
+        setRefreshTrigger(t => t + 1);
+    }
 
     const { reccurents, loading, error } = useRecurringTransactions(
         refreshTrigger
@@ -43,7 +55,11 @@ export function RecurrentEgressScreen () {
 
             return;
         } catch (error) {
-            console.error('Error creando transaction', error);
+            Toast.show({
+                type: 'info',
+                text1: 'Error creando transaction',
+                text2: (error as Error).message.toString()
+            })
         }
     }
     
@@ -71,10 +87,8 @@ export function RecurrentEgressScreen () {
                     <DebitItem 
                         text={item.description} 
                         amount={item.amount} 
-                        onPress={() => {
-                            // console.log(item)
-                            createExpense(item.amount, item.description)
-                        }}
+                        onPress={() => createExpense(item.amount, item.description)}
+                        onDelete={() => deleteReccurent(item.id)}
                     />}
                 keyExtractor={(item) => item.id}
                 />

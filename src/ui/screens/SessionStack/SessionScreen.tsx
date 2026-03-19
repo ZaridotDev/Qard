@@ -5,6 +5,7 @@ import { AuthScreen } from "./AuthScreen";
 import { authService } from "../../../services/auth.service";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 import { DrawerButon } from "../../components/DrawerButon";
+import { ButtonStack } from "../../components/ButtonStack";
 
 export function SessionScreen () {
     
@@ -22,13 +23,19 @@ export function SessionScreen () {
   
   
     return (
-        <View>
+        <View
+          style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+          }}
+        >
           <DrawerButon />
           <Text>Logueado como:</Text>
-          <Text>{user?.email} en {env}</Text>
+          <Text>{user?.email}</Text>
 
-          <Button
-            title="Logout"
+          <ButtonStack
+            text="Logout"
             onPress={() => authService.signOut()}
           />
         </View>

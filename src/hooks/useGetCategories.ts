@@ -12,7 +12,6 @@ export function useGetCategories(
     setLoading(true);
     setError(null);
     budgetingService.getCatergories().then(({ data, error }) => {
-      console.log('data:', JSON.stringify(data, null, 2));
       if (error) {
         setError(error.message);
       } else {

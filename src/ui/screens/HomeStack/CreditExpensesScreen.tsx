@@ -51,7 +51,6 @@ export function CreditExpensesScreen({ crud, title, id, selectMonth}: CreditExpe
         }
     } catch (error) {
         Toast.show({ type: 'error', text1: 'Error al registrar el pago' });
-        console.error(error);
     }
 };
 
@@ -95,7 +94,6 @@ export function CreditExpensesScreen({ crud, title, id, selectMonth}: CreditExpe
     }
     } catch (error) {
         Toast.show({ type: 'error', text1: 'Error al registrar el pago' });
-        console.error(error);
     }
   };
 
@@ -121,9 +119,7 @@ export function CreditExpensesScreen({ crud, title, id, selectMonth}: CreditExpe
     }
 
     const ids = allInstallments.map(i => i.id);
-    console.log('ids a eliminar:', ids);
     const { error: deleteError } = await installmentsService.deleteMany(ids);
-    console.log('deleteError:', JSON.stringify(deleteError));
     Toast.show({ type: 'success', text1: 'Compra eliminada correctamente' });
     setLocalRefresh(t => t + 1);
   };

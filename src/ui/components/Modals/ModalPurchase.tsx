@@ -9,6 +9,7 @@ import { WalletsStackParams } from "../../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
 import { budgetingService } from "../../../services/src/services/budgeting.service";
 import { shoppingItemsService } from "../../../services/src/services/shoppintItems.service";
+import Toast from "react-native-toast-message";
 
 type ModalPurchaseType = {
     visible: boolean;
@@ -53,29 +54,49 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
                     
                     if (shoppingItemsError) throw shoppingItemsError;
                 }
-
+                
+                Toast.show({
+                    type: 'success',
+                    text1: 'Compra realizada',
+                })
             } catch (error) {
-                console.error('Error creando transaction', error);
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error creando transaction',
+                    text2: (error as Error).message.toString()
+                })
                 onClose(false);
             }
-
+            
             if (idBudget != '') {
                 try {
                     const {error: fetchError, data: currentBudget} = await budgetingService.getBudget(idBudget)
                     
                     if (fetchError) {
-                        console.error('Error obteniendo budget:', fetchError.message);
+                        Toast.show({
+                            type: 'error',
+                            text1: 'Error obteniendo budget',
+                            text2: (fetchError as Error).message.toString()
+                        })
                         return;
                     }
-
+                    
                     const newAmount = currentBudget.amount - totalAmount;
                     
                     const {error: updateError} = await budgetingService.updateBudget(idBudget, newAmount)
                     
                     if (updateError) {
-                        console.error('Error actualizando budget:', updateError.message);
+                        Toast.show({
+                            type: 'error',
+                            text1: 'Error actualizando budget',
+                            text2: (updateError as Error).message.toString()
+                        })
                     } else {
-                        console.log('Budget actualizado con éxito, nuevo monto:', newAmount );
+                        Toast.show({
+                            type: 'success',
+                            text1: 'Budget actualizado con éxito, nuevo monto',
+                            text2: newAmount.toString()                        
+                        })
                     }
                     
                     onClose(false);
@@ -83,7 +104,11 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
                     navigation.navigate('Wallets')
                     return;
                 } catch (error) {
-                    console.error('Error en la compra', error);
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Error en la compra',
+                        text2: (error as Error).message.toString()
+                    })
                     onClose(false);
                 }
             } else {
@@ -92,7 +117,13 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
                 navigation.navigate('Wallets')
                 return;
             }
-        } else console.log("ingresa un nombre a la compra para guardarla")
+        } else {
+            Toast.show({
+                type: 'info',
+                text1: 'ingresa un nombre a la compra para guardarla',
+            })
+            
+        }
     }
 
     return (

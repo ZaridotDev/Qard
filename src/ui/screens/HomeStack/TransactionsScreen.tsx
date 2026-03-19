@@ -8,6 +8,7 @@ import { transactionService } from '../../../services/src/services/transactions.
 import { SelectMonthScreen } from './SelectMonthScreen';
 import { installmentsService } from '../../../services/src/services/installments.service';
 import { formatCurrency } from '../../../utils/currency';
+import Toast from 'react-native-toast-message';
 
 type TransactionsScreenType = {
   refreshTrigger?: number;
@@ -55,7 +56,12 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
     await installmentsService.resetByPaidTransactionId(id);
     
     const { error } = await transactionService.delete(id);
-    if (error) console.error(error);
+    if (error) {
+    Toast.show({
+      type: 'info',
+      text1: 'Error borrando la transaction',
+      text2: 'Intente de nuevo mas tarde',
+    })}
     crud(true);
 }
   
@@ -66,8 +72,8 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
       <View style={{ backgroundColor: '#D9E7CB', height: '80%', borderRadius: 10, padding: 4, flex: 1, elevation: 5, marginBottom: 10}}>
 
         {/* <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/> */}
-        <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 93, width: 2, zIndex: 1}}/>
-        <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 200, width: 2, zIndex: 1}}/>
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 72, width: 2, zIndex: 1}}/>
+        <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 180, width: 2, zIndex: 1}}/>
 
           {/* TRANSACTIONS */}
           <FlatList
@@ -88,9 +94,9 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
               <Text style={{ fontSize: 14, flex: 3, marginLeft: 12 }}>{item.description}</Text>
               <Text style={{ fontSize: 14, flex: 2, textAlign: 'right', marginHorizontal: 4 }}>{formatCurrency(item.amount)}</Text>
               <Text style={{ fontSize: 12, fontWeight: 'bold', flex: 0.7, textAlign: 'right', marginHorizontal: 4, width: 10 }}>{formatDateForUI(item.transaction_date)}</Text>
-              <TouchableOpacity style={{ marginLeft: 4, }}>
+              {/* <TouchableOpacity style={{ marginLeft: 4, }}>
                 <SquarePen size={16} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity style={{ marginHorizontal: 8, }} onPress={() => deleteItem(item.id)}>
                 <Trash size={16} />
               </TouchableOpacity>

@@ -13,7 +13,6 @@ export function useGetPaymentMethods(
     setLoading(true);
     setError(null);
     paymentMethodsService.getPaymentMethods().then(({ data, error }) => {
-      console.log('data:', JSON.stringify(data, null, 2));
       if (error) {
         setError(error.message);
       } else {
@@ -22,7 +21,6 @@ export function useGetPaymentMethods(
       setLoading(false);
     });
     paymentMethodsService.getPaymentMethodsWithInstallments().then(({ data, error }) => {
-      console.log('data:', JSON.stringify(data, null, 2));
       if (error) {
         setError(error.message);
       } else {

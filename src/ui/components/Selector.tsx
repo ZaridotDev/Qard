@@ -17,15 +17,10 @@ export function Selector ({ title, placeholder, center, fs, cards, idCategory, i
     const [visible, setVisible] = useState(false);
     const [selected, setSelected] = useState(placeholder);
 
-    // useEffect (() => {
-    //     setSelected(placeholder);
-    //     console.log(selected)
-    // }, [selected])
 
 
     const handleCloseModal = (closed: boolean, item) => {
         setVisible(false);
-        console.log(item)
         if (idCategory) {
             item ? idCategory(item.id) : '';
             setSelected(item ? item.name : placeholder);
@@ -53,7 +48,8 @@ export function Selector ({ title, placeholder, center, fs, cards, idCategory, i
                     alignItems: 'center',
                     flexDirection: 'row',
                     paddingHorizontal: 8,
-                    paddingTop: 2
+                    paddingTop: 2,
+                    borderRadius: 10,
                 }}
             >
                 <Text style={{color: 'grey', fontSize: 18, bottom: 2}}>{selected}</Text>

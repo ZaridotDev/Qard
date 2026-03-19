@@ -1,15 +1,16 @@
-import { View } from "react-native";
+import { View, FlatList } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { DebitItem } from "../../../components/DebitItem";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 import { PlusButton } from "../../../components/PlusButton";
 import { useState } from "react";
 import { ModalCategories } from "../../../components/Modals/ModalCategories";
-import { FlatList } from "react-native-gesture-handler";
 import { useGetCategories } from "../../../../hooks/useGetCategories";
 import { formatCurrency } from "../../../../utils/currency";
 import { WalletsStackParams } from "../../../../types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Toast from "react-native-toast-message";
+import { budgetingService } from "../../../../services/src/services/budgeting.service";
 
 export function WalletScreen () {
     const [visible, setVisible] = useState(false);
@@ -33,6 +34,24 @@ export function WalletScreen () {
         setVisible(false);
         if (saved) setRefreshTrigger((t) => t + 1);
     };
+    
+    const deleteCategory = async (item: any) => {
+        // Si tiene budget lo borrás primero
+        if (item.budgets?.[0]?.id) {
+            const { error: budgetError } = await budgetingService.deleteBudget(item.budgets[0].id);
+            if (budgetError) {
+                Toast.show({ type: 'error', text1: 'Error al eliminar el presupuesto' });
+                return;
+            }
+        }
+        const { error } = await budgetingService.deleteCategory(item.id);
+        if (error) {
+            Toast.show({ type: 'error', text1: 'Error al eliminar la categoría' });
+            return;
+        }
+        Toast.show({ type: 'success', text1: 'Categoría eliminada correctamente' });
+        setRefreshTrigger(t => t + 1);
+    };
 
     return (
             <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
@@ -50,7 +69,11 @@ export function WalletScreen () {
                                 : ''
                             }                            
                             onPress={() => 
-                                navigation.navigate('Calculator', {category: item})}/>}
+                                navigation.navigate('Calculator', {category: item})
+                            }
+                            onDelete={() => deleteCategory(item)}
+                        />
+                    }
                     keyExtractor={(item) => item.id}
                     />
                 </View>

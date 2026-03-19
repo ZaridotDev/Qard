@@ -34,6 +34,10 @@ export function CalculateEgressScreen () {
         setShoppingItems((prev) => [...prev, item]);  
     };
 
+    const handleDeleteItem = (index: number) => {
+        setShoppingItems(prev => prev.filter((_, i) => i !== index));
+    };
+
     return (
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
 
@@ -60,11 +64,12 @@ export function CalculateEgressScreen () {
                 <View style={{height: 'auto',maxHeight: '75%'}}>
                     <FlatList 
                     data={shoppingItems} 
-                    renderItem={({ item }) => (
+                    renderItem={({ item, index }) => (
                         <DebitItem 
                             text={item.name}
                             amount={formatCurrency(item.price * item.quantity)}
                             quantity={item.quantity}
+                            onDelete={() => handleDeleteItem(index)}
                         />
                     )}
                     // keyExtractor={(item) => item.id}
