@@ -1,11 +1,13 @@
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { CommonActions, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { FlatList, Pressable, View } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { CategoryItem } from "../../../components/CategoryItem";
 import { DebitItem } from "../../../components/DebitItem";
 import { useGetHistory } from "../../../../hooks/useGetHistory";
+import { useCallback, useState } from "react";
 
 export function HistoryScreen () {
+    const [localRefresh, setLocalRefresh] = useState(0);
     const navigation = useNavigation();
     const goHome = () => {
         navigation.dispatch(
@@ -16,9 +18,14 @@ export function HistoryScreen () {
         );
     };
 
-    const { categories, loading, error } = useGetHistory();
+    const { categories, loading, error } = useGetHistory(localRefresh);
 
-
+    useFocusEffect(
+        useCallback(() => {
+            setLocalRefresh(t => t + 1);
+        }, [])
+    );
+    
     return (
         <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
             <BackButton onClick={goHome}/>
@@ -33,11 +40,7 @@ export function HistoryScreen () {
                     />}
                 keyExtractor={(item) => item.id}
             />
-            {/* <Pressable
-            onPress={() => console.log(categories[0].transactions[0].shopping_items)}>
-                <View style={{backgroundColor: 'red', width: 100, height: 100}}></View>
-            </Pressable> */}
-            </View>
+        </View>
     )
 }   
 

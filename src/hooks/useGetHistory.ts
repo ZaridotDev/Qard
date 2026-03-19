@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { shoppingItemsService } from '../services/src/services/shoppintItems.service';
 
-export function useGetHistory() {
+export function useGetHistory(
+  refreshTrigger: number = 0
+) {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +20,7 @@ export function useGetHistory() {
       }
       setLoading(false);
     });
-  }, []);
+  }, [refreshTrigger]);
 
   return { categories, loading, error };
 }

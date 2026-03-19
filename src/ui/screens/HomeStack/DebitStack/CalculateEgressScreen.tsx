@@ -91,7 +91,6 @@ export function CalculateEgressScreen () {
             />
 
             <PlusButton onPress={() => setVisibleItem(true)}/>
-            <PlusButton onPress={() => console.log(shoppingItems, 'hola')}/>
             {/* Boton Comprar */}
             <TouchableOpacity 
                 onPress={() => setVisibleBuy(true)}
