@@ -1,4 +1,4 @@
-import { View, TextInput, Button, Text } from 'react-native';
+import { View, TextInput, Button, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
 import { authService } from '../../../services/auth.service';
 import { ButtonStack } from '../../components/ButtonStack';
@@ -52,6 +52,10 @@ export function AuthScreen() {
 
   
   return (
+    <KeyboardAvoidingView 
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
     <View 
       style={{ 
         padding: 24,
@@ -109,5 +113,6 @@ export function AuthScreen() {
           />
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 }
