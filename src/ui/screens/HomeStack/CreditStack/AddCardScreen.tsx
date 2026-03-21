@@ -241,7 +241,7 @@ export function AddCardScreen () {
                             keyboardType="numeric"
                             style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
                             placeholderTextColor={colors.placeholder}
-                            placeholder={method ? 'limite monetario' : 'limite en porcentaje'}
+                            placeholder={method ? 'limite monetario' : 'Limite que deseas tener en esta tarjeta'}
                             value={displayPersonalLimit}
                             onChangeText={handlePersonalLimitChange}
                             
@@ -260,7 +260,7 @@ export function AddCardScreen () {
             </View>
 
             {/* Boton de cargar Emisor */}
-            <ButtonStack text={'Añadir Emisor'} onPress={() => insertCard()} bt={20}/>
+            <ButtonStack text={'Crear Tarjeta'} onPress={() => insertCard()} bt={20}/>
         </View>
         </KeyboardAvoidingView>
     )
