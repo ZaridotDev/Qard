@@ -7,6 +7,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { formatCurrency } from "../../../../utils/currency";
 import { paymentMethodsService } from "../../../../services/src/services/paymentMethods.service";
 import Toast from "react-native-toast-message";
+import { colors } from "../../../styles/colors";
 
 export function AddCardScreen () {
     const [ method, setMethod ] = useState(false);
@@ -38,12 +39,12 @@ export function AddCardScreen () {
     };
 
     const insertCard = async () => {
-        if (card ? form.name != '' && form.lastDigits != '' : form.name != '' ) {
+        if ( form.name != '' ) {
             if (parseInt(form.closingDay) < 31 && parseInt(form.closingDay) > 0 && parseInt(form.dueDay) < 31 && parseInt(form.dueDay) > 0 || form.closingDay == '' && form.dueDay == ''){
                 try {
                     await paymentMethodsService.insertPaymentMethod({
                         alias: form.name,
-                        last_digits: form.lastDigits,
+                        // last_digits: form.lastDigits,
                         closing_day: parseInt(form.closingDay),
                         due_day: parseInt(form.dueDay),
                         credit_limit: form.creditLimit,
@@ -116,7 +117,7 @@ export function AddCardScreen () {
             {/* Titulo */}
             <View 
                 style={{
-                    backgroundColor: '#BAD3A2', 
+                    backgroundColor: colors[4], 
                     padding: 10, 
                     borderRadius: 10, 
                     alignSelf: 'center', 
@@ -136,7 +137,7 @@ export function AddCardScreen () {
                 <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                     <TouchableOpacity 
                     style={{ 
-                        backgroundColor: '#BAD3A2', 
+                        backgroundColor: colors[4], 
                         borderTopStartRadius: 10, 
                         borderTopEndRadius: 10, 
                         padding: 4, 
@@ -148,7 +149,7 @@ export function AddCardScreen () {
                     </TouchableOpacity>
                     <TouchableOpacity 
                     style={{ 
-                        backgroundColor: '#BAD3A2', 
+                        backgroundColor: colors[4], 
                         borderTopStartRadius: 10, 
                         borderTopEndRadius: 10, 
                         padding: 4, 
@@ -164,18 +165,18 @@ export function AddCardScreen () {
                 {/* Sombras */}
                 <TouchableOpacity onPress={() => {setPerson(false), setCard(true)}} style={{elevation: 15, backgroundColor: "rgba(0,0,0,0.2)", position: 'absolute', height: 35, width:50, zIndex: card ? -1 : 0, borderTopStartRadius: 10, borderTopEndRadius: 10, right: '50%', top: 20}}/>
                 <TouchableOpacity onPress={() => {setPerson(true), setCard(false)}} style={{elevation: 15, backgroundColor: "rgba(0,0,0,0.2)", position: 'absolute', height: 35, width:50, zIndex: person ? -1 : 0, borderTopStartRadius: 10, borderTopEndRadius: 10, left: '50%', top: 20}}/>
-                <View style={{elevation: 15, backgroundColor: "rgba(0,0,0,0.2)", position: 'absolute', height: '80%', width: '3%', top: 60, right: 35, zIndex: -1, borderRadius: 10, alignSelf: 'center'}}/>
-                <View style={{elevation: 15, backgroundColor: "rgba(0,0,0,0.2)", position: 'absolute', height: '80%', left: 35, width: '3%', top: 60, zIndex: -1, borderRadius: 10, alignSelf: 'center'}}/>
-                <View style={{elevation: 15, backgroundColor: "rgba(0,0,0,0.2)", position: 'absolute', height: '3%', width: '82%', bottom: 40, zIndex: -1, borderRadius: 10, alignSelf: 'center'}}/>
+                <View style={{elevation: 15, backgroundColor: "rgba(0,0,0,0.2)", position: 'absolute', height: '75%', width: '3%', top: 60, right: 35, zIndex: -1, borderRadius: 10, alignSelf: 'center'}}/>
+                <View style={{elevation: 15, backgroundColor: "rgba(0,0,0,0.2)", position: 'absolute', height: '75%', left: 35, width: '3%', top: 60, zIndex: -1, borderRadius: 10, alignSelf: 'center'}}/>
+                <View style={{elevation: 15, backgroundColor: "rgba(0,0,0,0.2)", position: 'absolute', height: '3%', width: '82%', bottom: 78, zIndex: -1, borderRadius: 10, alignSelf: 'center'}}/>
                 {/* Sombras */}
 
                 {/* Fomrulario */}
                 <ScrollView 
                 contentContainerStyle={{ paddingBottom: 25 }}
                 style={{
-                    backgroundColor: '#BAD3A2', 
+                    backgroundColor: colors[4], 
                     padding: 12, 
-                    maxHeight: '90%', 
+                    maxHeight: '80%', 
                     borderRadius: 10, 
                     alignSelf: 'center', 
                     width:  '85%', 
@@ -189,7 +190,7 @@ export function AddCardScreen () {
                         value={form.name}
                         onChangeText={(text) => updateForm('name', text)}
                     />
-                    {card 
+                    {/* {card 
                         ? <>
                             <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Identificador de tarjeta</Text>
                             <TextInput 
@@ -203,7 +204,7 @@ export function AddCardScreen () {
                             />
                         </>
                         : <></>
-                    }
+                    } */}
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>{'Cierre de la tarjeta'}</Text>
                     <TextInput 
                         keyboardType="numeric"

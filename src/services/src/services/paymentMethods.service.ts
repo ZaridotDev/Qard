@@ -2,7 +2,7 @@ import { supabase } from '../../../core/supabase/client';
 
 export type paymentMethodsType = {
   alias: string,
-  last_digits: string,
+  // last_digits: string,
   closing_day: number,
   due_day: number,
   credit_limit: number,
