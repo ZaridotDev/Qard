@@ -78,6 +78,7 @@ export function AuthScreen() {
 
       <TextInput
         placeholder="Email"
+        placeholderTextColor={colors.placeholder}
         autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
@@ -86,6 +87,7 @@ export function AuthScreen() {
 
       <TextInput
         placeholder="Contraseña"
+        placeholderTextColor={colors.placeholder}
         secureTextEntry
         value={password}
         onChangeText={setPassword}

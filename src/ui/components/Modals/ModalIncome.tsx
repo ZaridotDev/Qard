@@ -5,6 +5,7 @@ import { useState } from "react";
 import { X } from "lucide-react-native";
 import { formatCurrency } from "../../../utils/currency";
 import Toast from "react-native-toast-message";
+import { colors } from "../../styles/colors";
 
 type ModalIncomeType = {
     visible: boolean;
@@ -100,6 +101,7 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
                         placeholder="Sueldo"
+                        placeholderTextColor={colors.placeholder}
                         value={description}
                         onChangeText={(text) => setDescription(text)}
                     />
@@ -107,6 +109,7 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
                         placeholder={formatCurrency(0)}
+                        placeholderTextColor={colors.placeholder}
                         keyboardType="numeric"
                         value={displayAmount}
                         onChangeText={handleAmountChange}

@@ -7,6 +7,7 @@ import { formatCurrency } from "../../../utils/currency";
 import { recurrentEgressType, recurrentEgressService } from "../../../services/src/services/recurrentEgress.service";
 import { Selector } from "../Selector";
 import Toast from "react-native-toast-message";
+import { colors } from "../../styles/colors";
 
 type ModalRecurerentEgressType = {
     visible: boolean;
@@ -106,6 +107,7 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
                         placeholder="Cafe diario"
+                        placeholderTextColor={colors.placeholder}
                         value={description}
                         onChangeText={(text) => setDescription(text)}
                     />
@@ -113,6 +115,7 @@ export function ModalRecurerentEgress ({visible, onClose}: ModalRecurerentEgress
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
                         placeholder={formatCurrency(0)}
+                        placeholderTextColor={colors.placeholder}
                         keyboardType="numeric"
                         value={displayAmount}
                         onChangeText={handleAmountChange}

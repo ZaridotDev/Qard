@@ -3,6 +3,7 @@ import { Modal, TextInput, TouchableOpacity, View, Text } from "react-native";
 import { formatCurrency } from "../../../utils/currency";
 import { useState } from "react";
 import { ShoppingItemsType } from "../../screens/HomeStack/DebitStack/CalculateEgressScreen";
+import { colors } from "../../styles/colors";
 
 // ModalShoppingItem.tsx
 type ModalShoppingItemType = {
@@ -72,6 +73,7 @@ export function ModalShoppingItem({ visible, onClose, onAddItem, idCategory }: M
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
                         placeholder="Producto"
+                        placeholderTextColor={colors.placeholder}
                         value={name}
                         onChangeText={(text) => setName(text)}
                     />
@@ -79,6 +81,7 @@ export function ModalShoppingItem({ visible, onClose, onAddItem, idCategory }: M
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
                         placeholder={formatCurrency(0)}
+                        placeholderTextColor={colors.placeholder}
                         keyboardType="numeric"
                         value={displayPrice}
                         onChangeText={handleAmountChange}

@@ -185,7 +185,7 @@ export function AddCardScreen () {
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>{card ? 'Nombre de la tarjeta' : 'Nombre de la persona'}</Text>
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                        placeholderTextColor={'#999'}
+                        placeholderTextColor={colors.placeholder}
                         placeholder={ card ? "Alias de la tarjeta" : "Nombre de quien pagara"}
                         value={form.name}
                         onChangeText={(text) => updateForm('name', text)}
@@ -210,7 +210,7 @@ export function AddCardScreen () {
                         keyboardType="numeric"
                         maxLength={2}
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                        placeholderTextColor={'#999'}
+                        placeholderTextColor={colors.placeholder}
                         placeholder="Fecha de inicio de facturacion (aprox)"
                         value={form.closingDay}
                         onChangeText={(text) => updateForm('closingDay', text)}
@@ -220,7 +220,7 @@ export function AddCardScreen () {
                         keyboardType="numeric"
                         maxLength={2}
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                        placeholderTextColor={'#999'}
+                        placeholderTextColor={colors.placeholder}
                         placeholder="Fecha limite para pagar resumen (aprox)"
                         value={form.dueDay}
                         onChangeText={(text) => updateForm('dueDay', text)}
@@ -229,7 +229,7 @@ export function AddCardScreen () {
                     <TextInput 
                         keyboardType="numeric"
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                        placeholderTextColor={'#999'}
+                        placeholderTextColor={colors.placeholder}
                         placeholder="Limite crediticio de la tarjeta (aprox)"
                         value={displayCreditLimit}
                         onChangeText={handleCreditLimitChange}
@@ -240,7 +240,7 @@ export function AddCardScreen () {
                         <TextInput 
                             keyboardType="numeric"
                             style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                            placeholderTextColor={'#999'}
+                            placeholderTextColor={colors.placeholder}
                             placeholder={method ? 'limite monetario' : 'limite en porcentaje'}
                             value={displayPersonalLimit}
                             onChangeText={handlePersonalLimitChange}

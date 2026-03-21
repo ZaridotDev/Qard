@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { budgetingService } from "../../../services/src/services/budgeting.service";
 import { shoppingItemsService } from "../../../services/src/services/shoppintItems.service";
 import Toast from "react-native-toast-message";
+import { colors } from "../../styles/colors";
 
 type ModalPurchaseType = {
     visible: boolean;
@@ -151,6 +152,7 @@ export function ModalPurchase ({visible, onClose, shoppingItems, idBudget}: Moda
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15,}}
                         placeholder="Supermercado"
+                        placeholderTextColor={colors.placeholder}
                         value={description}
                         onChangeText={(text) => setDescription(text)}
                     />

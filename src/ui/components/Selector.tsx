@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react-native";
 import { View, Text, TouchableOpacity } from "react-native";
 import { ModalSelector } from "./Modals/ModalSelector";
+import { colors } from "../styles/colors";
 
 type SelectorType = {
     title: string;
@@ -52,7 +53,7 @@ export function Selector ({ title, placeholder, center, fs, cards, idCategory, i
                     borderRadius: 10,
                 }}
             >
-                <Text style={{color: 'grey', fontSize: 18, bottom: 2}}>{selected}</Text>
+                <Text style={{color: colors.placeholder, fontSize: 18, bottom: 2}}>{selected}</Text>
                 <ChevronDown color={'grey'}/>
             </TouchableOpacity> 
             

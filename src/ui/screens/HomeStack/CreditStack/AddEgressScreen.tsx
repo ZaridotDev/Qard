@@ -9,6 +9,7 @@ import { Selector } from "../../../components/Selector";
 import Toast from "react-native-toast-message";
 import { useInsertWithInstallments } from "../../../../hooks/useInsertWithInstallments";
 import { formatCurrency } from "../../../../utils/currency";
+import { colors } from "../../../styles/colors";
 
 export function AddEgressScreen () {
     const [ paid, setPaid ] = useState(false);
@@ -140,7 +141,7 @@ export function AddEgressScreen () {
                         keyboardType="numeric"
                         maxLength={10}
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                        placeholderTextColor={'#999'}
+                        placeholderTextColor={colors.placeholder}
                         placeholder="$"
                         value={displayAmount}
                         onChangeText={handleAmountChange}
@@ -150,7 +151,7 @@ export function AddEgressScreen () {
                         keyboardType="numeric"
                         maxLength={3}
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                        placeholderTextColor={'#999'}
+                        placeholderTextColor={colors.placeholder}
                         placeholder="1, 3, 6, 9 ..."
                         value={installments}
                         onChangeText={(text) => setInstallments(text)}
@@ -158,7 +159,7 @@ export function AddEgressScreen () {
                     <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Descripcion</Text>
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                        placeholderTextColor={'#999'}
+                        placeholderTextColor={colors.placeholder}
                         placeholder="Titulo de la compra"
                         value={description}
                         onChangeText={(text) => setDescription(text)}
@@ -179,7 +180,7 @@ export function AddEgressScreen () {
                         <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>Nombre</Text>
                         <TextInput 
                             style={{width: '100%', backgroundColor: 'white', height: 40, fontSize: 16, marginBottom: 12, borderRadius: 10, paddingLeft: 10}}
-                            placeholderTextColor={'#999'}
+                            placeholderTextColor={colors.placeholder}
                             placeholder="Nombre de la persona"
                             // value={description}
                             // onChangeText={(text) => setDescription(text)}

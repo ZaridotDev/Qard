@@ -9,4 +9,5 @@ export const colors = {
     8: "#3D502B",
     9: "#334225",
     10: "#182310",
+    placeholder: "#CCCCCC",
 }
