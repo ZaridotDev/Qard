@@ -1,4 +1,4 @@
-import { View, FlatList } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { DebitItem } from "../../../components/DebitItem";
 import { useNavigation, CommonActions } from "@react-navigation/native";
@@ -11,6 +11,7 @@ import { WalletsStackParams } from "../../../../types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Toast from "react-native-toast-message";
 import { budgetingService } from "../../../../services/src/services/budgeting.service";
+import { colors } from "../../../styles/colors";
 
 export function WalletScreen () {
     const [visible, setVisible] = useState(false);
@@ -54,10 +55,27 @@ export function WalletScreen () {
     };
 
     return (
-            <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
+            <View style={{backgroundColor: colors[1], flex: 1}}>
                 {/* Flatlist */}
 
                 <BackButton onClick={goHome}/>
+
+                {/* Titulo */}
+                <View 
+                    style={{
+                        backgroundColor: colors[4], 
+                        padding: 10, 
+                        borderRadius: 10, 
+                        alignSelf: 'center', 
+                        justifyContent: 'center', 
+                        alignItems: 'center',
+                        elevation: 15, 
+                        width: '70%',
+                        marginBottom: 20,
+                }}>
+                    <Text style={{ fontSize: 28, textAlignVertical: 'center'}}>Presupuestos</Text>
+                </View>
+                {/* Titulo */}
                 <View style={{height: 'auto',maxHeight: '75%'}}>
                     <FlatList 
                     data={categories} 

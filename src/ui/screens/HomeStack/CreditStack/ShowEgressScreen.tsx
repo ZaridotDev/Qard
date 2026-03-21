@@ -6,6 +6,7 @@ import { getMonthRange } from "../../../../utils/date";
 import { CreditExpensesScreen } from "../CreditExpensesScreen";
 import { CommonActions, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useGetPaymentMethods } from "../../../../hooks/useGetPaymentMethods";
+import { colors } from "../../../styles/colors";
 
 export function ShowEgressScreen () {
     const today = new Date();
@@ -40,7 +41,7 @@ export function ShowEgressScreen () {
         <View style={{flex: 1, backgroundColor: '#F3F7EE'}}>
             <BackButton onClick={goHome}/>
             <SelectMonthScreen credit selected={restoreSelecetMonth}/>
-            <ScrollView style={{ padding: 24, backgroundColor: '#F3F7EE', flex: 1, paddingTop: 0}}>
+            <ScrollView style={{ padding: 24, backgroundColor: colors[1], flex: 1, paddingTop: 0}}>
                 <FlatList 
                     data={paymentMethods}
                     renderItem={({item})  => 

@@ -10,6 +10,7 @@ import { getMonthRange } from "../../../../utils/date";
 import { useRecurringTransactions } from "../../../../hooks/useRecurringTransactions";
 import { recurrentEgressService } from "../../../../services/src/services/recurrentEgress.service";
 import Toast from "react-native-toast-message";
+import { colors } from "../../../styles/colors";
 
 export function RecurrentEgressScreen () {
     const [visible, setVisible] = useState(false);
@@ -70,10 +71,25 @@ export function RecurrentEgressScreen () {
     }; 
 
     return (
-        <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
+        <View style={{backgroundColor: colors[1], flex: 1}}>
             <ModalRecurerentEgress visible={visible} onClose={handleCloseModal} />
             <BackButton onClick={goHome}/>
-            {/* Reutilizar BudgetItems para los items de compra */}
+            {/* Titulo */}
+            <View 
+                style={{
+                    backgroundColor: colors[4], 
+                    padding: 10, 
+                    borderRadius: 10, 
+                    alignSelf: 'center', 
+                    justifyContent: 'center', 
+                    alignItems: 'center',
+                    elevation: 15, 
+                    width: '70%',
+                    marginBottom: 20,
+            }}>
+                <Text style={{ fontSize: 28, textAlignVertical: 'center'}}>Gastos recurrentes</Text>
+            </View>
+            {/* Titulo */}
             <View
                 style={{
                     height: 'auto', 

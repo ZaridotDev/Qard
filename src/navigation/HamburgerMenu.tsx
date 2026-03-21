@@ -16,7 +16,7 @@ export function HamburgerMenu() {
   if (!isAuthenticated) return <AuthScreen />;
   return (
     <Drawer.Navigator screenOptions={{ headerShown: false,  }}>
-      <Drawer.Screen name="Home" component={HomeStack} />
+      <Drawer.Screen name="HomeStack" component={HomeStack} />
       <Drawer.Screen name="Analytics" component={AnalyticsScreen} />
       <Drawer.Screen name="Session" component={SessionScreen} />
     </Drawer.Navigator>

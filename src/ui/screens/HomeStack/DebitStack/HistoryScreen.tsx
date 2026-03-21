@@ -1,10 +1,10 @@
 import { CommonActions, useFocusEffect, useNavigation } from "@react-navigation/native";
-import { FlatList, Pressable, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { BackButton } from "../../../components/BackButton";
 import { CategoryItem } from "../../../components/CategoryItem";
-import { DebitItem } from "../../../components/DebitItem";
 import { useGetHistory } from "../../../../hooks/useGetHistory";
 import { useCallback, useState } from "react";
+import { colors } from "../../../styles/colors";
 
 export function HistoryScreen () {
     const [localRefresh, setLocalRefresh] = useState(0);
@@ -18,7 +18,7 @@ export function HistoryScreen () {
         );
     };
 
-    const { categories, loading, error } = useGetHistory(localRefresh);
+    const { categories } = useGetHistory(localRefresh);
 
     useFocusEffect(
         useCallback(() => {
@@ -27,8 +27,24 @@ export function HistoryScreen () {
     );
     
     return (
-        <View style={{backgroundColor: '#BAD3A2', flex: 1}}>
+        <View style={{backgroundColor: colors[1], flex: 1}}>
             <BackButton onClick={goHome}/>
+            {/* Titulo */}
+            <View 
+                    style={{
+                        backgroundColor: colors[4], 
+                        padding: 10, 
+                        borderRadius: 10, 
+                        alignSelf: 'center', 
+                        justifyContent: 'center', 
+                        alignItems: 'center',
+                        elevation: 15, 
+                        width: '70%',
+                        marginBottom: 20,
+                }}>
+                    <Text style={{ fontSize: 28, textAlignVertical: 'center'}}>Historal</Text>
+                </View>
+                {/* Titulo */}
             <FlatList
                 data={categories}
                 renderItem={({item}) => 

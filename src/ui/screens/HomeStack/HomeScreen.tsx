@@ -31,9 +31,9 @@ export function HomeScreen () {
       <ModalIncome visible={visible} onClose={handleCloseModal} />
       
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 25, padding:8}}>
-        <ButtonStack text="DEBITO" onPress={() => navigation.navigate('Debit')}/>
+        <ButtonStack text="GASTOS" onPress={() => navigation.navigate('Debit')}/>
         <PlusButton onPress={() => setVisible(true)}/>
-        <ButtonStack text="CREDITO" onPress={() => navigation.navigate('Credit')}/>
+        <ButtonStack text="TARJETAS" onPress={() => navigation.navigate('Credit')}/>
       </View>
       
     </View>
