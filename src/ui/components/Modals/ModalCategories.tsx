@@ -4,6 +4,7 @@ import { useState } from "react";
 import { X } from "lucide-react-native";
 import { formatCurrency } from "../../../utils/currency";
 import Toast from "react-native-toast-message";
+import { colors } from "../../styles/colors";
 
 type ModalCategoriesType = {
     visible: boolean;
@@ -43,7 +44,7 @@ export function ModalCategories ({visible, onClose}: ModalCategoriesType) {
         
             Toast.show({
                 type: 'success',
-                text1: 'Categoria creada con éxito'
+                text1: 'Presupuesto creado con éxito'
             });
             onClose(false, true);
             setDescription('');
@@ -53,7 +54,7 @@ export function ModalCategories ({visible, onClose}: ModalCategoriesType) {
             } catch (error) {
                 Toast.show({
                     type: 'error',
-                    text1: 'Error creando categoria'
+                    text1: 'Error creando presupuesto'
                 });
                 onClose(false);
             }
@@ -70,7 +71,7 @@ export function ModalCategories ({visible, onClose}: ModalCategoriesType) {
                 activeOpacity={1}
                 style={{flex: 1, justifyContent: 'center', padding: 20}}
             >
-                <View style={{alignSelf: 'center', width: '80%', height: 260, backgroundColor: '#BAD3A2', padding: 20, borderRadius: 15, alignItems: 'center'}}>
+                <View style={{alignSelf: 'center', width: '80%', height: 280, backgroundColor: colors[4], padding: 20, paddingTop: 35, borderRadius: 15, alignItems: 'center'}}>
                     <TouchableOpacity 
                     onPress={() => {
                         setDisplayAmount('');
@@ -83,14 +84,14 @@ export function ModalCategories ({visible, onClose}: ModalCategoriesType) {
                         <X size={24} color={'white'} />
                     </TouchableOpacity>
 
-                    <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Nombrar categoria</Text>
+                    <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Nombre del presupuesto</Text>
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
                         placeholder="Comida"
                         value={description}
                         onChangeText={(text) => setDescription(text)}
                     />
-                    <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Ingresa cuanto gastar</Text>
+                    <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Monto del presupuesto</Text>
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
                         placeholder={formatCurrency(0)}
