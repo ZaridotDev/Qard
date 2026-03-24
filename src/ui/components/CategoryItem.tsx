@@ -40,9 +40,7 @@ export function CategoryItem ({text, transactions}: CategoryItemType) {
             }}>
                 <Text style={{color: 'white', fontSize: 24}}>{text}</Text>
         </View> 
-                <FlatList 
-                    data={transactions}
-                    renderItem={({item}) => 
+                    {transactions.map((item) => (
                         <View
                             // style={{ flex: 1,}}
                             >
@@ -59,8 +57,7 @@ export function CategoryItem ({text, transactions}: CategoryItemType) {
                                 })}}
                                 />
                         </View>
-                    }
-                />
+                    ))}
         </View>
     )
 }
