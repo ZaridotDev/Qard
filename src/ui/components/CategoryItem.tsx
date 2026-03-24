@@ -41,9 +41,7 @@ export function CategoryItem ({text, transactions}: CategoryItemType) {
                 <Text style={{color: 'white', fontSize: 24}}>{text}</Text>
         </View> 
                     {transactions.map((item) => (
-                        <View
-                            // style={{ flex: 1,}}
-                            >
+                        <View>
                             <HistoryItem 
                                 text={item.description} 
                                 amount={formatCurrency(item.amount)}

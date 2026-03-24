@@ -11,6 +11,7 @@ import { useRecurringTransactions } from "../../../../hooks/useRecurringTransact
 import { recurrentEgressService } from "../../../../services/src/services/recurrentEgress.service";
 import Toast from "react-native-toast-message";
 import { colors } from "../../../styles/colors";
+import { formatCurrency } from "../../../../utils/currency";
 
 export function RecurrentEgressScreen () {
     const [visible, setVisible] = useState(false);
@@ -102,7 +103,7 @@ export function RecurrentEgressScreen () {
                 renderItem={({item}) => 
                     <DebitItem 
                         text={item.description} 
-                        amount={item.amount} 
+                        amount={formatCurrency(item.amount)} 
                         onPress={() => createExpense(item.amount, item.description)}
                         onDelete={() => deleteReccurent(item.id)}
                     />}
