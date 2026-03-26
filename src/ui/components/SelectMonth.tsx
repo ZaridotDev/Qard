@@ -1,15 +1,15 @@
 import { View, Text, TouchableOpacity } from 'react-native';
-import { getMonthRange, parseLocalDate } from '../../../utils/date';
+import { getMonthRange, parseLocalDate } from '../../utils/date';
 import { ChevronLeft, ChevronRight } from 'lucide-react-native';
 import { useState } from 'react';
 
-type SelectMonthScreenType = {
+type SelectMonthType = {
     selected: (selectMonthIndex: string[]) => void;
     credit: boolean;
 }
 
 
-export function SelectMonthScreen ({selected, credit}: SelectMonthScreenType) {
+export function SelectMonth ({selected, credit}: SelectMonthType) {
     const today = new Date();
     const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
 

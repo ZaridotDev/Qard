@@ -5,10 +5,11 @@ import { getMonthRange } from '../../../utils/date';
 import { Trash, SquarePen } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import { transactionService } from '../../../services/src/services/transactions.service';
-import { SelectMonthScreen } from './SelectMonthScreen';
+import { SelectMonth } from '../../components/SelectMonth';
 import { installmentsService } from '../../../services/src/services/installments.service';
 import { formatCurrency } from '../../../utils/currency';
 import Toast from 'react-native-toast-message';
+import { colors } from '../../styles/colors';
 
 type TransactionsScreenType = {
   refreshTrigger?: number;
@@ -68,8 +69,9 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
   return (
     <>
     {/* SELECCION DE MES */}
-      <SelectMonthScreen credit={false} selected={restoreSelecetMonth}/>
-      <View style={{ backgroundColor: '#D9E7CB', height: '80%', borderRadius: 10, padding: 4, flex: 1, elevation: 5, marginBottom: 10}}>
+      <SelectMonth credit={false} selected={restoreSelecetMonth}/>
+      <Text style={{ fontSize: 22, color: colors[6], fontStyle: 'italic', textAlign: 'center', top: -10}}>Transacciones</Text>
+      <View style={{ backgroundColor: colors[3], height: '80%', borderRadius: 10, padding: 4, flex: 1, elevation: 5}}>
 
         {/* <View style={{ backgroundColor: 'rgba(0,0,0,0.1)',  height: '97%', position: 'absolute', top: 5, right: 55, width: 2, zIndex: 1}}/> */}
         <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',  height: '97%', position: 'absolute', top: 5, right: 72, width: 2, zIndex: 1}}/>
@@ -88,7 +90,7 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
                   borderRadius: 8,
                   height: 35,
                   alignItems: 'center',
-                  backgroundColor: getTransactionType(item.type) ? '#BAD3A2' : '#E7B8B8', 
+                  backgroundColor: getTransactionType(item.type) ? colors[4] : colors.expense 
                 }}
               >
               <Text style={{ fontSize: 14, flex: 3, marginLeft: 12 }}>{item.description}</Text>

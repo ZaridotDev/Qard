@@ -1,17 +1,17 @@
 import { View, Text, FlatList } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import { DebitItem } from "../../../components/DebitItem";
+import { BackButton } from "../../../../components/BackButton";
+import { DebitItem } from "../../../../components/DebitItem";
 import { useNavigation, CommonActions } from "@react-navigation/native";
-import { PlusButton } from "../../../components/PlusButton";
+import { PlusButton } from "../../../../components/PlusButton";
 import { useState } from "react";
-import { ModalCategories } from "../../../components/Modals/ModalCategories";
-import { useGetCategories } from "../../../../hooks/useGetCategories";
-import { formatCurrency } from "../../../../utils/currency";
-import { WalletsStackParams } from "../../../../types/navigation";
+import { ModalCategories } from "../../../../components/Modals/ModalCategories";
+import { useGetCategories } from "../../../../../hooks/useGetCategories";
+import { formatCurrency } from "../../../../../utils/currency";
+import { WalletsStackParams } from "../../../../../types/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Toast from "react-native-toast-message";
-import { budgetingService } from "../../../../services/src/services/budgeting.service";
-import { colors } from "../../../styles/colors";
+import { budgetingService } from "../../../../../services/src/services/budgeting.service";
+import { colors } from "../../../../styles/colors";
 
 export function WalletScreen () {
     const [visible, setVisible] = useState(false);
@@ -22,7 +22,7 @@ export function WalletScreen () {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Home' }],
+                routes: [{ name: 'NavMenu' }],
             })
         );
     };

@@ -1,14 +1,14 @@
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import { DebitItem } from "../../../components/DebitItem";
-import { PlusButton } from "../../../components/PlusButton";
+import { BackButton } from "../../../../components/BackButton";
+import { DebitItem } from "../../../../components/DebitItem";
+import { PlusButton } from "../../../../components/PlusButton";
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
-import { WalletsStackParams } from '../../../../types/navigation';
-import { formatCurrency } from "../../../../utils/currency";
+import { WalletsStackParams } from '../../../../../types/navigation';
+import { formatCurrency } from "../../../../../utils/currency";
 import { useState } from "react";
-import { ModalShoppingItem } from "../../../components/Modals/ModalShoppingItem";
-import { ModalAlert } from "../../../components/Modals/ModalAlert";
-import { ModalPurchase } from "../../../components/Modals/ModalPurchase";
+import { ModalShoppingItem } from "../../../../components/Modals/ModalShoppingItem";
+import { ModalAlert } from "../../../../components/Modals/ModalAlert";
+import { ModalPurchase } from "../../../../components/Modals/ModalPurchase";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 type CalculatorRouteProp = RouteProp<WalletsStackParams, 'Calculator'>;

@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import { DebitItem } from "../../../components/DebitItem";
+import { BackButton } from "../../../../components/BackButton";
+import { DebitItem } from "../../../../components/DebitItem";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { HistoryStackParams } from "../../../../types/navigation";
-import { formatCurrency } from "../../../../utils/currency";
+import { HistoryStackParams } from "../../../../../types/navigation";
+import { formatCurrency } from "../../../../../utils/currency";
 
 type DetailsRouteProp = RouteProp<HistoryStackParams, 'Details'>;
 

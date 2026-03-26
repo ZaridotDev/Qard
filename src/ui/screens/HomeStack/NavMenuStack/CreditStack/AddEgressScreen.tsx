@@ -1,15 +1,15 @@
 import { View, Text, TextInput, ScrollView, TouchableOpacity } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import { ButtonStack } from "../../../components/ButtonStack";
+import { BackButton } from "../../../../components/BackButton";
+import { ButtonStack } from "../../../../components/ButtonStack";
 import { useMemo, useState } from "react";
 import { Square, SquareCheckBig } from "lucide-react-native";
 import { RadioButtonProps, RadioGroup } from "react-native-radio-buttons-group";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { Selector } from "../../../components/Selector";
+import { Selector } from "../../../../components/Selector";
 import Toast from "react-native-toast-message";
-import { useInsertWithInstallments } from "../../../../hooks/useInsertWithInstallments";
-import { formatCurrency } from "../../../../utils/currency";
-import { colors } from "../../../styles/colors";
+import { useInsertWithInstallments } from "../../../../../hooks/useInsertWithInstallments";
+import { formatCurrency } from "../../../../../utils/currency";
+import { colors } from "../../../../styles/colors";
 
 export function AddEgressScreen () {
     const [ paid, setPaid ] = useState(false);
@@ -25,7 +25,7 @@ export function AddEgressScreen () {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Home' }],
+                routes: [{ name: 'NavMenu' }],
             })
         );
     };

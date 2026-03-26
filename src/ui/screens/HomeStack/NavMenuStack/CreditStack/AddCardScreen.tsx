@@ -1,13 +1,13 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, Platform, KeyboardAvoidingView } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import { ButtonStack } from "../../../components/ButtonStack";
+import { BackButton } from "../../../../components/BackButton";
+import { ButtonStack } from "../../../../components/ButtonStack";
 import { useState } from "react";
 import { CreditCard, User } from "lucide-react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { formatCurrency } from "../../../../utils/currency";
-import { paymentMethodsService } from "../../../../services/src/services/paymentMethods.service";
+import { formatCurrency } from "../../../../../utils/currency";
+import { paymentMethodsService } from "../../../../../services/src/services/paymentMethods.service";
 import Toast from "react-native-toast-message";
-import { colors } from "../../../styles/colors";
+import { colors } from "../../../../styles/colors";
 
 export function AddCardScreen () {
     const [ method, setMethod ] = useState(false);
@@ -29,7 +29,7 @@ export function AddCardScreen () {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Home' }],
+                routes: [{ name: 'NavMenu' }],
             })
         );
     };

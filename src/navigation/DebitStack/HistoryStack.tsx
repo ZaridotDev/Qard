@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { HistoryScreen } from '../../ui/screens/HomeStack/DebitStack/HistoryScreen';
-import { HistoryDetailsScreen } from '../../ui/screens/HomeStack/DebitStack/HistoryDetailsScreen';
+import { HistoryScreen } from '../../ui/screens/HomeStack/NavMenuStack/HistoryStack/HistoryScreen';
+import { HistoryDetailsScreen } from '../../ui/screens/HomeStack/NavMenuStack/HistoryStack/HistoryDetailsScreen';
 
 const Stack = createStackNavigator();
 

@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { WalletScreen } from '../../ui/screens/HomeStack/DebitStack/WalletScreen';
-import { CalculateEgressScreen } from '../../ui/screens/HomeStack/DebitStack/CalculateEgressScreen';
+import { WalletScreen } from '../../ui/screens/HomeStack/NavMenuStack/WalletsStack/WalletScreen';
+import { CalculateEgressScreen } from '../../ui/screens/HomeStack/NavMenuStack/WalletsStack/CalculateEgressScreen';
 
 const Stack = createStackNavigator();
 

@@ -21,11 +21,13 @@ export type HamburguerDrawerParams = {
 };
 export type HomeStackParams = {
     Home: undefined;
-    Debit: undefined;
-    Credit: undefined;
+    NavMenu: undefined
 };
 
-export type DebitTabParams = {
+export type NavMenuStackParams = {
+    NavMenu: undefined;
+    QuickExpense: undefined;
+    Credit: undefined;
     Wallets: undefined;
     History: undefined;
     Recurrents: undefined;

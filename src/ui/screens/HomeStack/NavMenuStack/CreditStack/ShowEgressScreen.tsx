@@ -1,12 +1,12 @@
-import { View, Text, ScrollView, FlatList } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import { SelectMonthScreen } from "../SelectMonthScreen";
+import { View, ScrollView, FlatList } from "react-native";
+import { BackButton } from "../../../../components/BackButton";
+import { SelectMonth } from "../../../../components/SelectMonth";
 import { useCallback, useState } from "react";
-import { getMonthRange } from "../../../../utils/date";
-import { CreditExpensesScreen } from "../CreditExpensesScreen";
+import { getMonthRange } from "../../../../../utils/date";
+import { CreditExpensesScreen } from "./CreditExpensesScreen";
 import { CommonActions, useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useGetPaymentMethods } from "../../../../hooks/useGetPaymentMethods";
-import { colors } from "../../../styles/colors";
+import { useGetPaymentMethods } from "../../../../../hooks/useGetPaymentMethods";
+import { colors } from "../../../../styles/colors";
 
 export function ShowEgressScreen () {
     const today = new Date();
@@ -20,7 +20,7 @@ export function ShowEgressScreen () {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Home' }],
+                routes: [{ name: 'NavMenu' }],
             })
         );
     };
@@ -38,9 +38,9 @@ export function ShowEgressScreen () {
     const {paymentMethods} = useGetPaymentMethods(refreshTrigger)
 
     return (
-        <View style={{flex: 1, backgroundColor: '#F3F7EE'}}>
+        <View style={{flex: 1, backgroundColor: colors[1]}}>
             <BackButton onClick={goHome}/>
-            <SelectMonthScreen credit selected={restoreSelecetMonth}/>
+            <SelectMonth credit selected={restoreSelecetMonth}/>
             <ScrollView style={{ padding: 24, backgroundColor: colors[1], flex: 1, paddingTop: 0}}>
                 <FlatList 
                     data={paymentMethods}

@@ -1,10 +1,10 @@
 import { CommonActions, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { FlatList, Text, View } from "react-native";
-import { BackButton } from "../../../components/BackButton";
-import { CategoryItem } from "../../../components/CategoryItem";
-import { useGetHistory } from "../../../../hooks/useGetHistory";
+import { BackButton } from "../../../../components/BackButton";
+import { CategoryItem } from "../../../../components/CategoryItem";
+import { useGetHistory } from "../../../../../hooks/useGetHistory";
 import { useCallback, useState } from "react";
-import { colors } from "../../../styles/colors";
+import { colors } from "../../../../styles/colors";
 
 export function HistoryScreen () {
     const [localRefresh, setLocalRefresh] = useState(0);
@@ -13,7 +13,7 @@ export function HistoryScreen () {
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
-                routes: [{ name: 'Home' }],
+                routes: [{ name: 'NavMenu' }],
             })
         );
     };

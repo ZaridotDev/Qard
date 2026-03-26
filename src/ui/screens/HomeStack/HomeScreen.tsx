@@ -8,6 +8,7 @@ import { useState } from "react";
 import { PlusButton } from "../../components/PlusButton";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeStackParams } from "../../../types/navigation";
+import { colors } from "../../styles/colors";
 
 export function HomeScreen () {
   const navigation = useNavigation<StackNavigationProp<HomeStackParams>>();
@@ -24,16 +25,16 @@ export function HomeScreen () {
   }
 
   return ( 
-    <View style={{ padding: 24, backgroundColor: '#F3F7EE', flex: 1, paddingTop: 20}}>
+    <View style={{ padding: 24, backgroundColor: colors[1], flex: 1, paddingTop: 20}}>
       <DrawerButon />
 
       <TransactionsScreen refreshTrigger={refreshTrigger} crud={crudTransaction}/>
       <ModalIncome visible={visible} onClose={handleCloseModal} />
       
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 25, padding:8}}>
-        <ButtonStack text="GASTOS" onPress={() => navigation.navigate('Debit')}/>
-        <PlusButton onPress={() => setVisible(true)}/>
-        <ButtonStack text="TARJETAS" onPress={() => navigation.navigate('Credit')}/>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingBottom: 25, padding:8}}>
+        <ButtonStack text="GASTAR"  icon expense fs={26} onPress={() => navigation.navigate('NavMenu')}/>
+        {/* <PlusButton onPress={() => setVisible(true)}/> */}
+        <ButtonStack text="INGRESAR"  icon fs={26} onPress={() => setVisible(true)}/>
       </View>
       
     </View>

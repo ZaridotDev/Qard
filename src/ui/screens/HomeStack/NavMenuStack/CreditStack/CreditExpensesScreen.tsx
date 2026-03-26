@@ -1,10 +1,10 @@
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { Trash, SquarePen, Square, SquareCheckBig } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
-import { useMonthlyInstallments } from '../../../hooks/useMonthlyInstallments';
-import { formatCurrency } from '../../../utils/currency';
-import { transactionService } from '../../../services/src/services/transactions.service';
-import { installmentsService } from '../../../services/src/services/installments.service';
+import { useMonthlyInstallments } from '../../../../../hooks/useMonthlyInstallments';
+import { formatCurrency } from '../../../../../utils/currency';
+import { transactionService } from '../../../../../services/src/services/transactions.service';
+import { installmentsService } from '../../../../../services/src/services/installments.service';
 import Toast from 'react-native-toast-message';
 import { useFocusEffect } from '@react-navigation/native';
 

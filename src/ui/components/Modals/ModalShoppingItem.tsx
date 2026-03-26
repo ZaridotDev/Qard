@@ -2,7 +2,7 @@ import { X } from "lucide-react-native";
 import { Modal, TextInput, TouchableOpacity, View, Text } from "react-native";
 import { formatCurrency } from "../../../utils/currency";
 import { useState } from "react";
-import { ShoppingItemsType } from "../../screens/HomeStack/DebitStack/CalculateEgressScreen";
+import { ShoppingItemsType } from "../../screens/HomeStack/NavMenuStack/WalletsStack/CalculateEgressScreen";
 import { colors } from "../../styles/colors";
 
 // ModalShoppingItem.tsx

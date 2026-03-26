@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ShowEgressScreen } from '../ui/screens/HomeStack/CreditStack/ShowEgressScreen';
-import { AddEgressScreen } from '../ui/screens/HomeStack/CreditStack/AddEgressScreen';
-import { AddCardScreen } from '../ui/screens/HomeStack/CreditStack/AddCardScreen';
+import { ShowEgressScreen } from '../ui/screens/HomeStack/NavMenuStack/CreditStack/ShowEgressScreen';
+import { AddEgressScreen } from '../ui/screens/HomeStack/NavMenuStack/CreditStack/AddEgressScreen';
+import { AddCardScreen } from '../ui/screens/HomeStack/NavMenuStack/CreditStack/AddCardScreen';
 import { CreditCard, List, SquarePlus } from 'lucide-react-native';
 
 const Tab = createBottomTabNavigator();

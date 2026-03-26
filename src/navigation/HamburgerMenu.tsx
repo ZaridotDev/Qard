@@ -30,9 +30,7 @@ export function HamburgerMenu() {
           fontSize: 16,
           color: '#333',
         },
-        drawerActiveBackgroundColor: colors[5],
-        // drawerActiveTintColor: colors[1],
-        // drawerInactiveTintColor: '#ccc',
+        drawerActiveBackgroundColor: colors[5]
       }}
     >
       <Drawer.Screen 
@@ -43,11 +41,6 @@ export function HamburgerMenu() {
           drawerIcon: ({ focused }) => (
             <View
               style={{
-                // width: 42,
-                // height: 42,
-                // borderRadius: 21,
-                // justifyContent: 'center',
-                // alignItems: 'center',
                 backgroundColor: focused ? colors[2] : colors[1],
                 borderRadius: 50,
                 padding: 5

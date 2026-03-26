@@ -3,7 +3,7 @@ import { transactionService } from "../../../services/src/services/transactions.
 import { getMonthRange } from "../../../utils/date";
 import { useState } from "react";
 import { X } from "lucide-react-native";
-import { ShoppingItemsType } from "../../screens/HomeStack/DebitStack/CalculateEgressScreen";
+import { ShoppingItemsType } from "../../screens/HomeStack/NavMenuStack/WalletsStack/CalculateEgressScreen";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { WalletsStackParams } from "../../../types/navigation";
 import { useNavigation } from "@react-navigation/native";
