@@ -1,13 +1,15 @@
-import { View, TextInput, Button, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, TextInput, Button, Text, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { authService } from '../../../services/auth.service';
 import { ButtonStack } from '../../components/ButtonStack';
 import { colors } from '../../styles/colors';
 import Toast from 'react-native-toast-message';
+import { Eye, EyeOff } from 'lucide-react-native';
 
 export function AuthScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [env, setEnv] = useState(process.env.EXPO_PUBLIC_ENV);
 
   const handleSignIn = async () => {
@@ -85,15 +87,21 @@ export function AuthScreen() {
         style={{ borderWidth: 1, width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15, borderRadius: 10  }}
       />
 
-      <TextInput
-        placeholder="Contraseña"
-        placeholderTextColor={colors.placeholder}
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        style={{ borderWidth: 1, width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, borderRadius: 10}}
-      />
-
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <TextInput
+          placeholder="Contraseña"
+          placeholderTextColor={colors.placeholder}
+          secureTextEntry={!showPassword}
+          value={password}
+          onChangeText={setPassword}
+          style={{ borderWidth: 1, width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, borderRadius: 10}}
+          />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: 10 }}>
+          {showPassword 
+          ? <EyeOff color={colors.placeholder} size={20}/> 
+          : <Eye color={colors.placeholder} size={20}/>}
+        </TouchableOpacity>
+      </View>
       <View
         style={{
           flexDirection: 'row',
