@@ -1,3 +1,2 @@
--firstRoute o InitialRoute para volver a la home
-
--hacer que backButton tenga un prop que diferencie entre Home o atras
+cuando una etiqueta <TouchableOpacity> tiene texto sin la etiqueta
+<Text> sale el error de "Text strings"

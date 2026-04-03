@@ -5,12 +5,17 @@ import { ButtonStack } from '../../components/ButtonStack';
 import { colors } from '../../styles/colors';
 import Toast from 'react-native-toast-message';
 import { Eye, EyeOff } from 'lucide-react-native';
+import { Loading } from '../../components/Loading';
 
 export function AuthScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [haveAccount, setHaveAccount] = useState(false);
+  const [optionSelected, setOptionSelected] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [env, setEnv] = useState(process.env.EXPO_PUBLIC_ENV);
+
 
   const handleSignIn = async () => {
     try {
@@ -31,19 +36,20 @@ export function AuthScreen() {
       console.log('SIGN UP DATA', data);
   
       if (!data.session) {
-        console.log('Usuario creado pero sin sesión (email confirmation)');
+        setVisible(true)
+        console.log('Usuario creado pero sin sesión (email confirmation)', data);
         Toast.show({
           type: 'info',
           text1: 'Te hamos enviado un email de confirmacion',
           text2: 'Por favor, verifica tu casilla de correos',
         })
-    } else {
-      Toast.show({
-        type: 'success',
-        text1: 'Usuario creado y logueado',
-      })
-    }
-  } catch (error) {
+      } else {
+        Toast.show({
+          type: 'success',
+          text1: 'Usuario creado y logueado',
+        })
+      }
+    } catch (error) {
       Toast.show({
         type: 'error',
         text1: 'Error registrando el usuario',
@@ -58,7 +64,9 @@ export function AuthScreen() {
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-    <View 
+
+      <Loading visible={visible}/>
+      <View 
       style={{ 
         padding: 24,
         flex: 1,
@@ -67,6 +75,8 @@ export function AuthScreen() {
         backgroundColor: colors[5]
       }}
       >
+      { !optionSelected 
+      ? <>
       <Text
         style={{
           color: 'white', 
@@ -74,10 +84,47 @@ export function AuthScreen() {
           marginBottom: 8, 
           fontWeight: 'bold',
         }}
-      >
-        INICIA SESIÓN O REGISTRATE
+        >
+        ¿Ya tenes una cuenta?
       </Text>
 
+      <ButtonStack
+        tp={5}
+        bt={15}
+        isFullWidth={true}
+        ctr
+        text="INICIAR SESIÓN"
+        onPress={() => {
+          setHaveAccount(true)
+          setOptionSelected(true)
+        }}
+        />
+      <Text
+        style={{
+          color: 'white', 
+          fontSize: 16, 
+          // marginBottom: 8, 
+          // fontWeight: 'bold',
+        }}
+        >
+        o crea una cuenta
+      </Text>
+      <ButtonStack
+      tp={1}
+      text="REGISTRARSE"
+      onPress={() => {
+        setHaveAccount(false)
+        setOptionSelected(true)
+      }}
+      />
+      <TouchableOpacity onPress={() =>  setVisible(true)}><Text>asdasd</Text></TouchableOpacity>
+      </>
+      : <></>}
+
+
+      {optionSelected 
+      ? 
+      <>
       <TextInput
         placeholder="Email"
         placeholderTextColor={colors.placeholder}
@@ -102,26 +149,57 @@ export function AuthScreen() {
           : <Eye color={colors.placeholder} size={20}/>}
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          width: '80%',
-          alignSelf: 'center',
-          top: -10
-        }}
-      >
-        <ButtonStack
-          text="Registrarse"
+      { haveAccount
+
+        ? <ButtonStack
+        text="INICIAR SESIÓN"
+        onPress={handleSignIn}
+        />
+
+        : <ButtonStack
+          text="REGISTRARSE"
           onPress={handleSignUp}
           />
+      }
 
-        <ButtonStack
-          text="Login"
-          onPress={handleSignIn}
-          />
-      </View>
+      { haveAccount
+
+        ? <View style={{ flexDirection: 'row', position: 'absolute', bottom: 20, alignSelf: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 18}}>
+            {`Crear cuenta, `} 
+          </Text>
+            <TouchableOpacity 
+              onPress={() => {
+                setHaveAccount(false)
+                setOptionSelected(true)
+              }}
+              style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center',}}
+              >
+              <Text style={{ color: colors[7], fontSize: 18 }}>
+                registrarse
+              </Text>
+            </TouchableOpacity>
+        </View>
+
+        : <View style={{ flexDirection: 'row', position: 'absolute', bottom: 20, alignSelf: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 18}}>
+            {`si ya tenes una cuenta, `}
+          </Text>
+            <TouchableOpacity 
+              onPress={() => {
+                setHaveAccount(true)
+                setOptionSelected(true)
+              }}
+              style={{ alignContent: 'center', justifyContent: 'center', alignItems: 'center',}}
+              >
+              <Text style={{ color: colors[7], fontSize: 18}}>
+                iniciar sesión
+              </Text>
+            </TouchableOpacity>
+        </View>
+      }
+        </>
+      : <></>}
     </View>
     </KeyboardAvoidingView>
   );

@@ -6,13 +6,14 @@ type ButtonStackType = {
     text: string;
     onPress: () => void;
     bt?: number;
+    tp?: number;
     fs?: number;
     expense?: boolean;
     isFullWidth?: boolean;
     icon?: boolean;
     ctr?: boolean;
 }
-export function ButtonStack ({text, onPress, bt, fs, expense, isFullWidth, icon, ctr}: ButtonStackType) {
+export function ButtonStack ({text, onPress, bt, fs, tp, expense, isFullWidth, icon, ctr}: ButtonStackType) {
     return (
         <TouchableOpacity 
             onPress={onPress}
@@ -21,7 +22,7 @@ export function ButtonStack ({text, onPress, bt, fs, expense, isFullWidth, icon,
                 width: isFullWidth ? '70%' : 'auto', 
                 padding: 15, 
                 borderRadius: 10, 
-                marginTop: 20, 
+                marginTop: tp ? tp : 20, 
                 alignSelf: 'center',
                 elevation: 5,
                 marginBottom: bt ? bt : 0,
