@@ -20,13 +20,12 @@ export type HamburguerDrawerParams = {
     Session: undefined;
 };
 export type HomeStackParams = {
-    Home: undefined;
+    Home: undefined | { visible: boolean };
     NavMenu: undefined
 };
 
 export type NavMenuStackParams = {
     NavMenu: undefined;
-    QuickExpense: undefined;
     Credit: undefined;
     Wallets: undefined;
     History: undefined;

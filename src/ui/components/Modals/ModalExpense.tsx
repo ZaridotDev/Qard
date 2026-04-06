@@ -7,13 +7,13 @@ import { formatCurrency } from "../../../utils/currency";
 import Toast from "react-native-toast-message";
 import { colors } from "../../styles/colors";
 
-type ModalIncomeType = {
+type ModalExpenseType = {
     visible: boolean;
     onClose: (closed: boolean, saved?: boolean) => void;
 }
 
-export function ModalIncome ({visible, onClose}: ModalIncomeType) {
-    const [teton, setTeton] = useState<number>(0) // esto es culpa de Joni
+export function ModalExpense ({visible, onClose}: ModalExpenseType) {
+    const [amount, setAmount] = useState<number>(0)
     const [description, setDescription] = useState("")
     const [displayAmount, setDisplayAmount] = useState('');    
 
@@ -23,27 +23,27 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
         const cleaned = text.replace(/\D/g, '');
         const number = parseInt(cleaned) || 0;
         
-        setTeton(number);                          
+        setAmount(number);                          
         setDisplayAmount(formatCurrency(number));  
     };
 
-    const createIncome = async () => {
-        if  ( teton > 0 && description != '') {
+    const createExpense = async () => {
+        if  ( amount > 0 && description != '') {
             try {
                 const {today: piton} = getMonthRange(new Date());
                 await transactionService.insert({
-                    type: 'income',
-                    amount: teton, 
+                    type: 'expense',
+                    amount: amount, 
                     description: description, 
                     transaction_date: piton, 
                 });
                 
                 Toast.show({
                     type: 'success',
-                    text1: 'Ingreso creado con éxito'
+                    text1: 'Egreso creado con éxito'
                 })
                 onClose(false); 
-                setTeton(0);
+                setAmount(0);
                 setDisplayAmount('');
                 setDescription('');
                 return;
@@ -55,7 +55,7 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                 })
                 onClose(false);
             }
-        } else if (teton < 0) {
+        } else if (amount < 0) {
             Toast.show({
                 type: 'error',
                 text1: 'ingresa un monto mayor a 0"'
@@ -64,7 +64,7 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
         } else if (description === '') {
             Toast.show({
                 type: 'error',
-                text1: 'ingresa una descripcion a tu ingreso"'
+                text1: 'ingresa una descripcion a tu egreso"'
             })
             return;
         }
@@ -82,13 +82,13 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
         >
             <View
                 style={{flex: 1, justifyContent: 'center', padding: 20, top: -28}}>
-                <Text style={{color: 'white', fontSize: 28, marginBottom: 18, fontWeight: 'bold', alignSelf: 'center'}}>NUEVO INGRESO</Text>
-                <View style={{alignSelf: 'center', width: '80%', height: 260, backgroundColor: colors[4], padding: 20, borderRadius: 15, alignItems: 'center'}}>
+                <Text style={{color: 'white', fontSize: 28, marginBottom: 18, fontWeight: 'bold', alignSelf: 'center'}}>NUEVO EGRESO</Text>
+                <View style={{alignSelf: 'center', width: '80%', height: 260, backgroundColor: colors.expense, padding: 20, borderRadius: 15, alignItems: 'center'}}>
                     <TouchableOpacity 
                     onPress={() => {
                         setDisplayAmount('');
                         setDescription('');
-                        setTeton(0);
+                        setAmount(0);
                         onClose(false);
                     }} 
                     style={{ padding: 10, position: 'absolute', top: 5, right:5 }}
@@ -99,7 +99,7 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                     <Text style={{color: 'white', fontSize: 22, marginBottom: 4, fontWeight: 'bold'}}>Descripcion</Text>
                     <TextInput 
                         style={{width: '100%', backgroundColor: 'white', height: 40, textAlign: 'center', fontSize: 18, marginBottom: 15 }}
-                        placeholder="Ponele nombre al ingreso"
+                        placeholder="Ponele nombre al egreso"
                         placeholderTextColor={colors.placeholder}
                         value={description}
                         onChangeText={(text) => setDescription(text)}
@@ -115,10 +115,10 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                         
                     />
                     <TouchableOpacity 
-                    onPress={() => createIncome()} 
+                    onPress={() => createExpense()} 
                     >
-                        <View style={{backgroundColor: colors[6], padding: 10, borderRadius: 10,}}>
-                            <Text style={{color: 'white', fontSize: 20}}>Crear ingreso</Text>
+                        <View style={{backgroundColor: colors.expenseBtn, padding: 10, borderRadius: 10}}>
+                            <Text style={{color: 'white', fontSize: 20}}>Crear egreso</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

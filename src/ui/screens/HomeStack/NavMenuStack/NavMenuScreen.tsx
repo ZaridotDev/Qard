@@ -7,11 +7,12 @@ import { colors } from "../../../styles/colors";
 import { ButtonStack } from "../../../components/ButtonStack";
 import { Separator } from "../../../components/Separator";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { NavMenuStackParams } from "../../../../types/navigation";
+import { HomeStackParams, NavMenuStackParams } from "../../../../types/navigation";
 
 export function NavMenuScreen () {
     const [visible, setVisible] = useState(false);
     const navigation = useNavigation<StackNavigationProp<NavMenuStackParams>>();
+    const navigation2 = useNavigation<StackNavigationProp<HomeStackParams>>();
     const goHome = () => {
         navigation.dispatch(
             CommonActions.reset({
@@ -56,7 +57,7 @@ export function NavMenuScreen () {
 
                 }}
             >
-                <ButtonStack isFullWidth ctr fs={24} text={'Gasto rápido'} onPress={() => navigation.navigate('QuickExpense')}/>
+                <ButtonStack isFullWidth ctr fs={24} text={'Gasto rápido'} onPress={() => navigation2.navigate('Home', {visible: true})}/>
                 <ButtonStack isFullWidth ctr fs={24} text={'Tarjetas'} onPress={() => navigation.navigate('Credit')}/>
                 <ButtonStack isFullWidth ctr fs={24} text={'Gastos recurrentes'} onPress={() => navigation.navigate('Recurrents')}/>
                 <ButtonStack isFullWidth ctr fs={24} text={'Presupuestos'} onPress={() => navigation.navigate('Wallets')}/>
