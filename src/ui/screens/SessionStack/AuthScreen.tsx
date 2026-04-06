@@ -65,7 +65,7 @@ export function AuthScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
 
-      <Loading visible={visible}/>
+      <Loading visible={visible} text='Revisa tu email'/>
       <View 
       style={{ 
         padding: 24,
@@ -117,7 +117,6 @@ export function AuthScreen() {
         setOptionSelected(true)
       }}
       />
-      <TouchableOpacity onPress={() =>  setVisible(true)}><Text>asdasd</Text></TouchableOpacity>
       </>
       : <></>}
 
