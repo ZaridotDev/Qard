@@ -42,7 +42,7 @@ export function ModalIncome ({visible, onClose}: ModalIncomeType) {
                     type: 'success',
                     text1: 'Ingreso creado con éxito'
                 })
-                onClose(false); 
+                onClose(false, true); 
                 setTeton(0);
                 setDisplayAmount('');
                 setDescription('');

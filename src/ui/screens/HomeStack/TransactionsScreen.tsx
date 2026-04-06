@@ -12,11 +12,10 @@ import Toast from 'react-native-toast-message';
 import { colors } from '../../styles/colors';
 
 type TransactionsScreenType = {
-  refreshTrigger?: number;
-  crud: (crud: boolean) => void;
+  refreshTrigger: number;
 }
 
-export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScreenType) {
+export function TransactionsScreen({ refreshTrigger }: TransactionsScreenType) {
   const { startCurrentMonth, endCurrentMonth } = getMonthRange(new Date());
   const [selectMonth, setSelectMonth] = useState<string[]>([startCurrentMonth, endCurrentMonth]);
   const [ balance, setBalance ] = useState<number>(0);
@@ -63,7 +62,6 @@ export function TransactionsScreen({ refreshTrigger = 0, crud }: TransactionsScr
       text1: 'Error borrando la transaction',
       text2: 'Intente de nuevo mas tarde',
     })}
-    crud(true);
 }
   
   return (

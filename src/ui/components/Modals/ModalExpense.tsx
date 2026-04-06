@@ -30,19 +30,19 @@ export function ModalExpense ({visible, onClose}: ModalExpenseType) {
     const createExpense = async () => {
         if  ( amount > 0 && description != '') {
             try {
-                const {today: piton} = getMonthRange(new Date());
+                const {today} = getMonthRange(new Date());
                 await transactionService.insert({
                     type: 'expense',
                     amount: amount, 
                     description: description, 
-                    transaction_date: piton, 
+                    transaction_date: today, 
                 });
                 
                 Toast.show({
                     type: 'success',
                     text1: 'Egreso creado con éxito'
                 })
-                onClose(false); 
+                onClose(false, true); 
                 setAmount(0);
                 setDisplayAmount('');
                 setDescription('');

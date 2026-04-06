@@ -40,7 +40,7 @@ export function HomeScreen () {
     <View style={{ padding: 24, backgroundColor: colors[1], flex: 1, paddingTop: 20}}>
       <DrawerButon />
 
-      <TransactionsScreen refreshTrigger={refreshTrigger} crud={crudTransaction}/>
+      <TransactionsScreen refreshTrigger={refreshTrigger} />
       <ModalIncome visible={visibleIncome} onClose={handleCloseModal} />
       <ModalExpense visible={visibleExpense} onClose={handleCloseModal} />
       
